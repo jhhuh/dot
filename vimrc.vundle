@@ -1,0 +1,12 @@
+set rtp+=~/.vim/bundle/Vundle.vim
+
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'chriskempson/base16-vim'
+Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-fugitive'
+Plugin 'LnL7/vim-nix'
+Plugin 'davidhalter/jedi-vim'
+
+call vundle#end()
