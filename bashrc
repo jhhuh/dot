@@ -12,20 +12,23 @@ export LOCALE_ARCHIVE=$HOME/.nix-profile/lib/locale/locale-archive
 # enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
+    source /usr/share/bash-completion/bash_completion
   elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+    source /etc/bash_completion
+  elif [ -f ~/.nix-profile/share/git/contrib/completion/git-completion.bash ]; then
+    source ~/.nix-profile/share/git/contrib/completion/git-completion.bash
   fi
 fi
 # brew bash completion
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
-fi 
+#if [ -f $(brew --prefix)/etc/bash_completion ]; then
+#    . $(brew --prefix)/etc/bash_completion
+#fi 
 
 # bash colors
-(ls --color=auto &> /dev/null \
-    && ( export LS_OPTIONS="--color=auto"; eval "`dircolors`" ))\
-|| export LS_OPTIONS="-G"
+export LS_OPTIONS="--color=auto"; eval "`dircolors`"
+#(ls --color=auto &> /dev/null \
+#    && ( export LS_OPTIONS="--color=auto"; eval "`dircolors`" ))\
+#|| export LS_OPTIONS="-G"
 alias ls="ls $LS_OPTIONS" 
 
 # $HOME/bin $HOME/npm/bin
@@ -63,8 +66,8 @@ export GIT_PS1_SHOWCOLORHINTS=1
 #if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
 #   source /usr/local/etc/bash_completion.d/git-prompt.sh
 #fi
-if [ -f "$(brew --prefix git)/etc/bash_completion.d/git-prompt" ]; then
-    source "$(brew --prefix git)/etc/bash_completion.d/git-prompt" >/dev/null
+if [ -f "${HOME}/.nix-profile/share/git/contrib/completion/git-prompt.sh" ]; then
+    source "${HOME}/.nix-profile/share/git/contrib/completion/git-prompt.sh" >/dev/null
 fi
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
