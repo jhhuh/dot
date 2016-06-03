@@ -41,10 +41,10 @@ export WORKON_HOME=$HOME/.virtualenvs
 #fi
 
 # miniconda
-#export PATH=~/miniconda3/bin:"$PATH"
-#eval "$(register-python-argcomplete conda)"
-#alias activate='source activate'
-#alias condalist='conda env list'
+export PATH=~/miniconda3/bin:"$PATH"
+eval "$(register-python-argcomplete conda)"
+alias activate='source activate'
+alias condalist='conda env list'
 
 # prevent sudden exit
 set -o ignoreeof
