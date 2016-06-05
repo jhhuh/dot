@@ -25,13 +25,13 @@ source ~/.vimrc.vundle
 filetype plugin indent on
 "" <<< Vundle ""
 
-#" base16 colorscheme
-#let base16colorspace=256
-#set background=light
-#colorscheme base16-mocha
-#highlight Comment ctermfg=DarkGrey
-#highlight Visual cterm=None ctermfg=DarkGrey ctermbg=Grey
-#highlight MatchParen ctermfg=Red
+"" base16 colorscheme
+"let base16colorspace=256
+"set background=light
+"colorscheme base16-mocha
+"highlight Comment ctermfg=DarkGrey
+"highlight Visual cterm=None ctermfg=DarkGrey ctermbg=Grey
+"highlight MatchParen ctermfg=Red
 
 colorscheme morning
 
