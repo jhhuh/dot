@@ -6,9 +6,6 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# a fix for nix locale problem
-export LOCALE_ARCHIVE=$HOME/.nix-profile/lib/locale/locale-archive
-
 # enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -125,3 +122,7 @@ fnix() {
 dnix() {
     nix-store --query --references $(nix-instantiate '<nixpkgs>' -A $1)
 }
+
+# completion with sudo
+complete -cf sudo
+
