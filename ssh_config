@@ -38,7 +38,7 @@ Host bitnote
     IdentitiesOnly yes
 Host hidden-home
     Hostname y7tmtj6y62f6x2ox.onion
-    proxyCommand ncat --proxy 127.0.0.1:9050 --proxy-type socks5 %h %p
+    proxyCommand nc -X 5 -x 127.0.0.1:9050 %h %p
 Host hidden-mbp
     Hostname cul25xl4jzap24ou.onion
-    proxyCommand ncat --proxy 127.0.0.1:9050 --proxy-type socks5 %h %p
+    proxyCommand nc -X 5 -x 127.0.0.1:9050 %h %p
