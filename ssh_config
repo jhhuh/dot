@@ -1,0 +1,44 @@
+Host deephy
+    HostName deephy
+    Port 22221
+    User jhhuh
+Host minji
+    HostName minji
+    Port 22
+    User tominji
+Host aws
+    HostName aws
+    Port 22
+    User jhhuh
+Host genis
+    HostName genis.ddns.net
+    #Port 2222
+    User jhhuh
+Host lxplus
+    HostName lxplus.cern.ch
+    PubkeyAuthentication no
+    PasswordAuthentication yes
+    Port 22
+    User jhuh
+Host lxpluspub
+    HostName lxplus.cern.ch
+    ForwardAgent yes
+    Port 22
+    User jhuh
+Host office
+    Hostname macth68.cern.ch
+    ForwardAgent yes
+    Port 22
+    User jhuh
+Host *+*
+  ProxyCommand ssh $(echo %h | sed 's/+[^+]*$//;s/\([^+%%]*\)%%\([^+]*\)$/\2 -l \1/;s/:/ -p /') exec nc -w1 $(echo %h | sed 's/^.*+//;/:/!s/$/ %p/;s/:/ /')
+Host bitnote
+    Hostname bitbucket.org
+    IdentityFile ~/.ssh/id_rsa_jhnote
+    IdentitiesOnly yes
+Host hidden-home
+    Hostname y7tmtj6y62f6x2ox.onion
+    proxyCommand ncat --proxy 127.0.0.1:9050 --proxy-type socks5 %h %p
+Host hidden-mbp
+    Hostname cul25xl4jzap24ou.onion
+    proxyCommand ncat --proxy 127.0.0.1:9050 --proxy-type socks5 %h %p
