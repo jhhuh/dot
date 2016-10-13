@@ -122,3 +122,10 @@ fnix() {
 dnix() {
     nix-store --query --references $(nix-instantiate '<nixpkgs>' -A $1)
 }
+
+# nixpkgs fork
+NIX_PATH=nixfork=$HOME/fork/nixpkgs:$NIX_PATH
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+source "$(brew --prefix nvm)/nvm.sh"
