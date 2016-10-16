@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sandbox_init_nvm(){
+  export NVM_DIR="$HOME/.nvm";
+  source $(brew --prefix nvm)/nvm.sh
+}
+
+sandbox_hook nvm nvm

@@ -1,22 +1,14 @@
-# Just in case /usr/local/bin is not included
+# $HOME/.local/bin /usr/local/bin 
 export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
 
 # Alias definitions.
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f $HOME/.bash_aliases ]; then
+    . $HOME/.bash_aliases
 fi
 
-# a fix for nix locale problem
-export LOCALE_ARCHIVE=$HOME/.nix-profile/lib/locale/locale-archive
+# cabal 
+export PATH=~/.cabal/bin:"$PATH"
 
-# enable programmable completion features
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
 # brew bash completion
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
@@ -28,24 +20,6 @@ fi
 || export LS_OPTIONS="-G"
 alias ls="ls $LS_OPTIONS" 
 
-# $HOME/bin $HOME/npm/bin
-export PATH="$HOME/local/bin:$HOME/npm/bin:$PATH"
-
-# virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
-#if [ -f /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh ]; then
-#  source /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh
-#fi
-#if [ -f $HOME/.nix-profile/bin/virtualenvwrapper_lazy.sh ]; then
-#  source $HOME/.nix-profile/bin/virtualenvwrapper_lazy.sh
-#fi
-
-# miniconda
-#export PATH=~/miniconda3/bin:"$PATH"
-#eval "$(register-python-argcomplete conda)"
-#alias activate='source activate'
-#alias condalist='conda env list'
-
 # prevent sudden exit
 set -o ignoreeof
 
@@ -53,19 +27,10 @@ set -o ignoreeof
 get_sha() {
     git rev-parse --short HEAD 2>/dev/null
 }
-export GIT_PS1_SHOWCOLORHINTS=1
-#if [ -f /etc/bash_completion.d/git-prompt ]; then
-#   source /etc/bash_completion.d/git-prompt
+#export GIT_PS1_SHOWCOLORHINTS=1
+#if [ -f "$(brew --prefix git)/etc/bash_completion.d/git-prompt" ]; then
+#    source "$(brew --prefix git)/etc/bash_completion.d/git-prompt" >/dev/null
 #fi
-#if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
-#   source /usr/local/etc/bash_completion.d/git-completion.bash
-#fi
-#if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
-#   source /usr/local/etc/bash_completion.d/git-prompt.sh
-#fi
-if [ -f "$(brew --prefix git)/etc/bash_completion.d/git-prompt" ]; then
-    source "$(brew --prefix git)/etc/bash_completion.d/git-prompt" >/dev/null
-fi
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
@@ -81,20 +46,10 @@ is_in_nixshell() {
     fi
 }
 
-# Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/base16-mocha.dark.sh"
-#[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL 
-
 # my little secret
 if [ -r ~/.not-public ]; then
     source ~/.not-public
 fi
-
-# cabal 
-export PATH=~/.cabal/bin:"$PATH"
-
-# TMPDIR
-#export TMPDIR=~/.tmp
 
 # PERL5
 PATH="/Users/jhhuh/perl5/bin${PATH:+:${PATH}}"; export PATH;
@@ -123,9 +78,10 @@ dnix() {
     nix-store --query --references $(nix-instantiate '<nixpkgs>' -A $1)
 }
 
-# nixpkgs fork
-NIX_PATH=nixfork=$HOME/fork/nixpkgs:$NIX_PATH
+# nvm ! moved to .sandboxrc
+#export NVM_DIR="$HOME/.nvm"
+#source "$(brew --prefix nvm)/nvm.sh"
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-source "$(brew --prefix nvm)/nvm.sh"
+# sandboxd: see https://github.com/benvan/sandboxd (modified)
+source $HOME/.sandboxd
+

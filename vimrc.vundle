@@ -2,6 +2,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
 
+Plugin 'neovimhaskell/haskell-vim'
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'LnL7/vim-nix'
 Plugin 'davidhalter/jedi-vim'
