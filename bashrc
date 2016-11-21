@@ -24,20 +24,12 @@ alias ls="ls $LS_OPTIONS"
 set -o ignoreeof
 
 # git-prompt
-get_sha() {
-    git rev-parse --short HEAD 2>/dev/null
-}
-#export GIT_PS1_SHOWCOLORHINTS=1
-#if [ -f "$(brew --prefix git)/etc/bash_completion.d/git-prompt" ]; then
-#    source "$(brew --prefix git)/etc/bash_completion.d/git-prompt" >/dev/null
-#fi
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWSTASHSTATE=1
-GIT_PS1_SHOWUNTRACKEDFILES=1
-GIT_PS1_SHOWCOLORHINTS=1
-GIT_PS1_DESCRIBE_STYLE="branch"
-GIT_PS1_SHOWUPSTREAM="auto git"
-PROMPT_COMMAND='__git_ps1 "\033[01;33m\]$(is_in_nixshell)\033[00m\]\[\033[01;32m\]|\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]|\033[01;33m\]$CONDA_DEFAULT_ENV\033[00m\]|" "\n$ " "[%s $(get_sha)]"'
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+
+if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+        source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
+    fi
 
 is_in_nixshell() {
     if [ $IN_NIX_SHELL ]

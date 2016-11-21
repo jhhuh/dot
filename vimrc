@@ -1,12 +1,13 @@
 set nocompatible
 
-syntax on
 set number
 set ignorecase
 set smarttab expandtab tabstop=4 shiftwidth=4
 
 set nobackup noswapfile
 set wildmode=longest,list,full
+
+set modelines=1
 
 " key-bindings
 nnoremap ; :
@@ -26,6 +27,7 @@ nmap <leader>m :make<cr>
 filetype off
 source ~/.vimrc.vundle
 filetype plugin indent on
+syntax on
 "" <<< Vundle ""
 
 "" base16 colorscheme

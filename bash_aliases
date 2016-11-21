@@ -18,3 +18,8 @@ alias tls='tmux -2 ls'
 alias tat='tmux -2 attach -t'
 alias tns='tmux -2 new-session -s'
 
+# nix-shell assisted
+with-jedi() {
+    nix-shell -p pythonPackages.jedi --run '$@'
+}
+alias vim-jedi='with-jedi vim '

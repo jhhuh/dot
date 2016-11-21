@@ -10,9 +10,8 @@ Host aws
     HostName aws
     Port 22
     User jhhuh
-Host genis
-    HostName genis.ddns.net
-    #Port 2222
+Host nixos-genis
+    HostName  192.168.1.14
     User jhhuh
 Host lxplus
     HostName lxplus.cern.ch
