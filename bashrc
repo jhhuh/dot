@@ -16,10 +16,6 @@ if ! shopt -oq posix; then
     source ~/.nix-profile/share/git/contrib/completion/git-completion.bash
   fi
 fi
-# brew bash completion
-#if [ -f $(brew --prefix)/etc/bash_completion ]; then
-#    . $(brew --prefix)/etc/bash_completion
-#fi 
 
 # bash colors
 export LS_OPTIONS="--color=auto"; eval "`dircolors`"
@@ -33,18 +29,6 @@ export PATH="$HOME/local/bin:$HOME/npm/bin:$PATH"
 
 # virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
-#if [ -f /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh ]; then
-#  source /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh
-#fi
-#if [ -f $HOME/.nix-profile/bin/virtualenvwrapper_lazy.sh ]; then
-#  source $HOME/.nix-profile/bin/virtualenvwrapper_lazy.sh
-#fi
-
-# miniconda
-#export PATH=~/miniconda3/bin:"$PATH"
-#eval "$(register-python-argcomplete conda)"
-#alias activate='source activate'
-#alias condalist='conda env list'
 
 # prevent sudden exit
 set -o ignoreeof
@@ -53,25 +37,18 @@ set -o ignoreeof
 get_sha() {
     git rev-parse --short HEAD 2>/dev/null
 }
-export GIT_PS1_SHOWCOLORHINTS=1
-#if [ -f /etc/bash_completion.d/git-prompt ]; then
-#   source /etc/bash_completion.d/git-prompt
-#fi
-#if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
-#   source /usr/local/etc/bash_completion.d/git-completion.bash
-#fi
-#if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
-#   source /usr/local/etc/bash_completion.d/git-prompt.sh
-#fi
+
 if [ -f "${HOME}/.nix-profile/share/git/contrib/completion/git-prompt.sh" ]; then
     source "${HOME}/.nix-profile/share/git/contrib/completion/git-prompt.sh" >/dev/null
 fi
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
-GIT_PS1_SHOWCOLORHINTS=1
 GIT_PS1_DESCRIBE_STYLE="branch"
 GIT_PS1_SHOWUPSTREAM="auto git"
+PROMPT_COLOR="1;31m"
+let $UID && PROMPT_COLOR="1;32m"
+#PS1='\n\[\033[$PROMPT_COLOR\][\u@\h \W]\[\033[0m\]$(__git_ps1 " (%s)")\n\$ '
 PROMPT_COMMAND='__git_ps1 "\033[01;33m\]$(is_in_nixshell)\033[00m\]\[\033[01;32m\]|\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]|\033[01;33m\]$CONDA_DEFAULT_ENV\033[00m\]|" "\n$ " "[%s $(get_sha)]"'
 
 is_in_nixshell() {
