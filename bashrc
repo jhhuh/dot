@@ -103,4 +103,3 @@ dnix() {
 # completion with sudo
 complete -cf sudo
 
-NIX_PATH=nixpkgs=/home/jhhuh/repo/nixpkgs:$NIX_PATH
