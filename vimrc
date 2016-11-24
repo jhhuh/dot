@@ -33,7 +33,7 @@ filetype plugin indent on
 "highlight Visual cterm=None ctermfg=DarkGrey ctermbg=Grey
 "highlight MatchParen ctermfg=Red
 
-colorscheme morning
+colorscheme default
 
 " vim-airline
 set laststatus=2
