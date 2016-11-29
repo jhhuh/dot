@@ -53,8 +53,8 @@
           Option "SwipeUpButton" "0"
           Option "SwipeDownButton" "0"
           Option "ScrollDistance" "75"
-          Option "VertScrollDelta" "-40"
-          Option "HorizScrollDelta" "-40"
+          Option "VertScrollDelta" "-10"
+          Option "HorizScrollDelta" "-10"
         '';
       };
 #      synaptics = {

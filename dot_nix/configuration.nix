@@ -8,16 +8,17 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-#      ./terminal-server.nix
       ./services.nix
     ];
+  
+  nixpkgs.config.allowUnfree = true;
 
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "powersave";
   };
 
-#  boot.loader.grub.device = "/dev/disk/by-label/nixos";
+#  boot.loader.grub.device = "/dev/sda";
 
 #  systemd-boot EFI boot loader.
   boot.loader = {
@@ -44,7 +45,7 @@
     enableFontDir = true;
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
-      #corefonts
+      corefonts
       inconsolata
       ubuntu_font_family
       baekmuk-ttf

@@ -16,16 +16,15 @@
 #        "usb_storage" "usbhid"
 #        "sd_mod"
       ];
-      kernelModules = [ ];
     };
-#    kernelModules = [ "kvm-intel" ];
+    kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
     kernelParams = [
-#      "i915_enable_rc6=7"
-#      "i915_enable_fbc=1"
-#      "lvds_downclock=1"
-#      "nmi_watchdog=0"
-#      "acpi_osi=Darwin"
+      "i915_enable_rc6=1"
+      "i915_enable_fbc=1"
+      "lvds_downclock=1"
+      "nmi_watchdog=0"
+      "acpi_osi=\"!Darwin\""
     ];
   };
 
