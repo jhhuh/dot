@@ -7,6 +7,8 @@ set smarttab expandtab tabstop=4 shiftwidth=4
 
 set nobackup noswapfile
 set wildmode=longest,list,full
+set backspace=indent,eol,start
+set autoindent
 
 " key-bindings
 nnoremap ; :
