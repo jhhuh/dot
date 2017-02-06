@@ -24,9 +24,6 @@ export LS_OPTIONS="--color=auto"; eval "`dircolors`"
 #|| export LS_OPTIONS="-G"
 alias ls="ls $LS_OPTIONS" 
 
-# $HOME/bin $HOME/npm/bin
-export PATH="$HOME/local/bin:$HOME/npm/bin:$PATH"
-
 # virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
 
@@ -58,9 +55,8 @@ is_in_nixshell() {
     fi
 }
 
-# Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/base16-mocha.dark.sh"
-#[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL 
+# fix for broken characters
+export TERM=screen
 
 # my little secret
 if [ -r ~/.not-public ]; then
@@ -103,3 +99,8 @@ dnix() {
 # completion with sudo
 complete -cf sudo
 
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+source ~/.profile
+
+export DTK_PROGRAM=espeak

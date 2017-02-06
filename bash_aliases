@@ -1,3 +1,6 @@
+alias vi='vim'
+alias vij='function __vij() { nix-shell -p pythonPackages.jedi vimHugeX --run "vim $@";}; __vij'
+
 #alias ec="emacsclient -a '' -c "
 #alias et="emacsclient -a '' -t "
 #alias emacs="emacs -nw"
@@ -18,3 +21,5 @@ alias tls='tmux -2 ls'
 alias tat='tmux -2 attach -t'
 alias tns='tmux -2 new-session -s'
 
+# stack aliases
+alias ghci-stack='stack ghci'
