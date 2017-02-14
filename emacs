@@ -42,15 +42,15 @@
 (ido-mode t)
 
 ;; auto-complete
-(require 'auto-complete)
-(global-auto-complete-mode t)
+;;(require 'auto-complete)
+;;(global-auto-complete-mode t)
 
 ;; yasnippet
 ; I needed to change the name of the file 'go-mode/default' to 'go-mode/defaultGo',
 ; or put an empty 'default' file in '~/Library/Preferences/[Aquamacs]/' or 
 ; '~/Library/Application Support/[Aquamacs]/'
-(require 'yasnippet)
-(yas-global-mode t)
+;;(require 'yasnippet)
+;;(yas-global-mode t)
 
 ;; confirm-kill-emacs
 (setq confirm-kill-emacs 'yes-or-no-p)
