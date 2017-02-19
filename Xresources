@@ -1,8 +1,16 @@
-URxvt.font: xft:monaco:size=10
+Xft.dpi:        125.37
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintfull
+Xft.lcdfilter:  lcddefault
 
+!!! URxvt !!!
+URxvt.font: xft:monaco:size=9
+URxvt.scrollBar: false
 URxvt.perl-ext-common: font-size,color-themes 
 
-!! font-size
+!! font-size plugin
 URxvt.keysym.C-Up:     font-size:increase
 URxvt.keysym.C-Down:   font-size:decrease
 URxvt.keysym.C-S-Up:   font-size:incglobal
@@ -10,7 +18,7 @@ URxvt.keysym.C-S-Down: font-size:decglobal
 URxvt.keysym.C-equal:  font-size:reset
 URxvt.keysym.C-slash:  font-size:show
 
-!! color-themes
+!! color-themes plugin
 URxvt.color-themes.themedir:  ~/.themes/urxvt
 URxvt.color-themes.preprocessor: $HOME/.nix-profile/bin/cpp
 URxvt.keysym.M-C-n:  perl:color-themes:next
