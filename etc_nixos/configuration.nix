@@ -5,207 +5,93 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
-
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
-
-  # gummiboot efi boot loader.
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-    kernel.sysctl."net.ipv4.ip_forward" = 1;
-  };
-
-  # networking
-  networking.hostName = "nixos-genis";
-  networking.networkmanager.enable = true;
-  networking.firewall = {
-    enable = true;
-    allowPing = true;
-    allowedTCPPorts = [ 445 139 25565 21027 22000 5900 4711 24800 ];
-    allowedUDPPorts = [ 137 138 ];
-    allowedUDPPortRanges = [
-      { from = 60000; to = 61000; }
-      { from = 9993; to = 9993;}
-    ];
-  };
- 
-  # i18n
-  i18n = {
-    consoleFont = "latarcyrheb-sun32";
-    consoleKeyMap = "us";
-    defaultLocale = "en_US.UTF-8";
-  };
-
-  fonts = {
-    enableFontDir = true;
-    enableGhostscriptFonts = true;
-    fonts = with pkgs; [
-      corefonts
-      inconsolata
-      ubuntu_font_family
-      baekmuk-ttf
-    ];
-  };
-
-  # time zone.
-  time.timeZone = "Europe/Amsterdam";
-
-  # packages 
-  environment.systemPackages = with pkgs; [
-    wget vim w3m tmux python
-    blueman
-    networkmanager
+  imports = [ 
+    ./hardware-configuration.nix
   ];
 
-  # rfkill bug fix 
-#  systemd.additionalUpstreamSystemUnits = [ "systemd-rfkill.socket" ];
-
-  # virtualisation
-#  virtualisation.docker.enable = true;
-
-  environment.etc = {
-    "synergy-server.conf".text = ''
-      section: screens
-        z40:
-        macth68.cern.ch:
-      end
-      section: links
-        z40:
-          right = macth68.cern.ch
-        macth68.cern.ch:
-          left = z40
-      end
-    '';
+  boot = {
+    loader.grub = {
+      enable = true;
+      version = 2;
+      device = "/dev/sda";
+    };
+    kernelParams = [
+      "acpi_osi=!\"Windows 2012\""
+    ];
+    extraModprobeConfig = '''';
+  };
+  
+  sound = {
+    enable = true;
+    enableMediaKeys = true;
   };
 
-  systemd.services.synergy-server.serviceConfig.User="jhhuh";
- 
-  # services
+  networking = {
+    hostName = "x230-nixos";
+    networkmanager.enable = true;
+  };
+
+  environment.systemPackages = with pkgs; [
+    wget git vim tmux acpitool rxvt_unicode-with-plugins dillo
+  ];
+
   services = {
-    synergy.server = {
-      enable = true;
-      address = "192.168.2.4";
-      screenName = "z40";
-    };
-    
+    tlp.enable = true;
+    acpid.enable = true;
+    openssh.enable = true;
     xserver = {
       enable = true;
-      dpi = 157;
       layout = "us";
       xkbOptions = "ctrl:swapcaps";
-
-      libinput.enable = true;
- 
-      desktopManager = {
-        xfce.enable = true;
-        xterm.enable = false;
-        default = "xfce";
+      synaptics = {
+        enable = true;
+        additionalOptions = ''
+          Option "VertResolution" "100"
+          Option "HorizResolution" "65"
+          Option "MinSpeed" "1"
+          Option "MaxSpeed" "1"
+          Option "AccelerationProfile" "2"
+          Option "AdaptiveDeceleration" "16"
+          Option "ConstantDeceleration" "16"
+          Option "VelocityScale" "20"
+          Option "AccelerationNumerator" "30"
+          Option "AccelerationDenominator" "10"
+          Option "AccelerationThreshold" "10"
+          Option "TapButton2" "0"
+          Option "HorizHysteresis" "100"
+          Option "VertHysteresis" "100"
+        '';
       };
-
-      displayManager.sddm.enable = true;
-#      displayManager.gdm.enable = true;
-
-#      libinput.enable = false;
-#      multitouch = {
-#        enable = true;
-#        additionalOptions = ''
-#          Option "Sensitivity" "0.64"
-#          Option "FingerHigh" "5"
-#          Option "FingerLow" "1"
-#          Option "IgnoreThumb" "true"
-#          Option "IgnorePalm" "true"
-#          Option "DisableOnPalm" "true"
-#          Option "TapButton1" "1"
-#          Option "TapButton2" "3"
-#          Option "TapButton3" "2"
-#          Option "TapButton4" "0"
-#          Option "ClickFinger1" "1"
-#          Option "ClickFinger2" "2"
-#          Option "ClickFinger3" "3"
-#          Option "ButtonMoveEmulate" "false"
-#          Option "ButtonIntegrated" "true"
-#          Option "ClickTime" "25"
-#          Option "BottomEdge" "30"
-#          Option "SwipeLeftButton" "8"
-#          Option "SwipeRightButton" "9"
-#          Option "SwipeUpButton" "0"
-#          Option "SwipeDownButton" "0"
-#          Option "ScrollDistance" "75"
-#          Option "VertScrollDelta" "-10"
-#          Option "HorizScrollDelta" "-10"
-#        '';
-#      };
-    };
-
-    syncthing = {
-      enable = true;
-      user = "jhhuh";
-      dataDir = "/home/jhhuh/.config/syncthing";
-    };
-
-    postgresql = {
-      enable = true;
-    };
-
-    #fail2ban.enable = true;
-
-    samba = {
-      enable = true;
-      shares = {
-        Videos =
-          { path = "/home/tominji/share/videos";
-            #"read only" = "yes";
-            browseable = "yes";
-            "guest ok" = "yes";
-          };
+      windowManager = {
+	default = "i3";
+        i3.enable = true;
       };
-      extraConfig = ''
-      guest account = smbguest
-      map to guest = bad user
-      '';
-  };
- 
-    tor = {
-      enable = true;
-      extraConfig = ''
-        HiddenServiceDir /var/lib/tor/ssh
-        HiddenServicePort 22 127.0.0.1:22
-      '';
     };
-
-    openssh = {
-      enable = true;
-      forwardX11 = true;
-      gatewayPorts = "yes";
-    };
- 
-#    logind.extraConfig = "HandleLidSwitch=ignore";
   };
-
-  programs.ssh.setXAuthLocation = true;
   
-  # user account
-  users.extraUsers.jhhuh = {
-    isNormalUser = true;
+  users.extraUsers."jhhuh" = {
     extraGroups = [ "wheel" "networkmanager" ];
+    isNormalUser = true;
     uid = 1000;
   };
-  
-  users.extraUsers.tominji = {
-    isNormalUser = true;
-  };
-  
-  users.users.smbguest = 
-    { name = "smbguest";
-      uid  = config.ids.uids.smbguest;
-      description = "smb guest user";
-    }; 
 
-  # The NixOS release to be compatible with for stateful data such as databases.
   system.stateVersion = "16.09";
+  
+  # Select internationalisation properties.
+  # i18n = {
+  #   consoleFont = "Lat2-Terminus16";
+  #   consoleKeyMap = "us";
+  #   defaultLocale = "en_US.UTF-8";
+  # };
+
+  # Set your time zone.
+  # time.timeZone = "Europe/Amsterdam";
+
+  # Enable CUPS to print documents.
+  # services.printing.enable = true;
+  
+  # Enable the KDE Desktop Environment.
+  # services.xserver.displayManager.kdm.enable = true;
+  # services.xserver.desktopManager.kde4.enable = true;
+
 }

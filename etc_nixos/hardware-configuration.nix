@@ -4,37 +4,22 @@
 { config, lib, pkgs, ... }:
 
 {
-#  imports = [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix> ]; 
+  imports =
+    [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+    ];
 
-  nixpkgs.config = {
-    packageOverrides = pkgs: {
-        bluez = pkgs.bluez5;
-    };
-  };
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "sdhci_pci" ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
 
-  hardware = {
-    enableAllFirmware = true;
-    bluetooth.enable = true;
-    pulseaudio = {
-      enable = true;
-      package = pkgs.pulseaudioFull;
-      extraConfig = ''
-        load-module module-simple-protocol-tcp source=1 record=true port=4711
-      '';
-    };
-  };
-
-  boot = {
-    kernelParams = [ "ath9k.ps_enable=1" "nmi_watchdog=0" ]; 
-    initrd.availableKernelModules = [ ]; # [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" "rtsx_usb_sdmmc"]
-    blacklistedKernelModules = [ "ideapad_laptop" "r8169" "rtsx_usb" ];
-    extraModulePackages = [ ];
-  };
- 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/5bb101dc-6231-4a41-8178-e6db1fd4d37b";
-      fsType = "ext4";
+    { device = "/dev/disk/by-uuid/a8742633-56e1-4b1f-8543-3499779dab6f";
+      fsType = "xfs";
     };
+
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/5a93167d-f45c-42cd-a46f-5f58595d25a4"; }
+    ];
 
   nix.maxJobs = lib.mkDefault 4;
 }
