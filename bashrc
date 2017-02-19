@@ -7,14 +7,10 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 # enable programmable completion features
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    source /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    source /etc/bash_completion
-  elif [ -f ~/.nix-profile/share/git/contrib/completion/git-completion.bash ]; then
+if [ -f ~/.nix-profile/share/git/contrib/completion/git-completion.bash ]; then
     source ~/.nix-profile/share/git/contrib/completion/git-completion.bash
-  fi
+elif [ -f $(readlink `which git`|xargs dirname)/../share/git/contrib/completion/git-completion.bash ]; then
+    source $(readlink `which git`|xargs dirname)/../share/git/contrib/completion/git-completion.bash
 fi
 
 # bash colors
@@ -31,13 +27,16 @@ export WORKON_HOME=$HOME/.virtualenvs
 set -o ignoreeof
 
 # git-prompt
+if [ -f ~/.nix-profile/share/git/contrib/completion/git-prompt.sh ]; then
+    source ~/.nix-profile/share/git/contrib/completion/git-prompt.sh
+elif [ -f $(readlink `which git`|xargs dirname)/../share/git/contrib/completion/git-prompt.sh ]; then
+    source $(readlink `which git`|xargs dirname)/../share/git/contrib/completion/git-prompt.sh
+fi
+
 get_sha() {
     git rev-parse --short HEAD 2>/dev/null
 }
 
-if [ -f "${HOME}/.nix-profile/share/git/contrib/completion/git-prompt.sh" ]; then
-    source "${HOME}/.nix-profile/share/git/contrib/completion/git-prompt.sh" >/dev/null
-fi
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
@@ -101,6 +100,8 @@ complete -cf sudo
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
-source ~/.profile
+if [ -f ~/.profile ]; then
+    source ~/.profile
+fi
 
 export DTK_PROGRAM=espeak
