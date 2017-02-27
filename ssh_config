@@ -45,3 +45,7 @@ Host hidden-home
 Host hidden-mbp
     Hostname cul25xl4jzap24ou.onion
     proxyCommand ncat --proxy 127.0.0.1:9050 --proxy-type socks5 %h %p
+Host hidden-office
+    Hostname zz6wmnzq7h6y5vdb.onion
+    proxyCommand ncat --proxy 127.0.0.1:9050 --proxy-type socks5 %h %p
+    User jhuh

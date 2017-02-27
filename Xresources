@@ -1,12 +1,13 @@
-Xft.dpi:        125.37
+Xft.dpi:        127.41
 Xft.antialias:  true
 Xft.rgba:       rgb
+Xft.autohint:   true
 Xft.hinting:    true
-Xft.hintstyle:  hintfull
+Xft.hintstyle:  hintslight
 Xft.lcdfilter:  lcddefault
 
 !!! URxvt !!!
-URxvt.font: xft:monaco:size=9
+URxvt.font: xft:ubuntu mono:size=12
 URxvt.scrollBar: false
 URxvt.perl-ext-common: font-size,color-themes 
 
