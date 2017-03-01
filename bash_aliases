@@ -23,3 +23,6 @@ alias tns='tmux -2 new-session -s'
 
 # stack aliases
 alias ghci-stack='stack ghci'
+
+# yasr aliases
+alias yed='yasr `which edbrowse`' 

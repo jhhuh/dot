@@ -1,4 +1,4 @@
-{stdenv,fetchurl,flite}:
+{stdenv,fetchurl,flite,alsaLib}:
 
 stdenv.mkDerivation rec {
   name = "eflite-${version}";
@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
     url = "https://sourceforge.net/projects/eflite/files/eflite/${version}/${name}.tar.gz";
     sha256 = "088p9w816s02s64grfs28gai3lnibzdjb9d1jwxzr8smbs2qbbci";
   };
-  buildInputs = [ flite ];
-  configureFlags = "flite_dir=${flite} CFLAGS=-DDEBUG=2";
+  buildInputs = [ flite alsaLib ];
+  configureFlags = "flite_dir=${flite} --with-audio=alsa";
   patches = [
     ./buf-overflow
     ./cvs-update
