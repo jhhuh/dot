@@ -157,29 +157,13 @@
       enable = true;
       layout = "us";
       xkbOptions = "ctrl:swapcaps";
-      libinput.enable = false;
-      synaptics = {
-        enable = false;
-        additionalOptions = ''
-          Option "VertResolution" "100"
-          Option "HorizResolution" "65"
-          Option "MinSpeed" "1"
-          Option "MaxSpeed" "1"
-          Option "AccelerationProfile" "2"
-          Option "AdaptiveDeceleration" "16"
-          Option "ConstantDeceleration" "16"
-          Option "VelocityScale" "20"
-          Option "AccelerationNumerator" "30"
-          Option "AccelerationDenominator" "10"
-          Option "AccelerationThreshold" "10"
-          Option "TapButton2" "0"
-          Option "HorizHysteresis" "100"
-          Option "VertHysteresis" "100"
-        '';
-      };
       windowManager = {
 	default = "i3";
         i3.enable = true;
+      };
+      displayManager = {
+        slim.enable = false;
+        lightdm.enable = true; 
       };
     };
   };
@@ -200,13 +184,11 @@
 
   services.printing = {
     enable = true;
-#    drivers = [ pkgs.hplip ];
   };
 
   virtualisation = {
     xen = {
-      enable = true;  
-#      domain0MemorySize = 2048;
+      enable = false;
     };
   };
   
