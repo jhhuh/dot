@@ -1,7 +1,7 @@
 set nocompatible
 
 syntax on
-set number
+set nonumber
 set ignorecase
 set smarttab expandtab tabstop=4 shiftwidth=4
 

@@ -16,6 +16,10 @@ in
 
       eflite = callPackage ./eflite {};
 
+      bluez-alsa = callPackage ./bluez-alsa/HEAD.nix {
+              automake = pkgs.automake.overrideDerivation (attr:{ patches = [ ./automake115x.patch ]; });
+      };
+
       my-haskell.ghc7103 = pkgs.haskell.packages.ghc7103.override {
         overrides = self: super: {
           dice-entropy-conduit = pkgs.haskell.lib.dontCheck super.dice-entropy-conduit;

@@ -69,11 +69,11 @@ export PATH=~/.cabal/bin:"$PATH"
 #export TMPDIR=~/.tmp
 
 # PERL5
-PATH="/Users/jhhuh/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/Users/jhhuh/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/Users/jhhuh/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/Users/jhhuh/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/jhhuh/perl5"; export PERL_MM_OPT;
+#PATH="/Users/jhhuh/perl5/bin${PATH:+:${PATH}}"; export PATH;
+#PERL5LIB="/Users/jhhuh/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+#PERL_LOCAL_LIB_ROOT="/Users/jhhuh/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+#PERL_MB_OPT="--install_base \"/Users/jhhuh/perl5\""; export PERL_MB_OPT;
+#PERL_MM_OPT="INSTALL_BASE=/Users/jhhuh/perl5"; export PERL_MM_OPT;
 
 # colored man
 man() {
