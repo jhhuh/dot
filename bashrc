@@ -46,13 +46,13 @@ PROMPT_COLOR="1;31m"
 let $UID && PROMPT_COLOR="1;32m"
 #PS1='\n\[\033[$PROMPT_COLOR\][\u@\h \W]\[\033[0m\]$(__git_ps1 " (%s)")\n\$ '
 PROMPT_COMMAND='__git_ps1 "'
-PROMPT_COMMAND+='\033[01;32m\]\h\033[00m\]:'
-PROMPT_COMMAND+='\033[01;34m\]\w\033[00m\]'
+PROMPT_COMMAND+='\[\033[00;36m\]\u\[\033[00m\]@'
+PROMPT_COMMAND+='\[\033[00;32m\]\h\[\033[00m\]:'
+PROMPT_COMMAND+='\[\033[00;34m\]\w\[\033[00m\]'
 PROMPT_COMMAND+='" "'
 PROMPT_COMMAND+='\n'
-PROMPT_COMMAND+='\033[01;36m\]<\u>\033[00m\]'
-PROMPT_COMMAND+='\033[01;33m\]$(is_in_nixshell "(" ")")\033[00m\] '
-PROMPT_COMMAND+='" "(%s)"'
+PROMPT_COMMAND+='\[\033[01;35m\]$(is_in_nixshell "(" ")")\[\033[00m\]$ '
+PROMPT_COMMAND+='" "(branch:%s)"'
 
 is_in_nixshell() {
     if [ $IN_NIX_SHELL ]
