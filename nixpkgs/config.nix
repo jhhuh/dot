@@ -8,13 +8,37 @@ in
     allowBroken = true;
     packageOverrides = pkgs: rec {
 
-      tpacpi-bat = callPackage ./tpacpi-bat {};
+      cligh = callPackage ./cligh {};
 
-      yasr = callPackage ./yasr {};
+      eflite = callPackage ./eflite {};
 
       freetts = pkgs.freetts.overrideDerivation (attr:{ buildInputs = [ pkgs.jdk ]; }) ;
 
-      eflite = callPackage ./eflite {};
+      pyGithub = with pkgs.pythonPackages; buildPythonPackage rec {
+        name = "pyGithub-${version}";
+        version = "1.32";
+        src = pkgs.fetchurl {
+          url = "https://github.com/PyGithub/PyGithub/archive/v${version}.tar.gz";
+          sha256 = "0gip9ksm0m78wd2rhv4ahdaclw5fqz1f7bpdv8y3zpq7i9crf443";
+        };
+        propagatedBuildInputs = [ pythonJose ];
+        buildInput = [ pkgs.openssl pkgs.pkgconfig ];
+        SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"; # necessary for test to succeed
+      };
+      
+      pythonJose = with pkgs.pythonPackages; buildPythonPackage rec {
+        name = "pythonJose-${version}";
+        version = "1.3.2";
+        src = pkgs.fetchurl {
+          url = "https://github.com/mpdavis/python-jose/archive/${version}.tar.gz";
+          sha256 = "16mafs565lx7cqz1q625zgn3my4z7pmln8f6993rrip2i02wyk7g";
+        };
+        propagatedBuildInputs = [ pycrypto future six ecdsa ];
+      };
+
+      tpacpi-bat = callPackage ./tpacpi-bat {};
+
+      yasr = callPackage ./yasr {};
 
       bluez-alsa = callPackage ./bluez-alsa/HEAD.nix {
               automake = pkgs.automake.overrideDerivation (attr:{ patches = [ ./automake115x.patch ]; });
