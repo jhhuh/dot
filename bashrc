@@ -45,12 +45,19 @@ GIT_PS1_SHOWUPSTREAM="auto git"
 PROMPT_COLOR="1;31m"
 let $UID && PROMPT_COLOR="1;32m"
 #PS1='\n\[\033[$PROMPT_COLOR\][\u@\h \W]\[\033[0m\]$(__git_ps1 " (%s)")\n\$ '
-PROMPT_COMMAND='__git_ps1 "\033[01;33m\]$(is_in_nixshell)\033[00m\]\[\033[01;32m\]|\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]|\033[01;33m\]$CONDA_DEFAULT_ENV\033[00m\]|" "\n$ " "[%s $(get_sha)]"'
+PROMPT_COMMAND='__git_ps1 "'
+PROMPT_COMMAND+='\033[01;32m\]\h\033[00m\]:'
+PROMPT_COMMAND+='\033[01;34m\]\w\033[00m\]'
+PROMPT_COMMAND+='" "'
+PROMPT_COMMAND+='\n'
+PROMPT_COMMAND+='\033[01;36m\]<\u>\033[00m\]'
+PROMPT_COMMAND+='\033[01;33m\]$(is_in_nixshell "(" ")")\033[00m\] '
+PROMPT_COMMAND+='" "(%s)"'
 
 is_in_nixshell() {
     if [ $IN_NIX_SHELL ]
     then
-        echo $nativeBuildInputs |sed -ne 's#.*\(/nix/store/[a-z0-9]\{32\}-\)\(.*\)#\*NIX\* \2 #p'
+        echo "$1$name$2"
     fi
 }
 

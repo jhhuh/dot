@@ -67,7 +67,7 @@ in
         };
       };
       
-      keysafe = my-haskell.ghc7103.keysafe;
+      #keysafe = my-haskell.ghc7103.keysafe;
     
     };
   }
