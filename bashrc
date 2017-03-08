@@ -52,7 +52,7 @@ PROMPT_COMMAND+='\[\033[00;34m\]\w\[\033[00m\]'
 PROMPT_COMMAND+='" "'
 PROMPT_COMMAND+='\n'
 PROMPT_COMMAND+='\[\033[01;35m\]$(is_in_nixshell "(" ")")\[\033[00m\]$ '
-PROMPT_COMMAND+='" "(branch:%s)"'
+PROMPT_COMMAND+='" "(%s)"'
 
 is_in_nixshell() {
     if [ $IN_NIX_SHELL ]

@@ -10,7 +10,15 @@ in
 
       cligh = callPackage ./cligh {};
 
-      eflite = callPackage ./eflite {};
+      # FAILED!!!!
+      #      flite_alsa = pkgs.flite.overrideDerivation (attr:{ 
+      #        configureFlags = "--enable-shared --with-audio=alsa";
+      #        buildInputs = [ pkgs.pkgconfig pkgs.alsaLib pkgs.alsaLib.dev ];
+      #        CPPFLAGS = "-I ${pkgs.alsaLib.dev}/include";
+      #        LDFLAGS = "-L ${pkgs.alsaLib}/lib";
+      #      }); # enableOSSEmulation should be off. FAILED!
+
+      eflite = callPackage ./eflite { };
 
       freetts = pkgs.freetts.overrideDerivation (attr:{ buildInputs = [ pkgs.jdk ]; }) ;
 
@@ -25,7 +33,7 @@ in
         buildInput = [ pkgs.openssl pkgs.pkgconfig ];
         SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"; # necessary for test to succeed
       };
-      
+
       pythonJose = with pkgs.pythonPackages; buildPythonPackage rec {
         name = "pythonJose-${version}";
         version = "1.3.2";
@@ -40,9 +48,13 @@ in
 
       yasr = callPackage ./yasr {};
 
-      bluez-alsa = callPackage ./bluez-alsa/HEAD.nix {
+      bluealsa = callPackage ./bluez-alsa/HEAD.nix {
               automake = pkgs.automake.overrideDerivation (attr:{ patches = [ ./automake115x.patch ]; });
       };
+
+      bluealsa_debug = bluealsa.overrideDerivation (attr:{
+        configureFlags = attr.configureFlags+" --enable-debug";
+      });
 
       my-haskell.ghc7103 = pkgs.haskell.packages.ghc7103.override {
         overrides = self: super: {

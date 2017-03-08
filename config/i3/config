@@ -153,7 +153,7 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command /nix/store/z1p25n3b161gcir2y9jpydnbajy7i5ks-i3status-2.10/bin/i3status
+        status_command /run/current-system/sw/bin/i3status
 }
 
 # i3lock
