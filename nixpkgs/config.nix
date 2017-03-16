@@ -1,66 +1,52 @@
 let
-  nixpkgs = import <nixpkgs> {};
+  nightly = import nightlyPath { config = {}; };
+  nixpkgs = import <nixpkgs> { config = {}; };
+
   inherit (nixpkgs) callPackage stdenv;
   lts-6_12 = nixpkgs.haskell.packages.lts-6_12;
+
+  nightlyPath = builtins.getEnv "HOME" + "/repo/nixpkgs-nightly";
 in
   {
     allowUnfree = true;
     allowBroken = true;
-    packageOverrides = pkgs: rec {
+    packageOverrides = super: rec {
 
-      cligh = callPackage ./cligh {};
+      # Merged into the nightly version
+      yasr = nightly.yasr;
+
+      #      inherit (nightly) eflite yasr tpacpi-bat;
+
+      # WIP
+      rustNightly = super.recurseIntoAttrs (nightly.callPackage (nightlyPath+"/pkgs/development/compilers/rust/nightly.nix") {});
+
+      alacritty = callPackage ./alacritty {
+        inherit (super.xorg) libXcursor libXxf86vm libXi;
+        rustPlatform = super.makeRustPlatform rustNightly;
+      };
 
       # FAILED!!!!
-      #      flite_alsa = pkgs.flite.overrideDerivation (attr:{ 
-      #        configureFlags = "--enable-shared --with-audio=alsa";
-      #        buildInputs = [ pkgs.pkgconfig pkgs.alsaLib pkgs.alsaLib.dev ];
-      #        CPPFLAGS = "-I ${pkgs.alsaLib.dev}/include";
-      #        LDFLAGS = "-L ${pkgs.alsaLib}/lib";
-      #      }); # enableOSSEmulation should be off. FAILED!
-
-      eflite = callPackage ./eflite { };
-
-      freetts = pkgs.freetts.overrideDerivation (attr:{ buildInputs = [ pkgs.jdk ]; }) ;
-
-      pyGithub = with pkgs.pythonPackages; buildPythonPackage rec {
-        name = "pyGithub-${version}";
-        version = "1.32";
-        src = pkgs.fetchurl {
-          url = "https://github.com/PyGithub/PyGithub/archive/v${version}.tar.gz";
-          sha256 = "0gip9ksm0m78wd2rhv4ahdaclw5fqz1f7bpdv8y3zpq7i9crf443";
-        };
-        propagatedBuildInputs = [ pythonJose ];
-        buildInput = [ pkgs.openssl pkgs.pkgconfig ];
-        SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"; # necessary for test to succeed
-      };
-
-      pythonJose = with pkgs.pythonPackages; buildPythonPackage rec {
-        name = "pythonJose-${version}";
-        version = "1.3.2";
-        src = pkgs.fetchurl {
-          url = "https://github.com/mpdavis/python-jose/archive/${version}.tar.gz";
-          sha256 = "16mafs565lx7cqz1q625zgn3my4z7pmln8f6993rrip2i02wyk7g";
-        };
-        propagatedBuildInputs = [ pycrypto future six ecdsa ];
-      };
-
-      tpacpi-bat = callPackage ./tpacpi-bat {};
-
-      yasr = callPackage ./yasr {};
+      flite_alsa = super.flite.overrideDerivation (attr:{ 
+        configureFlags = "--enable-shared --with-audio=alsa";
+        buildInputs = with super; [ pkgconfig alsaLib alsaLib.dev ];
+        CPPFLAGS = "-I ${super.alsaLib.dev}/include";
+        LDFLAGS = "-L ${super.alsaLib}/lib";
+        patches = [ ./flite-1.9.0.patch ];
+      }); # enableOSSEmulation should be off. FAILED!
 
       bluealsa = callPackage ./bluez-alsa/HEAD.nix {
-              automake = pkgs.automake.overrideDerivation (attr:{ patches = [ ./automake115x.patch ]; });
+              automake = super.automake.overrideDerivation (attr:{ patches = [ ./automake115x.patch ]; });
       };
 
       bluealsa_debug = bluealsa.overrideDerivation (attr:{
         configureFlags = attr.configureFlags+" --enable-debug";
       });
 
-      my-haskell.ghc7103 = pkgs.haskell.packages.ghc7103.override {
+      my-haskell.ghc7103 = super.haskell.packages.ghc7103.override {
         overrides = self: super: {
-          dice-entropy-conduit = pkgs.haskell.lib.dontCheck super.dice-entropy-conduit;
-          scientific = pkgs.haskell.lib.dontCheck super.scientific;
-          secret-sharing = pkgs.haskell.lib.appendConfigureFlag super.secret-sharing "--ghc-options=-XDataKinds";
+          dice-entropy-conduit = super.haskell.lib.dontCheck super.dice-entropy-conduit;
+          scientific = super.haskell.lib.dontCheck super.scientific;
+          secret-sharing = super.haskell.lib.appendConfigureFlag super.secret-sharing "--ghc-options=-XDataKinds";
           singletons = super.mkDerivation {
             pname = "singletons";
             version = "2.1";

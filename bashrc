@@ -112,3 +112,6 @@ if [ -f ~/.profile ]; then
 fi
 
 export DTK_PROGRAM=espeak
+
+export SYSTEMD_LESS=FRXMK
+

@@ -1,7 +1,7 @@
 {stdenv,fetchurl,alsaLib,bluez,glib,sbc,ortp,fdk_aac,libbsd,ncurses,autoconf,automake,libtool,pkgconfig}:
 
 stdenv.mkDerivation rec {
-  name = "bluez-alsa-${version}";
+  name = "bluealsa-${version}";
   version = "1.1.0";
   src = fetchurl {
     url = "https://github.com/Arkq/bluez-alsa/archive/v${version}.tar.gz";

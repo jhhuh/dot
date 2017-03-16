@@ -1,12 +1,12 @@
-pcm.!default {
+pcm.mpow {
     type bluealsa
     interface "hci0"
     profile "a2dp"
-    delay 20000
+    delay 0
     device "00:08:2A:F0:0A:FF"
 }
 
-ctl.!default {
+ctl.mpow {
     type bluealsa
     interface "hci0"
 }

@@ -24,11 +24,23 @@ alias tns='tmux -2 new-session -s'
 # stack aliases
 alias ghci-stack='stack ghci'
 
-# yasr aliases
-alias yed='yasr `which edbrowse`' 
-
 # nixos
+alias nix-which='function __nix-which() { readlink $(which $1); }; __nix-which'
+
 alias nix-unpack-from='function __nix-unpack-from() { nix-shell $1 -A $2 --run unpackPhase; }; __nix-unpack-from'
 alias nix-unpack='nix-unpack-from "<nixpkgs>"'
-alias nix-where='function __nix-where() { readlink $(which $1); }; __nix-where'
-alias nix-show-tree='function __nix-show-tree() { tree $(dirname $(nix-where $1)); }; __nix-show-tree'
+
+alias nix-where-from='function __nix-where-from() { nix-build $1 -A $2 --no-out-link; }; __nix-where-from'
+alias nix-where='nix-where-from "<nixpkgs>"'
+
+alias nix-show-tree='function __nix-show-tree() { nix-shell -p tree --run "tree $(nix-where $1)"; }; __nix-show-tree'
+alias nix-visit='function __nix-visit() { cd $(nix-where $1); }; __nix-visit'
+
+alias nix-X-help-in-Y='function __nix-X-help-in-Y() { $(nix-where w3m)/bin/w3m $1/share/doc/$2; }; __nix-X-help-in-Y'
+alias nix-help='nix-X-help-in-Y $(nix-where nix.doc) nix/manual/index.html'
+alias nixpkgs-help='nix-X-help-in-Y $(nix-where-from "<nixpkgs/pkgs/top-level/release.nix>" manual) nixpkgs/manual.html'
+alias nixos-help='nix-X-help-in-Y $(nix-build "<nixpkgs/nixos/release.nix>" --arg supportedSystems "[ \"x86_64-linux\" ]" -A manual --no-out-link) nixos/index.html'
+
+# yasr aliases
+alias yed='$(nix-where yasr)/bin/yasr $(nix-where edbrowse)/bin/edbrowse' 
+

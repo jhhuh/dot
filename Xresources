@@ -7,7 +7,7 @@ Xft.hintstyle:  hintslight
 Xft.lcdfilter:  lcddefault
 
 !!! URxvt !!!
-URxvt.font: xft:ubuntu mono:size=12
+URxvt.font: xft:ubuntu mono :size=12
 URxvt.scrollBar: false
 URxvt.perl-ext-common: font-size,color-themes 
 

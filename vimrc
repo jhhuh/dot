@@ -11,6 +11,8 @@ set backspace=indent,eol,start
 set autoindent
 
 " key-bindings
+" imap jk <esc>
+" imap kj <esc>
 nnoremap ; :
 nnoremap j gj
 nnoremap k gk
@@ -19,8 +21,6 @@ nmap <leader>ev :e $MYVIMRC<CR>
 nmap <leader>sv :source $MYVIMRC<CR>
 nmap <leader>k :Explore<CR>
 nmap <leader>j :Rexplore<CR>
-imap jk <esc>
-imap kj <esc>
 vmap ; <esc>
 nmap <leader>m :make<cr>
 

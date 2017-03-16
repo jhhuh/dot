@@ -1,0 +1,15 @@
+--- bluez-alsa-217cdde52b203798829242d8bea84871eec7fff2-src.orig/src/io.c	2017-03-09 02:12:21.014875406 +0100
++++ bluez-alsa-217cdde52b203798829242d8bea84871eec7fff2-src/src/io.c	2017-03-09 04:52:08.979205683 +0100
+@@ -981,9 +981,10 @@
+ 
+ 		/* read data from the FIFO - this function will block */
+ 		if ((samples = io_thread_read_pcm(&t->a2dp.pcm, in_buffer_head, in_samples)) <= 0) {
+-			if (samples == -1)
++			if (samples == -1) {
+ 				error("FIFO read error: %s", strerror(errno));
+-			goto fail;
++			    goto fail;
++            }
+ 		}
+ 
+ 		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
