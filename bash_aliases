@@ -38,9 +38,14 @@ alias nix-visit='function __nix-visit() { cd $(nix-where $1); }; __nix-visit'
 
 alias nix-X-help-in-Y='function __nix-X-help-in-Y() { $(nix-where w3m)/bin/w3m $1/share/doc/$2; }; __nix-X-help-in-Y'
 alias nix-help='nix-X-help-in-Y $(nix-where nix.doc) nix/manual/index.html'
-alias nixpkgs-help='nix-X-help-in-Y $(nix-where-from "<nixpkgs/pkgs/top-level/release.nix>" manual) nixpkgs/manual.html'
+alias nixpkgs-help='nix-X-help-in-Y $(nix-build --no-out-link "<nixpkgs/doc>") nixpkgs/manual.html'
 alias nixos-help='nix-X-help-in-Y $(nix-build "<nixpkgs/nixos/release.nix>" --arg supportedSystems "[ \"x86_64-linux\" ]" -A manual --no-out-link) nixos/index.html'
 
 # yasr aliases
 alias yed='$(nix-where yasr)/bin/yasr $(nix-where edbrowse)/bin/edbrowse' 
 
+# commands in nix-shell
+alias nix-python='nix-shell -p python rlwrap --run "rlwrap python"'
+
+# xset
+alias xset-rate='xset r rate 330 50'

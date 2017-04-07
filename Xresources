@@ -7,7 +7,7 @@ Xft.hintstyle:  hintslight
 Xft.lcdfilter:  lcddefault
 
 !!! URxvt !!!
-URxvt.font: xft:ubuntu mono :size=12
+URxvt.font: xft:ubuntu mono :size=11
 URxvt.scrollBar: false
 URxvt.perl-ext-common: font-size,color-themes 
 
@@ -21,9 +21,10 @@ URxvt.keysym.C-slash:  font-size:show
 
 !! color-themes plugin
 URxvt.color-themes.themedir:  ~/.themes/urxvt
+!! URxvt.color-themes.preprocessor: $(/run/current-system/sw/bin/nix-build "<nixpkgs>" -A clang --no-out-link)/bin/cpp
 URxvt.color-themes.preprocessor: $HOME/.nix-profile/bin/cpp
-URxvt.keysym.M-C-n:  perl:color-themes:next
-URxvt.keysym.M-C-p:  perl:color-themes:prev
+URxvt.keysym.M-C-j:  perl:color-themes:next
+URxvt.keysym.M-C-k:  perl:color-themes:prev
 
 URxvt.color-themes.state-file: ~/.urxvt-theme
 URxvt.color-themes.autosave: 1
