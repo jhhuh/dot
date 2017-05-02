@@ -61,9 +61,6 @@ is_in_nixshell() {
     fi
 }
 
-# fix for broken characters
-export TERM=screen
-
 # my little secret
 if [ -r ~/.not-public ]; then
     source ~/.not-public

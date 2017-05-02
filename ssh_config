@@ -49,3 +49,9 @@ Host hidden-office
     Hostname zz6wmnzq7h6y5vdb.onion
     proxyCommand ncat --proxy 127.0.0.1:9050 --proxy-type socks5 %h %p
     User jhuh
+
+Host hashbang
+  HostName ny1.hashbang.sh
+  IdentitiesOnly yes
+  User jhhuh
+  IdentityFile /home/jhhuh/.ssh/id_rsa

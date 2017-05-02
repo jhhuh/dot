@@ -6,7 +6,7 @@ let
   nightly = import nightlyPath {
     config = {}; # important to avoid an infinite recrusion
   };
- 
+
   inherit (pkgs) callPackage stdenv;
 
 in {
@@ -16,23 +16,21 @@ in {
 
   packageOverrides = pkgs: rec {
 
-    inherit (nightly) yasr tpacpi-bat;
-    
-    eflite = nightly.eflite.override {
-      debug = true;
-      flite = nightly.flite.overrideDerivation (attr:{
-        nativeBuildInputs = with pkgs; [ pulseaudioFull.dev ];
-        configureFlags = attr.configureFlags + " --with-audio=pulseaudio";
-        LDFLAGS = "-L ${pkgs.pulseaudioFull}/lib";
-      });
-    };
+    tcplay = callPackage ./tcplay {};
 
-    #    eflite = (nightly.eflite.override { debug = true; }).overrideDerivation (attr:{
-    #      buildInputs = attr.buildInputs ++ [ nightly.pulseaudioFull ];
-    #      configureFlags = "flite_dir=${nightly.flite} --with-audio=pulseaudio --with-vox=cmu_us_kal16";
-    #    });
+    speechd = pkgs.speechd.override { withEspeak = true; };
 
-    # WIP
+    inherit (nightly) yasr;
+
+    flite = nightly.flite.overrideDerivation (attr:{
+      nativeBuildInputs = [ pkgs.alsaLib.dev ];
+      configureFlags = attr.configureFlags + " --with-audio=alsa";
+      LDFLAGS = "-L ${pkgs.alsaLib.dev}/lib";
+    });
+
+    eflite = nightly.eflite.override { flite = flite; debug = true; };
+
+   # WIP
     rustNightly = pkgs.recurseIntoAttrs (nightly.callPackage (nightlyPath+"/pkgs/development/compilers/rust/nightly.nix") {});
 
     alacritty = callPackage ./alacritty {

@@ -7,17 +7,21 @@
 { config, pkgs, ... }:
 
 {
+
   imports = [ 
     ./my-hardware-configuration.nix
   ];
 
   boot = {
+
     loader.grub = {
       enable = true;
       version = 2;
       device = "/dev/sda";
     };
+
     blacklistedKernelModules = [ "e1000e" ];
+    
     kernelParams = [
       "acpi_osi="
       "acpi_backlight=none"
@@ -31,21 +35,27 @@
 #      "iwlwifi.power_save=Y"
 #      "iwlwifi.power_level=1"
     ];
+    
     extraModprobeConfig = '''';
+    
     extraModulePackages = with pkgs.linuxPackages; [ acpi_call ];
+  
   };
 
   i18n = {
+
     consoleColors = [
       "002b36" "dc322f" "859900" "b58900"
       "268bd2" "d33682" "2aa198" "eee8d5"
       "002b36" "cb4b16" "586e75" "657b83"
       "839496" "6c71c4" "93a1a1" "fdf6e3"
     ];
+
     inputMethod = {
       enabled = "fcitx";
       fcitx.engines = with pkgs.fcitx-engines; [ hangul ];
     };
+
   };
 
   nixpkgs.config = {
@@ -93,23 +103,14 @@
  
   sound = {
     enable = true;
-    enableMediaKeys = true;
-    enableOSSEmulation = false;
-#    extraConfig = ''
-#      pcm.dsp {
-#        type plug
-#        slave.pcm "dmix"
-#      }
-#    ''; 
+    mediaKeys.enable = true;
+    enableOSSEmulation = true;
   };
 
   networking = {
     hostName = "x230-nixos";
     networkmanager.enable = true;
-    firewall.allowedTCPPorts = [
-      22000 # syncthing
-      24800 # synergy-server
-    ]; 
+    firewall.allowedTCPPorts = [ ]; 
   };
  
   environment.systemPackages = with pkgs; [
@@ -122,90 +123,92 @@
   ];
  
   fonts = {
+
     enableCoreFonts = true;
+
     enableFontDir = true;
+
     fonts = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      google-fonts
-      baekmuk-ttf
-      source-han-sans-korean
+      noto-fonts noto-fonts-cjk noto-fonts-emoji
+      baekmuk-ttf source-han-sans-korean
       ubuntu_font_family
+      google-fonts
     ];
+
     fontconfig = {
       dpi = 128;
       confPackages = [ pkgs.fontconfig-ultimate ];
       ultimate.allowBitmaps = false;
       hinting.style = "slight";
       defaultFonts = {
-        monospace = [ 
-          "DejaVu Sans Mono"
-          "Baekmuk Gulim"
-        ];
-        serif = [ 
-          "DejaVu Serif"
-          "Baekmuk Batang"
-        ];
-        sansSerif = [
-          "DejaVu Sans"
-          "Baekmuk Gulim"
-        ];
-       };
+        monospace = [ "DejaVu Sans Mono" "Baekmuk Gulim" ];
+        serif     = [ "DejaVu Serif" "Baekmuk Batang" ];
+        sansSerif = [ "DejaVu Sans" "Baekmuk Gulim" ];
+      };
     };
+
   };
  
-  systemd.services.synergy-client.serviceConfig.User="jhhuh";
-  systemd.services.synergy-server.serviceConfig.User="jhhuh";
-  environment.etc = {
-    "synergy-server.conf".text = ''
-      section: screens
-        x230-nixos:
-        macth68.cern.ch:
-      end
-  
-      section: links
-        x230-nixos:
-          right = macth68.cern.ch
-        macth68.cern.ch:
-          left = x230-nixos
-      end
-    '';
-  };
+  #systemd.services.synergy-client.serviceConfig.User="jhhuh";
+  #systemd.services.synergy-server.serviceConfig.User="jhhuh";
+  #environment.etc = {
+  #  "synergy-server.conf".text = ''
+  #    section: screens
+  #      x230-nixos:
+  #      macth68.cern.ch:
+  #    end
+  #
+  #    section: links
+  #      x230-nixos:
+  #        right = macth68.cern.ch
+  #      macth68.cern.ch:
+  #        left = x230-nixos
+  #    end
+  #  '';
+  #};
  
   services = {
+ 
+    glusterfs.enable = true;
+
     emacs = {
       enable = true;
       package = pkgs.emacs25;
     };
-    upower.enable = true;
-    thinkfan = {
-    enable = true;
-    sensor = "/sys/devices/virtual/hwmon/hwmon0/temp1_input";
-#      sensor = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input";
-    };
-    synergy = {
-      client = {
-        enable = false;
-        serverAddress = "192.168.2.1";
-        autoStart = false;
-      };
-      server = {
-        enable = true;
-        autoStart = false;
-      };
-    };
+
+#    thinkfan = {
+#      enable = true;
+#      sensor = "/sys/devices/virtual/hwmon/hwmon0/temp1_input";
+#      #sensor = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input";
+#    };
+
+    # synergy = {
+    #   client = {
+    #     enable = false;
+    #     serverAddress = "192.168.2.1";
+    #     autoStart = false;
+    #   };
+    #   server = {
+    #     enable = true;
+    #     autoStart = false;
+    #   };
+    # };
+
     tor = {
       enable = true;
       client.enable = true;
     };
+
     thermald.enable = true;
-    syncthing = {
-      enable = false;
-      user = "jhhuh";
-      dataDir = "/home/jhhuh/.config/syncthing";
-    };
+
+    # syncthing = {
+    #   enable = false;
+    #   user = "jhhuh";
+    #   dataDir = "/home/jhhuh/.config/syncthing";
+    # };
+
     tlp.enable = true;
+
     openssh = {
       enable = true;
       forwardX11 = true;
@@ -213,17 +216,17 @@
         Ciphers blowfish-cbc
       '';
     };
+
     xserver = {
       enable = true;
       exportConfiguration = true;
       layout = "us";
-      xkbOptions = "ctrl:swapcaps";
+      xkbOptions = "caps:ctrl_modifier,shift:both_capslock";
       desktopManager = {
-        default = "kde5";
-        kde5.enable = true;
+        default = "plasma5";
+        plasma5.enable = true;
       };
       windowManager = {
-#        default = "i3";
         i3.enable = true;
       };
       displayManager = {
@@ -243,25 +246,18 @@
           ''
             /run/current-system/sw/bin/xinput --disable "SynPS/2 Synaptics TouchPad"
             /run/current-system/sw/bin/xcalib ${x230_icc} 
-            DISPLAY=:0 /run/current-system/sw/bin/xset r rate 330 50
           '';
-#        slim.enable = false;
-#        lightdm.enable = true;
-        xserverArgs = [
-          "-ardelay 330"
-          "-arinterval 20"
-        ];
       };
     };
   };
   
   users.extraUsers."jhhuh" = {
-    extraGroups = [ "wheel" "networkmanager" "lp" "audio" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" ];
     isNormalUser = true;
     uid = 1000;
   };
  
-  system.stateVersion = "16.09";
+  system.stateVersion = "17.03";
  
   time.timeZone = "Europe/Paris";
  
@@ -282,11 +278,7 @@
     enable = true;
   };
  
-  virtualisation = {
-    xen = {
-      enable = false;
-    };
-  };
+  virtualisation.xen.enable = false;
  
 }
  
