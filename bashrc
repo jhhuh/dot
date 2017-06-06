@@ -1,5 +1,6 @@
 # Just in case /usr/local/bin is not included
 export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
+export PATH="$HOME/mutable_node_modules/bin:/usr/local/bin:$PATH"
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then

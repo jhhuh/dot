@@ -16,12 +16,16 @@ in {
 
   packageOverrides = pkgs: rec {
 
-    inherit (nightly) yasr;
+    inherit (nightly) yasr texlive;
 
     my-python = pkgs.python3.withPackages (
       pypkgs: with pypkgs; [
         jupyter numpy scipy matplotlib ]);
 
+    my-ghc = pkgs.haskellPackages.ghcWithPackages ( hs: with hs; [
+      hscolour
+      ghc-mod
+    ]);
     tcplay = callPackage ./tcplay {};
     speechd = pkgs.speechd.override { withEspeak = true; };
     flite = nightly.flite.overrideDerivation (attr:{
@@ -37,6 +41,5 @@ in {
       inherit (pkgs.xorg) libXcursor libXxf86vm libXi;
       rustPlatform = pkgs.makeRustPlatform rustNightly;
     };
-
   };
 }

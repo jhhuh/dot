@@ -29,17 +29,29 @@
       "i915.enable_psr=1"
       "i915.enable_fbc=1"
       "i915.enable_rc6=7"
-      "nmi_watchdog=0"
-      "vm.dirty_writeback_centisecs=6000"
-      "vm.laptop_mode=5"
+      "zswap.enabled=1"
 #      "iwlwifi.power_save=Y"
 #      "iwlwifi.power_level=1"
     ];
-    
-    extraModprobeConfig = '''';
-    
+
+    kernel.sysctl = {
+      "nmi_watchdog" = false;
+      "vm.dirty_writeback_centisecs" = 6000;
+      "vm.laptop_mode" =5;
+      "vm.swappiness" =5;
+    };
+          
+    extraModprobeConfig = ''
+    '';
+   
     extraModulePackages = with pkgs.linuxPackages; [ acpi_call ];
-  
+ 
+  };
+
+  powerManagement = {
+    enable = true;
+    powerDownCommands = "${pkgs.kmod}/bin/modprobe -r iwlwifi";
+    resumeCommands = "${pkgs.kmod}/bin/modprobe iwlwifi";
   };
 
   i18n = {
@@ -50,7 +62,7 @@
       "002b36" "cb4b16" "586e75" "657b83"
       "839496" "6c71c4" "93a1a1" "fdf6e3"
     ];
-
+#
     inputMethod = {
       enabled = "fcitx";
       fcitx.engines = with pkgs.fcitx-engines; [ hangul ];
@@ -97,77 +109,110 @@
     pulseaudio = {
       enable = true;
       package = pkgs.pulseaudioFull;
-#      extraConfig = '''';
     };
   };
  
   sound = {
     enable = true;
-    mediaKeys.enable = true;
+    mediaKeys.enable = false;
     enableOSSEmulation = true;
   };
+
 
   networking = {
     hostName = "x230-nixos";
     networkmanager.enable = true;
-    firewall.allowedTCPPorts = [ ]; 
+    firewall.allowedTCPPorts = [ ];
+    extraHosts =
+      let someonewhocares_hosts = pkgs.fetchurl rec {
+          name = "hosts";
+          url = with meta; "https://github.com/${owner}/${repo}/blob/${rev}/data/someonewhocares.org/hosts?raw=true";
+          sha256 = "03k0dkzvmwg3g06w01a039gdgba9gxci4bi1440bfkd1g52j0f02";
+          meta = {
+            owner = "StevenBlack";
+            repo = "hosts";
+            rev = "37e211d2115ad528c8be3d43e255fdf9b3b6c486";
+          };
+      };
+      in builtins.readFile someonewhocares_hosts;
   };
  
   environment.systemPackages = with pkgs; [
+    pciutils hdparm powertop htop 
+    networkmanager
     acpitool # system management utils
-    btrfs-progs parted # disk utils
+    btrfs-progs parted cryptsetup # disk utils
     wget git vim tmux # basic applications
     xcalib
-    rxvt_unicode-with-plugins dillo i3lock i3status # gui applications
-    firefox google-chrome # heavier applications
+    rxvt_unicode-with-plugins dillo # gui applications
+    google-chrome # heavier applications
+    haskellPackages.xmobar
   ];
  
   fonts = {
-
     enableCoreFonts = true;
-
     enableFontDir = true;
-
     fonts = with pkgs; [
+      roboto-mono
       noto-fonts noto-fonts-cjk noto-fonts-emoji
       baekmuk-ttf source-han-sans-korean
       ubuntu_font_family
       google-fonts
     ];
-
     fontconfig = {
-      dpi = 128;
-      confPackages = [ pkgs.fontconfig-ultimate ];
-      ultimate.allowBitmaps = false;
-      hinting.style = "slight";
+      dpi = 110;
+      hinting = {
+        enable = true;
+        style = "full";
+        autohint = false;
+      };
       defaultFonts = {
         monospace = [ "DejaVu Sans Mono" "Baekmuk Gulim" ];
         serif     = [ "DejaVu Serif" "Baekmuk Batang" ];
         sansSerif = [ "DejaVu Sans" "Baekmuk Gulim" ];
       };
     };
-
   };
  
-  #systemd.services.synergy-client.serviceConfig.User="jhhuh";
-  #systemd.services.synergy-server.serviceConfig.User="jhhuh";
-  #environment.etc = {
-  #  "synergy-server.conf".text = ''
-  #    section: screens
-  #      x230-nixos:
-  #      macth68.cern.ch:
-  #    end
-  #
-  #    section: links
-  #      x230-nixos:
-  #        right = macth68.cern.ch
-  #      macth68.cern.ch:
-  #        left = x230-nixos
-  #    end
-  #  '';
-  #};
- 
+#  systemd.services.synergy-client.serviceConfig.User="jhhuh";
+#  systemd.services.synergy-server.serviceConfig.User="jhhuh";
+#  environment.etc = {
+#    "synergy-server.conf".text = ''
+#      section: screens
+#        x230-nixos:
+#        macth68.cern.ch:
+#      end
+#  
+#      section: links
+#        x230-nixos:
+#          right = macth68.cern.ch
+#        macth68.cern.ch:
+#          left = x230-nixos
+#      end
+#   '';
+#  };
+
   services = {
+    mpd = {
+      enable = true;
+      group = "audio";
+    };
+
+    actkbd = {
+      enable = true;
+      bindings = [ 
+        { keys = [ 113 ]; events = [ "key" ];
+          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Master toggle"; }
+        { keys = [ 114 ]; events = [ "key" "rep" ];
+          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Master 5%- unmute"; }
+        { keys = [ 115 ]; events = [ "key" "rep" ];
+          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Master 5%+ unmute"; }
+        { keys = [ 190 ]; events = [ "key" ];
+          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Capture toggle"; }
+      ];
+    };
+
+    ipfs.enable = false;
  
     glusterfs.enable = true;
 
@@ -181,33 +226,15 @@
 #      sensor = "/sys/devices/virtual/hwmon/hwmon0/temp1_input";
 #      #sensor = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input";
 #    };
-
-    # synergy = {
-    #   client = {
-    #     enable = false;
-    #     serverAddress = "192.168.2.1";
-    #     autoStart = false;
-    #   };
-    #   server = {
-    #     enable = true;
-    #     autoStart = false;
-    #   };
-    # };
+#
+#    thermald.enable = true;
+#
+#    tlp.enable = true;
 
     tor = {
       enable = true;
       client.enable = true;
     };
-
-    thermald.enable = true;
-
-    # syncthing = {
-    #   enable = false;
-    #   user = "jhhuh";
-    #   dataDir = "/home/jhhuh/.config/syncthing";
-    # };
-
-    tlp.enable = true;
 
     openssh = {
       enable = true;
@@ -222,15 +249,15 @@
       exportConfiguration = true;
       layout = "us";
       xkbOptions = "caps:ctrl_modifier,shift:both_capslock";
-      desktopManager = {
-        default = "plasma5";
-        plasma5.enable = true;
-      };
       windowManager = {
-        i3.enable = true;
+        xmonad = {
+          enable = true;
+          enableContribAndExtras = true;
+          haskellPackages = pkgs.haskell.packages.ghc801;
+        };
       };
       displayManager = {
-        sddm.enable = true;
+        sddm.enable = false;
         sessionCommands = let
           x230_icc = pkgs.fetchurl rec {
               name = "lp125wh2-slb3.icc";
@@ -262,23 +289,23 @@
   time.timeZone = "Europe/Paris";
  
   nix = {
-    buildMachines = [
-      { hostName = "deephy";
-        sshUser = "jhhuh";
-        sshKey= "/root/.ssh/id_dsa";
-        system = "x86_64-linux";
-        maxJobs = 4;
-      }
-    ];
+#    buildMachines = [
+#      { hostName = "deephy";
+#        sshUser = "jhhuh";
+#        sshKey= "/root/.ssh/id_dsa";
+#        system = "x86_64-linux";
+#        maxJobs = 4;
+#      }
+#    ];
     distributedBuilds = false;
     buildCores = 0;
   };
-
+#
   services.printing = {
     enable = true;
   };
- 
-  virtualisation.xen.enable = false;
- 
+# 
+  virtualisation.xen.enable = true;
+# 
 }
  

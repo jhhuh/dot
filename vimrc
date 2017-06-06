@@ -7,9 +7,10 @@ set smarttab expandtab tabstop=4 shiftwidth=4
 
 set nobackup noswapfile
 set wildmode=longest,list,full
-set backspace=indent,eol,start
+"set backspace=indent,eol,start
 set autoindent
 
+" Tab specific option
 " key-bindings
 " imap jk <esc>
 " imap kj <esc>
@@ -27,7 +28,7 @@ nmap <leader>m :make<cr>
 "" >>> Vundle ""
 filetype off
 source ~/.vimrc.vundle
-filetype plugin indent on
+"filetype plugin indent on
 "" <<< Vundle ""
 
 "" base16 colorscheme

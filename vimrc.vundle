@@ -3,9 +3,11 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+"Plugin 'raichoo/haskell-vim'
 Plugin 'LnL7/vim-nix'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'scrooloose/syntastic'
+"Plugin 'itchyny/vim-haskell-indent'
 "Plugin 'Shougo/vimproc.vim'
 "Plugin 'eagletmt/ghcmod-vim'
 "Plugin 'chriskempson/base16-vim'

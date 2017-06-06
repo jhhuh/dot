@@ -10,9 +10,9 @@ Host minji
     Port 22
     User tominji
 Host aws
-    HostName aws
+    HostName 52.78.113.48
     Port 22
-    User jhhuh
+    User ubuntu
 Host genis
     HostName genis.ddns.net
     #Port 2222
