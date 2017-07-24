@@ -113,3 +113,4 @@ export DTK_PROGRAM=espeak
 
 export SYSTEMD_LESS=FRXMK
 
+export NO_AT_BRIDGE=1

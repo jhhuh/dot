@@ -39,7 +39,9 @@ source ~/.vimrc.vundle
 "highlight Visual cterm=None ctermfg=DarkGrey ctermbg=Grey
 "highlight MatchParen ctermfg=Red
 
-colorscheme default
+colorscheme ron
+
+set spell
 
 set laststatus=2
 set statusline=%f\ %y\ %l/%L\ 

@@ -18,6 +18,38 @@ in {
 
     inherit (nightly) yasr texlive;
 
+#    google-chrome = let
+#        google-chrome_updated = pkgs.google-chrome.override {
+#          commandLineArgs = "--enable-native-gpu-memory-buffers";
+#          chromium = {
+#            upstream-info = (callPackage ./chromium-upstream-info/update.nix {}).getChannel "stable";
+#          };
+#        };
+#        inherit (pkgs) gtk3;
+#        inherit (pkgs.lib) makeLibraryPath makeSearchPathOutput makeBinPath;
+#      in
+#        google-chrome_updated.overrideDerivation (attr:{
+#          rpath = makeLibraryPath [gtk3] + ":" + makeSearchPathOutput "lib" "lib64" [gtk3]
+#            + attr.rpath + ":" ;
+#          binpath = makeBinPath [gtk3] + ":" + attr.binpath;
+#        });
+#
+
+#    vimb-unwrapped = pkgs.vimb-unwrapped.override {
+#       webkit = pkgs.webkitgtk.overrideDerivation (attr:{
+#         configureFlags =
+#         ["--with-gtk=2.0"]; });
+#    };
+
+    racket = pkgs.racket.overrideDerivation (attr: rec {
+      LD_LIBRARY_PATH = attr.LD_LIBRARY_PATH+":${pkgs.libedit}/lib";
+      postInstall = ''
+        for p in $(ls $out/bin/) ; do
+          wrapProgram $out/bin/$p --set LD_LIBRARY_PATH "${LD_LIBRARY_PATH}";
+        done
+      '';
+    });
+
     my-python = pkgs.python3.withPackages (
       pypkgs: with pypkgs; [
         jupyter numpy scipy matplotlib ]);

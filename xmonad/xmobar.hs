@@ -1,9 +1,9 @@
-Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
+Config { font = "xft:Ubuntu Mono:pixelsize=12"
        , additionalFonts = []
-       , borderColor = "black"
+       , borderColor = "#2c2c2c"
        , border = TopB
-       , bgColor = "black"
-       , fgColor = "grey"
+       , bgColor = "#2c2c2c"
+       , fgColor = "gray"
        , alpha = 255
        , position = Bottom
        , textOffset = -1
@@ -27,8 +27,8 @@ Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
                 "--high", "green",
                 "--",
                 "-o", "<left>% (<timeleft>)",
-                "-O", "<fc=#dAA520>Charging</fc>",
-                "-i", "<fc=#006000>Charged</fc>" ] 50,
+                "-O", "<fc=#dAA520>Charging(<left>%)</fc>",
+                "-i", "<fc=green>Charged(<left>%)</fc>" ] 50,
             Run Volume "default" "Master" ["-t", "Vol: <volume>%"] 10,
             Run XMonadLog
        ]
