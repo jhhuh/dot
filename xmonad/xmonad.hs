@@ -63,7 +63,7 @@ main = do spawn "~/.xmonad/xmobar.sh ~/.xmonad/xmobar.hs"
      -- , [ className   =? c --> doF (W.shift "2") | c <- webApps ]
       ]
       where myFloatsByClass = concatMap (\s -> [ s, capitalize s ]) []
-            myFloatsByTitle = [ "Open Document" ]
+            myFloatsByTitle = [ "Open Document", "Open Files" ]
             webApps         = [ "" ]
 
     capitalize :: String -> String

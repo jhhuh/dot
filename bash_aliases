@@ -1,4 +1,4 @@
-alias vi='emacseditor -nw'
+alias vi='emacsclient -a vi -nw'
 alias vij='function __vij() { nix-shell -p pythonPackages.jedi vimHugeX --run "vim $@"; }; __vij'
 
 alias ec="emacsclient"
@@ -44,7 +44,7 @@ alias nixos-help='nix-X-help-in-Y $(nix-build "<nixpkgs/nixos/release.nix>" --ar
 
 # yasr aliases
 alias yed='$(nix-where yasr)/bin/yasr $(nix-where edbrowse)/bin/edbrowse' 
-alias yasr='speech-dispatcher && yasr -s "speech dispatcher" -p 127.0.0.1:6560' 
+#alias yasr='speech-dispatcher && yasr -s "speech dispatcher" -p 127.0.0.1:6560' 
 
 # commands in nix-shell
 alias nix-python='nix-shell -p python rlwrap --run "rlwrap python"'

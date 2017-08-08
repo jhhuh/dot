@@ -39,7 +39,7 @@ source ~/.vimrc.vundle
 "highlight Visual cterm=None ctermfg=DarkGrey ctermbg=Grey
 "highlight MatchParen ctermfg=Red
 
-colorscheme ron
+"colorscheme ron
 
 set spell
 
