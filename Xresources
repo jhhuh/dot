@@ -1,3 +1,6 @@
+!Emacs.FontBackend: xft
+Emacs.font: Ubuntu Mono-12
+
 Xft.dpi: 108
 Xft.antialias:  1
 Xft.autohint:   0
@@ -5,6 +8,7 @@ Xft.hinting:    1
 Xft.hintstyle:  hintslight
 Xft.lcdfilter:  lcddefault
 Xft.rgba:       rgb
+Xft.embolden: false
 
 !!! URxvt !!!
 URxvt.font: xft:Ubuntu Mono :pixelsize=15
@@ -32,5 +36,3 @@ URxvt.color-themes.state-file: ~/.urxvt-theme
 URxvt.color-themes.autosave: 1
 URxvt.keysym.M-C-l:  perl:color-themes:load-state
 URxvt.keysym.M-C-s:  perl:color-themes:save-state
-
-!Emacs.FontBackend: xft
