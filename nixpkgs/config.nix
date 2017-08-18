@@ -58,6 +58,9 @@ personalToolsEnv = pkgs.buildEnv {
   ];
 };
 
+# It was for debugging
+# myHoogle = self.haskPkgs.ghcWithHoogle (import ./hoogle-package-list.nix);
+
 myHaskellPackages = libProf: self: super:
   with pkgs.haskell.lib; let pkg = self.callPackage; in rec {
 
@@ -74,6 +77,8 @@ myHaskellPackages = libProf: self: super:
   time-recurrence          = doJailbreak super.time-recurrence;
   aeson_0_11_3_0           = doJailbreak super.aeson_0_11_3_0;
   cubicbezier              = dontCheck super.cubicbezier;
+
+  servant                  = super.servant // { noHoogle = true; };
 
   secret-sharing           = (dontHaddock (dontCheck super.secret-sharing)).override {
     finite-field = self.finite-field_0_8_0;
@@ -99,9 +104,15 @@ myHaskellPackages = libProf: self: super:
     };
    in super.free-functors.override {
        inherit template-haskell bifunctors comonad profunctors;
-     };
+      };
 
-  
+  ghcWithHoogle = selectFrom:
+    let
+      packages = selectFrom self;
+      hoogle = pkg ./hoogle-local.nix { inherit packages; };
+    in self.ghc.withPackages # Actually, it is ghcWithPackages (so confusing)
+      (_: packages ++ [ hoogle ]);
+ 
   mkDerivation = args: super.mkDerivation (args // {
     enableLibraryProfiling = libProf;
     enableExecutableProfiling = false;
@@ -121,29 +132,30 @@ profiledHaskell802Packages = super.haskell.packages.ghc802.override {
 };
 
 ghc80env = let
+  paths = with haskell802Packages; [
+    (ghcWithHoogle (import ./hoogle-package-list.nix))
+    alex happy cabal-install
+    ghc-core
+    hlint
+    ghc-mod
+    hdevtools
+    pointfree
+    hasktags
+    djinn
+    mueval
+    lambdabot
+    threadscope
+    timeplot
+    splot
+    liquidhaskell
+    idris
+    Agda
+    stylish-haskell
+  ];
   _ghc80env = pkgs.buildEnv {
     name = "_ghc80env";
-    paths = with haskell802Packages; [
-      (ghcWithHoogle (import ./hoogle-package-list.nix))
-      alex happy cabal-install
-      ghc-core
-      hlint
-      ghc-mod
-      hdevtools
-      pointfree
-      hasktags
-      djinn
-      mueval
-      lambdabot
-      threadscope
-      timeplot
-      splot
-      liquidhaskell
-      idris
-      Agda
-      stylish-haskell
-      wreq
-    ];};
+    inherit paths;
+  };
   in pkgs.stdenv.mkDerivation {
     name = "ghc80env";
     buildInputs = [ _ghc80env ];

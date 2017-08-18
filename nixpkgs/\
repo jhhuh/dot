@@ -73,8 +73,6 @@ data-default
 data-default-class
 data-fix
 diagrams
-diagrams-contrib
-diagrams-builder
 diagrams-core
 diagrams-svg
 diagrams-lib
@@ -84,7 +82,7 @@ distributive
 dlist
 dlist-instances
 dns
-doctest
+#doctest
 doctest-prop
 either
 enclosed-exceptions
@@ -106,7 +104,7 @@ free-vl
 freer-effects
 fsnotify
 fuzzcheck
-ghc-datasize
+#ghc-datasize
 ghc-paths
 graphviz
 groups
@@ -212,7 +210,7 @@ regex-posix
 resourcet
 retry
 safe
-sbv
+#sbv
 scalpel
 scientific
 scotty
@@ -226,6 +224,7 @@ servant-docs
 servant-foreign
 servant-js
 servant-server
+shake
 shakespeare
 shelly
 simple-reflect
@@ -276,6 +275,7 @@ vector
 void
 wai
 warp
+wreq
 x509
 x509-store
 x509-system

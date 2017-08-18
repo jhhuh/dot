@@ -226,7 +226,7 @@ servant-docs
 servant-foreign
 servant-js
 servant-server
-# shake
+shake
 shakespeare
 shelly
 simple-reflect
@@ -277,6 +277,7 @@ vector
 void
 wai
 warp
+wreq
 x509
 x509-store
 x509-system
