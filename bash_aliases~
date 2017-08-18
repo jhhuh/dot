@@ -51,7 +51,3 @@ alias nix-python='nix-shell -p python rlwrap --run "rlwrap python"'
 
 # xset
 alias xset-rate='xset r rate 330 50'
-
-# load-env
-alias freeze-env-ghc80env='nix-instantiate "<nixpkgs>" -A ghc80env --indirect --add-root $HOME/ghc80env.drv'
-alias load-env-ghc80env='nix-shell $HOME/ghc80env.drv'
