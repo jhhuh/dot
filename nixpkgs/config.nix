@@ -4,6 +4,10 @@ allowUnfree = true;
 
 packageOverrides = super: let self = super.pkgs; in with self; rec {
 
+brainworkshop = self.callPackage ./brainworkshop {};
+
+ataripp = self.callPackage ./atari++ {};
+
 systemToolsEnv = pkgs.buildEnv {
   name = "systemTools";
   paths = [
@@ -15,6 +19,7 @@ systemToolsEnv = pkgs.buildEnv {
     gparted
     (haskell.lib.justStaticExecutables haskPkgs.pandoc)
     imagemagick_light
+    lsof
     p7zip
     paperkey
     tree
@@ -22,6 +27,7 @@ systemToolsEnv = pkgs.buildEnv {
     watch
     xz
     patchelf
+    sshfs-fuse
     nixops
     nix-repl
     zip
@@ -32,12 +38,11 @@ personalToolsEnv = pkgs.buildEnv {
   name = "personalTools";
   paths = [
     aria2
-    cabal-install
+    haskPkgs.cabal-install_1_24_0_2
     cabal2nix
     electrum
     gimp
     haskPkgs.git-annex
-    google-chrome-beta
     iw
     libressl
     mplayer
@@ -55,6 +60,7 @@ personalToolsEnv = pkgs.buildEnv {
     xorg.xwd
     youtube-dl
     zathura
+    firefox
   ];
 };
 
@@ -77,6 +83,8 @@ myHaskellPackages = libProf: self: super:
   time-recurrence          = doJailbreak super.time-recurrence;
   aeson_0_11_3_0           = doJailbreak super.aeson_0_11_3_0;
   cubicbezier              = dontCheck super.cubicbezier;
+
+  cabal-install_1_24_0_2 = pkg ./cabal-install-1.24.0.2 {};
 
   servant                  = super.servant // { noHoogle = true; };
 
@@ -132,9 +140,11 @@ profiledHaskell802Packages = super.haskell.packages.ghc802.override {
 };
 
 ghc80env = let
-  paths = with haskell802Packages; [
-    (ghcWithHoogle (import ./hoogle-package-list.nix))
-    alex happy cabal-install
+  hsk = haskell802Packages;
+  ghc = hsk.ghcWithHoogle (import ./hoogle-package-list.nix);
+  paths = with hsk;
+  [ ghc
+    alex happy
     ghc-core
     hlint
     ghc-mod
@@ -147,9 +157,9 @@ ghc80env = let
     threadscope
     timeplot
     splot
-    liquidhaskell
+    #    liquidhaskell
     idris
-    Agda
+    # Agda
     stylish-haskell
   ];
   _ghc80env = pkgs.buildEnv {
@@ -159,6 +169,9 @@ ghc80env = let
   in pkgs.stdenv.mkDerivation {
     name = "ghc80env";
     buildInputs = [ _ghc80env ];
+    shellHook = ''
+      export NIX_GHC_LIBDIR=${_ghc80env}/lib/ghc-${ghc.version}
+    '';
   };
   
 haskell821Packages = super.haskell.packages.ghc821.override {

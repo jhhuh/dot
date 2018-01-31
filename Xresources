@@ -11,7 +11,7 @@ Xft.rgba:       rgb
 Xft.embolden: false
 
 !!! URxvt !!!
-URxvt.font: xft:Ubuntu Mono :pixelsize=15
+URxvt.font: xft:Ubuntu Mono :pixelsize=17
 URxvt.scrollBar: false
 URxvt.perl-ext-common: font-size,color-themes 
 !urxvt*transparent: true

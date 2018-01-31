@@ -1,6 +1,5 @@
 haskellPackages:
 with haskellPackages; [
-
 Boolean
 HTTP
 HUnit

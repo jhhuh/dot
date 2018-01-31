@@ -22,6 +22,7 @@ main = do spawn "~/.xmonad/xmobar.sh ~/.xmonad/xmobar.hs"
   where
 
     conf = desktopConfig { borderWidth = 2
+                         , focusedBorderColor = "#0000FF"
                          , terminal = "urxvt"
                          , modMask = mod4Mask
                          , keys = myKeys <+> keys desktopConfig

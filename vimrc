@@ -1,5 +1,5 @@
 set nocompatible
-
+set bs=2
 syntax on
 set nonumber
 set ignorecase
@@ -28,7 +28,7 @@ nmap <leader>m :make<cr>
 "" >>> Vundle ""
 filetype off
 source ~/.vimrc.vundle
-"filetype plugin indent on
+filetype plugin indent on
 "" <<< Vundle ""
 
 "" base16 colorscheme
@@ -41,7 +41,7 @@ source ~/.vimrc.vundle
 
 "colorscheme ron
 
-set spell
+"set spell
 
 set laststatus=2
 set statusline=%f\ %y\ %l/%L\ 
@@ -58,8 +58,23 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_cpp_compiler = "g++"
 let g:syntastic_cpp_compiler_options = "-std=c++11 -Wall -Wextra -Wpedantic"
 "let g:syntastic_debug = 3
+
+let g:syntastic_haskell_checkers = [ 'hlint' ]
+
 nmap > :lnext<CR>
 nmap < :lprev<CR>
+
+" ghcmod-vim
+map <silent> tw :GhcModTypeInsert<CR>
+map <silent> ts :GhcModSplitFunCase<CR>
+map <silent> tq :GhcModType<CR>
+map <silent> te :GhcModTypeClear<CR>
+
+" neco-ghc
+" Disable haskell-vim omnifunc
+let g:haskellmode_completion_ghc = 0
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+let g:necoghc_enable_detailed_browse = 1
 
 " vim-airline
 "let g:airline_powerline_fonts=0

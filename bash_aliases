@@ -1,4 +1,4 @@
-alias vi='emacsclient -a vi -nw'
+alias vi='emacsclient -a vim -nw'
 alias vij='function __vij() { nix-shell -p pythonPackages.jedi vimHugeX --run "vim $@"; }; __vij'
 
 alias ec="emacsclient"
@@ -53,5 +53,5 @@ alias nix-python='nix-shell -p python rlwrap --run "rlwrap python"'
 alias xset-rate='xset r rate 330 50'
 
 # load-env
-alias freeze-env-ghc80env='nix-instantiate "<nixpkgs>" -A ghc80env --indirect --add-root $HOME/ghc80env.drv'
+alias freeze-env-ghc80env='nix-instantiate "<nixpkgs>" -k -A ghc80env --indirect --add-root $HOME/ghc80env.drv'
 alias load-env-ghc80env='nix-shell $HOME/ghc80env.drv'
