@@ -22,6 +22,7 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/18df1976-52bb-4d66-81b6-b1abcf4572b1";
       fsType = "ext4";
+      options = [ "noatime" "commit=60" ];
     };
 
   fileSystems."/boot" =
@@ -30,9 +31,9 @@
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/592751b4-ff1c-41af-b4c6-d365e83436ec";
-      fsType = "btrfs";
-      options = [ "noatime" "autodefrag" "commit=60" "compress=lzo" "space_cache" "subvol=@" "subvol=@home" ];
+    { device = "/dev/disk/by-uuid/0aa72326-86f6-4f09-bc34-9c770e892e1d";
+      fsType = "ext4";
+      options = [ "noatime" "commit=60" ];
     };
 
   swapDevices = [ ];

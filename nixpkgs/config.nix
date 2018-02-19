@@ -128,9 +128,6 @@ myHaskellPackages = libProf: self: super:
   
 }; # End of myHaskellPackages
 
-haskPkgs = haskellPackages;
-haskellPackages = haskell802Packages;
-
 haskell802Packages = super.haskell.packages.ghc802.override {
   overrides = myHaskellPackages false;
 };
@@ -139,11 +136,14 @@ profiledHaskell802Packages = super.haskell.packages.ghc802.override {
   overrides = myHaskellPackages true;
 };
 
-ghc80env = let
-  hsk = haskell802Packages;
-  ghc = hsk.ghcWithHoogle (import ./hoogle-package-list.nix);
-  paths = with hsk;
-  [ ghc
+haskellPackages = haskell802Packages;
+
+haskPkgs = haskellPackages;
+ghcWithAll = haskPkgs.ghcWithHoogle (import ./hoogle-package-list.nix);
+
+_ghc80env = let
+  paths = with haskPkgs;
+  [ ghcWithAll
     alex happy
     ghc-core
     hlint
@@ -162,11 +162,13 @@ ghc80env = let
     # Agda
     stylish-haskell
   ];
-  _ghc80env = pkgs.buildEnv {
-    name = "_ghc80env";
+  in
+  pkgs.buildEnv {
+    name = "ghc80env";
     inherit paths;
   };
-  in pkgs.stdenv.mkDerivation {
+
+ghc80env = pkgs.stdenv.mkDerivation {
     name = "ghc80env";
     buildInputs = [ _ghc80env ];
     shellHook = ''

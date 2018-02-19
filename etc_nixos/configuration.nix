@@ -20,31 +20,37 @@
       device = "/dev/sda";
     };
 
-    blacklistedKernelModules = [ "e1000e" ];
+    blacklistedKernelModules = [
+#      "e1000e"
+      "dvb_usb_rtl28xxu"
+    ];
     
     kernelParams = [
       "acpi_osi="
       "acpi_backlight=none"
       "thinkpad_acpi.brightness_enable=0"
-      "i915.enable_psr=1"
-      "i915.enable_fbc=1"
-      "i915.enable_rc6=7"
+      "i915.enable_rc6=1" "i915.enable_fbc=1" "i915.semaphores=1"
+      "drm.debug=0xe"
       "zswap.enabled=1"
-#      "iwlwifi.power_save=Y"
-#      "iwlwifi.power_level=1"
     ];
 
-    kernel.sysctl = {
-      "nmi_watchdog" = false;
-      "vm.dirty_writeback_centisecs" = 6000;
-      "vm.laptop_mode" =5;
-      "vm.swappiness" =5;
-    };
-          
-    extraModprobeConfig = ''
-    '';
+#    kernelPackages = pkgs.linuxPackages_latest;
    
     extraModulePackages = with pkgs.linuxPackages; [ acpi_call ];
+  
+    kernel = {
+      sysctl = {
+        "nmi_watchdog" = false;
+        "vm.dirty_ratio" = 30;
+        "vm.dirty_writeback_centisecs" = 1500;
+        "vm.dirty_expire_centisecs" = 4500;
+        "vm.swappiness" = 20;
+        "vm.laptop_mode" = 5;
+      };
+    };
+
+    extraModprobeConfig = ''
+    '';
  
   };
 
@@ -72,19 +78,29 @@
 
   nixpkgs.config = {
     allowUnfree = true;
-    packageOverrides = super: rec {
-      bluez4 = let
-          pkgsPath = /nix/var/nix/profiles/per-user/root/channels/nixos/pkgs;
-        in
-          super.callPackage (pkgsPath+"/os-specific/linux/bluez") {
-            pythonPackages = super.pythonPackages //
-              { dbus = super.pythonPackages.dbus-python; };
-          };
-    };
+#    packageOverrides = super: {
+#      haskellPackages = super.haskell.packages.ghc802.override {
+#        overrides = self: super:
+#          with pkgs.haskell.lib; {
+#          # https://github.com/NixOS/nixpkgs/issues/31411
+#          c2hs = (overrideCabal super.c2hs {
+#                   version = "0.26.2-28-g8b79823";
+#                   doCheck = false;
+#                   src = pkgs.fetchFromGitHub {
+#                     owner = "deech";
+#                     repo = "c2hs";
+#                     rev = "8b79823c32e234c161baec67fdf7907952ca62b8";
+#                     sha256 = "0hyrcyssclkdfcw2kgcark8jl869snwnbrhr9k0a9sbpk72wp7nz";
+#                 };}).override { language-c = self.language-c_0_7_0; };
+#        };
+#      };
+#    };
   };
 
   programs = {
+#    adb.enable = true;
     ssh = {
+      startAgent = true;
       extraConfig = ''
         Host deephy
             Hostname 216.218.134.74
@@ -100,41 +116,78 @@
   };
 
   hardware = {
-    bluetooth.enable = true;
+    bluetooth.enable = false;
     trackpoint = {
       enable = true;
       emulateWheel = true;
     };
     cpu.intel.updateMicrocode = true;
     pulseaudio = {
-      enable = true;
+      enable = false;
       package = pkgs.pulseaudioFull;
     };
   };
  
   sound = {
     enable = true;
-    mediaKeys.enable = false;
+    mediaKeys.enable = true;
     enableOSSEmulation = true;
+    extraConfig = ''
+      pcm.dmix_PCH = {
+        type dmix
+        ipc_key = 1024
+        slave.pcm = "hw:PCH,0"
+      }
+      pcm.dmix_III = {
+        type dmix
+        ipc_key = 2048 
+        slave.pcm = "hw:III,0"
+      }
+      pcm.quad = {
+        type multi
+        slaves.a.pcm dmix_PCH 
+        slaves.a.channels 2
+        slaves.b.pcm dmix_III 
+        slaves.b.channels 2
+        bindings.0 { slave a; channel 0; }
+        bindings.1 { slave a; channel 1; }
+        bindings.2 { slave b; channel 0; }
+        bindings.3 { slave b; channel 1; }
+      }
+      pcm.stereo2quad {
+        type route
+        slave.pcm "quad"
+        ttable.0.0 1
+        ttable.1.1 1
+        ttable.0.2 1
+        ttable.1.3 1
+      }
+#      pcm.!default {
+#        type asym
+#        playback.pcm "plug:stereo2quad"
+#        capture.pcm "plug:dsnoop:hw:PCH,0"
+#      }
+    '';
   };
-
 
   networking = {
     hostName = "x230-nixos";
-    networkmanager.enable = true;
-    firewall.allowedTCPPorts = [ ];
-    extraHosts =
-      let someonewhocares_hosts = pkgs.fetchurl rec {
-          name = "hosts";
-          url = with meta; "https://github.com/${owner}/${repo}/blob/${rev}/data/someonewhocares.org/hosts?raw=true";
-          sha256 = "03k0dkzvmwg3g06w01a039gdgba9gxci4bi1440bfkd1g52j0f02";
-          meta = {
-            owner = "StevenBlack";
-            repo = "hosts";
-            rev = "37e211d2115ad528c8be3d43e255fdf9b3b6c486";
-          };
-      };
-      in builtins.readFile someonewhocares_hosts;
+    networkmanager = {
+      enable = true;
+    };
+    firewall.allowedTCPPorts = [ 8000 5901 ];
+    #extraHosts =
+    #  let someonewhocares_hosts = pkgs.fetchurl rec {
+    #      name = "hosts";
+    #      url = with meta; "https://github.com/${owner}/${repo}/blob/${rev}/data/someonewhocares.org/hosts?raw=true";
+    #      sha256 = "03k0dkzvmwg3g06w01a039gdgba9gxci4bi1440bfkd1g52j0f02";
+    #      meta = {
+    #        owner = "StevenBlack";
+    #        repo = "hosts";
+    #        rev = "37e211d2115ad528c8be3d43e255fdf9b3b6c486";
+    #      };
+    #  };
+    #  in builtins.readFile someonewhocares_hosts;
   };
  
   environment.systemPackages = with pkgs; [
@@ -142,11 +195,12 @@
     networkmanager
     acpitool # system management utils
     btrfs-progs parted cryptsetup # disk utils
-    wget git vim tmux # basic applications
+    wget git vimNox tmux # basic applications
     xcalib
     rxvt_unicode-with-plugins dillo # gui applications
-    google-chrome # heavier applications
+#    google-chrome # heavier applications
     haskellPackages.xmobar
+    (emacs.override { withGTK3 = false; })
   ];
  
   fonts = {
@@ -154,20 +208,25 @@
     enableFontDir = true;
     fonts = with pkgs; [
       roboto-mono
-      noto-fonts noto-fonts-cjk noto-fonts-emoji
       baekmuk-ttf source-han-sans-korean
       ubuntu_font_family
       google-fonts
+      noto-fonts-cjk
+      terminus_font_ttf
+      inconsolata
+      source-code-pro
+      ttf_bitstream_vera
+      open-dyslexic
     ];
     fontconfig = {
-      dpi = 110;
+      dpi = 108;
       hinting = {
         enable = true;
-        style = "full";
         autohint = false;
+#        style = "medium";
       };
       defaultFonts = {
-        monospace = [ "DejaVu Sans Mono" "Baekmuk Gulim" ];
+        monospace = [ "Ubuntu Mono" "DejaVu Sans Mono" "Baekmuk Gulim" ];
         serif     = [ "DejaVu Serif" "Baekmuk Batang" ];
         sansSerif = [ "DejaVu Sans" "Baekmuk Gulim" ];
       };
@@ -192,34 +251,72 @@
 #   '';
 #  };
 
+  environment.etc = let upower = config.services.upower.package; in {
+    "UPower/UPower.conf" = {
+       source = "${config.services.upower.package}/etc/UPower/UPower.conf";
+    };
+  };
+
   services = {
+     ipfs = {
+       enable = false;
+       autoMount = true;
+     };
+ 
+     glusterfs.enable = false;
+
+#     resolved = {
+#       enable = true;
+#       fallbackDns = [ "8.8.8.8" ];
+#     };
+ 
+#    redshift = {
+#      enable = true;
+#      provider = "geoclue2";
+#    };
+#
+#    postfix = {
+#      enable = true;
+#      config = { inet_protocols = "ipv4"; };
+#    };
+
+    printing = {
+      enable = true;
+      drivers = [ pkgs.hplip ];
+    };
+ 
+    udev.packages = [ pkgs.rtl-sdr ];
+ 
+    upower.enable = true;
     mpd = {
       enable = true;
       group = "audio";
+#      extraConfig = ''
+#        audio_output {
+#          type "alsa"
+#          name "my ALSA device"
+#          device "hw:1"
+#        }
+#      '';
     };
+#    actkbd = {
+#      enable = true;
+#      bindings = [ 
+#        { keys = [ 113 ]; events = [ "key" ];
+#          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Master toggle"; }
+#        { keys = [ 114 ]; events = [ "key" "rep" ];
+#          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Master 5%- unmute"; }
+#        { keys = [ 115 ]; events = [ "key" "rep" ];
+#          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Master 5%+ unmute"; }
+#        { keys = [ 190 ]; events = [ "key" ];
+#          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Capture toggle"; }
+#      ];
+#    };
 
-    actkbd = {
-      enable = true;
-      bindings = [ 
-        { keys = [ 113 ]; events = [ "key" ];
-          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Master toggle"; }
-        { keys = [ 114 ]; events = [ "key" "rep" ];
-          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Master 5%- unmute"; }
-        { keys = [ 115 ]; events = [ "key" "rep" ];
-          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Master 5%+ unmute"; }
-        { keys = [ 190 ]; events = [ "key" ];
-          command = "${pkgs.alsaUtils}/bin/amixer -q -c0 set Capture toggle"; }
-      ];
-    };
-
-    ipfs.enable = false;
- 
-    glusterfs.enable = true;
-
-    emacs = {
-      enable = true;
-      package = pkgs.emacs25;
-    };
+#    emacs = {
+#      enable = true;
+#      package = pkgs.emacs25;
+#    };
 
 #    thinkfan = {
 #      enable = true;
@@ -239,30 +336,32 @@
     openssh = {
       enable = true;
       forwardX11 = true;
-      extraConfig = ''
-        Ciphers blowfish-cbc
-      '';
     };
 
     xserver = {
       enable = true;
       exportConfiguration = true;
+      videoDrivers = [ "intel" ];
+      deviceSection = ''
+        Option "AccelMethod" "sna"
+      '';
       layout = "us";
       xkbOptions = "caps:ctrl_modifier,shift:both_capslock";
       windowManager = {
+        default = "xmonad";
         xmonad = {
           enable = true;
           enableContribAndExtras = true;
-          haskellPackages = pkgs.haskell.packages.ghc801;
+          haskellPackages = pkgs.haskellPackages;
         };
       };
       displayManager = {
         sddm.enable = false;
         sessionCommands = let
           x230_icc = pkgs.fetchurl rec {
-              name = "lp125wh2-slb3.icc";
+              name = "lp125wf2-spb2.icc";
               url = with meta; "https://github.com/${owner}/${repo}/blob/${rev}/${name}?raw=true";
-              sha256 = "0kxvyywy2dk2c17571534jjx1cq0bf76zy7r0pcmri9mnc95njay";
+              sha256 = "18lidz1k98344i5z6m7mf8sl12syzvrzrlpbjm7hmhhyv96a44rc";
               meta = {
                 owner = "soleblaze";
                 repo = "icc";
@@ -279,14 +378,14 @@
   };
   
   users.extraUsers."jhhuh" = {
-    extraGroups = [ "wheel" "networkmanager" "audio" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "adbusers" "vboxusers" ];
     isNormalUser = true;
     uid = 1000;
   };
  
-  system.stateVersion = "17.03";
+  system.stateVersion = "17.09";
  
-  time.timeZone = "Europe/Paris";
+  time.timeZone = "Asia/Seoul";
  
   nix = {
 #    buildMachines = [
@@ -299,13 +398,20 @@
 #    ];
     distributedBuilds = false;
     buildCores = 0;
+    trustedBinaryCaches = [ "https://nixcache.reflex-frp.org" "https://cache.dmj.io" ];
+    binaryCachePublicKeys = [ "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" ];
   };
-#
-  services.printing = {
-    enable = true;
+
+  virtualisation = {
+    xen = {
+      enable = false;
+      bootParams = [ "iommu=verbose" ];
+    };
+    virtualbox.host = {
+      enable = true;
+    };
+
   };
-# 
-  virtualisation.xen.enable = true;
 # 
 }
  
