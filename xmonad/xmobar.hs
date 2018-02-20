@@ -34,6 +34,6 @@ Config { font = "xft:Ubuntu Mono:pixelsize=12"
        ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%XMonadLog% | %cpu% | %memory% | %wlp3s0% | %battery% } \
-                    \{ %default:Master% | %date% | %uname%"
+       , template = "%XMonadLog% | %cpu% | %memory% | %wlp3s0% } \
+                    \{ %battery% | %default:Master% | %date% | %uname%"
        }

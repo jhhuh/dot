@@ -8,6 +8,8 @@ brainworkshop = self.callPackage ./brainworkshop {};
 
 ataripp = self.callPackage ./atari++ {};
 
+BlueALSA = self.callPackage ./BlueALSA {};
+
 systemToolsEnv = pkgs.buildEnv {
   name = "systemTools";
   paths = [
