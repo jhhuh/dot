@@ -11,7 +11,7 @@ ataripp = self.callPackage ./atari++ {};
 BlueALSA = self.callPackage ./BlueALSA {};
 
 systemToolsEnv = pkgs.buildEnv {
-  name = "systemTools";
+  name = "systemToolsEnv";
   paths = [
     aspell
     file
@@ -37,11 +37,9 @@ systemToolsEnv = pkgs.buildEnv {
 };
 
 personalToolsEnv = pkgs.buildEnv {
-  name = "personalTools";
+  name = "personalToolsEnv";
   paths = [
     aria2
-    haskPkgs.cabal-install_1_24_0_2
-    cabal2nix
     electrum
     gimp
     haskPkgs.git-annex
@@ -65,6 +63,21 @@ personalToolsEnv = pkgs.buildEnv {
     firefox
   ];
 };
+
+haskellDevEnv = pkgs.buildEnv {
+  name = "haskellDevEnv";
+  paths = [
+    haskPkgs.cabal-install_1_24_0_2
+    cabal2nix
+  ];
+};
+
+pythonDevEnv = let
+  myPython = python36.withPackages (p: with p; [
+    jupyter
+    scipy numpy pandas matplotlib ]);
+in
+  myPython;
 
 # It was for debugging
 # myHoogle = self.haskPkgs.ghcWithHoogle (import ./hoogle-package-list.nix);
@@ -93,28 +106,28 @@ myHaskellPackages = libProf: self: super:
   secret-sharing           = (dontHaddock (dontCheck super.secret-sharing)).override {
     finite-field = self.finite-field_0_8_0;
   };
-  template-haskell_2_12_0_0= super.template-haskell_2_12_0_0.override {
-    ghc-boot-th = self.ghc-boot-th_8_2_1;
-  };
+#  template-haskell_2_12_0_0= super.template-haskell_2_12_0_0.override {
+#    ghc-boot-th = self.ghc-boot-th_8_2_1;
+#  };
   
-  algebraic-classes = (doJailbreak super.algebraic-classes).override {
-    template-haskell = self.template-haskell_2_12_0_0;
-  };
+#  algebraic-classes = (doJailbreak super.algebraic-classes).override {
+#    template-haskell = self.template-haskell_2_12_0_0;
+#  };
   
-  free-functors = let
-    template-haskell = self.template-haskell_2_12_0_0;
-    tagged = self.tagged.override { inherit template-haskell; };
-    distributive = (dontCheck self.distributive).override { inherit tagged; };
-    comonad = (dontCheck self.comonad).override { inherit tagged distributive; };
-    bifunctors = (dontCheck self.bifunctors).override {
-      inherit template-haskell tagged comonad;
-    };
-    profunctors = self.profunctors.override {
-      inherit tagged comonad distributive bifunctors;
-    };
-   in super.free-functors.override {
-       inherit template-haskell bifunctors comonad profunctors;
-      };
+#  free-functors = let
+#    template-haskell = self.template-haskell_2_12_0_0;
+#    tagged = self.tagged.override { inherit template-haskell; };
+#    distributive = (dontCheck self.distributive).override { inherit tagged; };
+#    comonad = (dontCheck self.comonad).override { inherit tagged distributive; };
+#    bifunctors = (dontCheck self.bifunctors).override {
+#      inherit template-haskell tagged comonad;
+#    };
+#    profunctors = self.profunctors.override {
+#      inherit tagged comonad distributive bifunctors;
+#    };
+#   in super.free-functors.override {
+#       inherit template-haskell bifunctors comonad profunctors;
+#      };
 
   ghcWithHoogle = selectFrom:
     let

@@ -1,4 +1,4 @@
-alias vi='emacsclient -a vim -nw'
+alias vi='emacsclient -a "" -nw'
 alias vij='function __vij() { nix-shell -p pythonPackages.jedi vimHugeX --run "vim $@"; }; __vij'
 
 alias ec="emacsclient"

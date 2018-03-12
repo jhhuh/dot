@@ -45,7 +45,8 @@ main = do spawn "~/.xmonad/xmobar.sh ~/.xmonad/xmobar.hs"
        ]
     myKeys XConfig { modMask = modm } =
       M.fromList [ ((modm, xK_p), shellPrompt def)
-                 , ((modm .|. controlMask, xK_i), spawn "xcalib -i -a")
+                 , ((modm .|. controlMask, xK_i), spawn "xcalib -i -a; xrandr --auto")
+                 , ((modm .|. controlMask, xK_F12), spawn "xrandr --output LVDS1 --off --output VGA1 --auto")
                  , ((modm .|. controlMask, xK_s), sshPrompt def)
                  , ((modm .|. controlMask, xK_h), namedScratchpadAction scratchpads "htop")
                  , ((modm .|. controlMask, xK_m), namedScratchpadAction scratchpads "vimpc")

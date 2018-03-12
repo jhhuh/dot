@@ -1,5 +1,5 @@
 !Emacs.FontBackend: xft
-Emacs.font: Ubuntu Mono-12
+!Emacs.font: Ubuntu Mono-12
 
 Xft.dpi: 108
 Xft.antialias:  1
@@ -11,7 +11,8 @@ Xft.rgba:       rgb
 Xft.embolden: false
 
 !!! URxvt !!!
-URxvt.font: xft:Ubuntu Mono :pixelsize=17
+URxvt.font: xft:Ubuntu Mono :pixelsize=20
+URxvt.letterSpace: -1
 URxvt.scrollBar: false
 URxvt.perl-ext-common: font-size,color-themes 
 !urxvt*transparent: true

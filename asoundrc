@@ -8,9 +8,10 @@ pcm.dmix_PCH = {
       buffer_size 8192
   }
 }
+
 pcm.dmix_III = {
   type dmix
-  ipc_key = 2048 
+  ipc_key = 4096
   slave = {
       pcm = "hw:III,0"
       period_time 0
@@ -18,6 +19,18 @@ pcm.dmix_III = {
       buffer_size 8192
   }
 }
+
+#pcm.dmix_bluealsa = {
+#  type dmix
+#  ipc_key = 4096
+#  slave = {
+#      pcm = "plug:bluealsa:HCI=hci0,DEV=00:00:AA:13:07:8B,PROFILE=a2dp"
+#      period_time 0
+#      period_size 1024
+#      buffer_size 8192
+#  }
+#}
+
 pcm.quad = {
   type multi
   slaves.a.pcm dmix_PCH 
@@ -29,6 +42,7 @@ pcm.quad = {
   bindings.2 { slave b; channel 0; }
   bindings.3 { slave b; channel 1; }
 }
+
 pcm.stereo2quad {
   type route
   slave.pcm "quad"
@@ -37,10 +51,11 @@ pcm.stereo2quad {
   ttable.0.2 1
   ttable.1.3 1
 }
+
 pcm.!default {
   type asym
-#  playback.pcm "plug:stereo2quad"
-  playback.pcm "bluealsa:HCI=hci0,DEV=00:00:AA:13:07:8B,PROFILE=a2dp"
+  playback.pcm "plug:stereo2quad"
+#  playback.pcm "dmix_bluealsa"
   capture.pcm "plug:dsnoop:hw:PCH,0"
 }
 
