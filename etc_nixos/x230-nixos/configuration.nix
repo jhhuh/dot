@@ -56,8 +56,8 @@
 
   powerManagement = {
     enable = true;
-    powerDownCommands = "${pkgs.kmod}/bin/modprobe -r iwlwifi";
-    resumeCommands = "${pkgs.kmod}/bin/modprobe iwlwifi";
+#    powerDownCommands = "${pkgs.kmod}/bin/modprobe -r iwlwifi";
+#    resumeCommands = "${pkgs.kmod}/bin/modprobe iwlwifi";
   };
 
   i18n = {
@@ -116,7 +116,7 @@
   };
 
   hardware = {
-    bluetooth.enable = false;
+    bluetooth.enable = true;
     trackpoint = {
       enable = true;
       emulateWheel = true;
@@ -133,40 +133,6 @@
     mediaKeys.enable = true;
     enableOSSEmulation = true;
     extraConfig = ''
-      pcm.dmix_PCH = {
-        type dmix
-        ipc_key = 1024
-        slave.pcm = "hw:PCH,0"
-      }
-      pcm.dmix_III = {
-        type dmix
-        ipc_key = 2048 
-        slave.pcm = "hw:III,0"
-      }
-      pcm.quad = {
-        type multi
-        slaves.a.pcm dmix_PCH 
-        slaves.a.channels 2
-        slaves.b.pcm dmix_III 
-        slaves.b.channels 2
-        bindings.0 { slave a; channel 0; }
-        bindings.1 { slave a; channel 1; }
-        bindings.2 { slave b; channel 0; }
-        bindings.3 { slave b; channel 1; }
-      }
-      pcm.stereo2quad {
-        type route
-        slave.pcm "quad"
-        ttable.0.0 1
-        ttable.1.1 1
-        ttable.0.2 1
-        ttable.1.3 1
-      }
-#      pcm.!default {
-#        type asym
-#        playback.pcm "plug:stereo2quad"
-#        capture.pcm "plug:dsnoop:hw:PCH,0"
-#      }
     '';
   };
 
@@ -258,6 +224,13 @@
   };
 
   services = {
+
+     prey = {
+       enable = true;
+       deviceKey = "";
+       apiKey = "";
+     };
+
      ipfs = {
        enable = false;
        autoMount = true;
