@@ -75,7 +75,8 @@ haskellDevEnv = pkgs.buildEnv {
 pythonDevEnv = let
   myPython = python36.withPackages (p: with p; [
     jupyter
-    scipy numpy pandas matplotlib ]);
+    scipy numpy pandas matplotlib
+    qrcode ]);
 in
   myPython;
 
