@@ -1,7 +1,9 @@
+# -*- mode:  sh -*-
+
 alias vi='emacsclient -a "" -nw'
 alias vij='function __vij() { nix-shell -p pythonPackages.jedi vimHugeX --run "vim $@"; }; __vij'
 
-alias ec="emacsclient"
+alias ec="emacsclient -c"
 #alias et="emacsclient -a '' -t "
 #alias emacs="emacs -nw"
 #alias qemu="qemu-system-x86_64"
