@@ -1,6 +1,6 @@
 { stdenv, fetchurl
 , pythonPackages
-, mesa, openal, fontconfig
+, mesa_noglu, openal, fontconfig
 , unzip, dos2unix
 , makeWrapper }:
 
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
     };
 
     nativeBuildInputs = [ unzip dos2unix makeWrapper];
-    buildInputs = [ mesa openal fontconfig ]
+    buildInputs = [ mesa_noglu openal fontconfig ]
       ++ (with pythonPackages; [ pyglet ]);
   
     patchPhase = ''
