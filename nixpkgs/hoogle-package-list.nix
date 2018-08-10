@@ -27,7 +27,7 @@ bifunctors
 bindings-DSL
 blaze-builder
 blaze-builder-conduit
-blaze-builder-enumerator
+#blaze-builder-enumerator
 blaze-html
 blaze-markup
 blaze-textual
@@ -102,7 +102,7 @@ foldl
 free
 free-functors
 free-vl
-freer-effects
+# freer-effects
 fsnotify
 fuzzcheck
 ghc-datasize
@@ -183,7 +183,7 @@ parsec
 parsers
 pipes
 pipes-attoparsec
-pipes-binary
+#pipes-binary
 pipes-bytestring
 pipes-concurrency
 pipes-extras
@@ -260,7 +260,7 @@ text-show
 these
 thyme
 time
-time-recurrence
+# time-recurrence
 tls
 total
 transformers
