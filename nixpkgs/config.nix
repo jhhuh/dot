@@ -4,6 +4,14 @@ allowUnfree = true;
 
 packageOverrides = super: let self = super.pkgs; in with self; rec {
 
+nixopsUnstable = super.nixopsUnstable.overrideDerivation (attr: {
+  patchPhase = ''
+             substituteInPlace nix/eval-machine-info.nix \
+             --replace 'system.nixosVersion' 'system.nixos.version'
+             substituteInPlace nix/ec2.nix \
+             --replace 'system.nixosVersion' 'system.nixos.version'
+  '';});
+
 brainworkshop = self.callPackage ./brainworkshop {};
 
 ataripp = self.callPackage ./atari++ {};
@@ -46,13 +54,6 @@ myHaskellOverrides = libProf: self: super:
   heap			    = dontCheck super.heap;
   freer-effects		    = dontCheck super.freer-effects;
 
-  # ghcWithHoogle = selectFrom:
-  #   let
-  #     packages = selectFrom self;
-  #     hoogle = pkg ./hoogle-local.nix { inherit packages; };
-  #   in self.ghc.withPackages # Actually, it is ghcWithPackages (so confusing)
-  #     (_: packages ++ [ hoogle ]);
- 
   mkDerivation = args: super.mkDerivation (args // {
     enableLibraryProfiling = libProf;
     enableExecutableProfiling = false;
