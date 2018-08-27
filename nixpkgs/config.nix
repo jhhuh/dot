@@ -51,8 +51,15 @@ myHaskellOverrides = libProf: self: super:
   with pkgs.haskell.lib; let pkg = self.callPackage; in rec {
 
   diagrams-graphviz         = doJailbreak super.diagrams-graphviz;
-  heap			    = dontCheck super.heap;
-  freer-effects		    = dontCheck super.freer-effects;
+  heap			                = dontCheck super.heap;
+  freer-effects      		    = dontCheck super.freer-effects;
+  reroute	       	          = dontCheck super.reroute;
+  superbuffer		            = dontCheck super.superbuffer;
+
+  extra_1_6_9               = pkg ./extra_1_6_9 {};
+  ghcid_0_7		              = pkg ./ghcid_0_7 {
+    extra = self.extra_1_6_9;
+  };
 
   mkDerivation = args: super.mkDerivation (args // {
     enableLibraryProfiling = libProf;
@@ -80,6 +87,7 @@ ghc82env = let
     alex happy
     ghc-core
     hlint
+    ghcid_0_7
 #    ghc-mod
     hdevtools
     pointfree

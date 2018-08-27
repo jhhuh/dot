@@ -233,6 +233,8 @@ singletons
 smallcheck
 speculation
 split
+Spock
+Spock-lucid
 spoon
 stm
 stm-chans
