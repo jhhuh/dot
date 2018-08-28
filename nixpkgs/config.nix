@@ -4,6 +4,33 @@ allowUnfree = true;
 
 packageOverrides = super: let self = super.pkgs; in with self; rec {
 
+firefox-devedition-bin-unwrapped = super.firefox-devedition-bin-unwrapped.override {
+  generated = import ./firefox-devedition-update/devedition_sources.nix; };
+
+vban = self.callPackage ./vban {};
+
+duktape = self.callPackage (fetchurl {
+  url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/interpreters/duktape/default.nix";
+  sha256 = "0q9nf5dsl7dlblgwzdji3gbhlcg3d0lixwzvypybkavzflrlkx79";
+  }) {};
+
+scrcpy = self.callPackage (fetchurl {
+  url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/misc/scrcpy/default.nix";
+  sha256 = "1g90mn67d9dlybhynx9nwx50zvgqzrrqrgwpm80pzy08ln2rprnq";
+  }) {
+    stdenv = self.stdenv
+             // { lib = self.stdenv.lib
+                        // { maintainers = self.stdenv.lib.maintainers
+                                           // { deltaevo = null; }; }; };
+    platformTools = self.androidenv.platformTools;
+  };
+
+  
+edbrowse = self.callPackage (fetchurl {
+  url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/applications/editors/edbrowse/default.nix";
+  sha256 = "0nvh78dz21kbkmb6vgl452640ci6b271rrzq0rg61pdxf249nsqb";
+  }) {};
+
 brainworkshop = self.callPackage ./brainworkshop {};
 
 ataripp = self.callPackage ./atari++ {};
@@ -43,9 +70,15 @@ myHaskellOverrides = libProf: self: super:
   with pkgs.haskell.lib; let pkg = self.callPackage; in rec {
 
   diagrams-graphviz         = doJailbreak super.diagrams-graphviz;
-  heap			    = dontCheck super.heap;
+  heap			                = dontCheck super.heap;
   freer-effects		    = dontCheck super.freer-effects;
 
+  extra_1_6_9         = pkg ./extra_1_6_9 {};
+  ghcid_0_7           = pkg ./ghcid_0_7 { extra = self.extra_1_6_9; };
+
+  easyplot            = super.easyplot.overrideDerivation (attr:{
+    patchPhase = ''mv Setup.lhs Setup.hs'';
+  });
   # ghcWithHoogle = selectFrom:
   #   let
   #     packages = selectFrom self;
@@ -79,6 +112,7 @@ ghc82env = let
     alex happy
     ghc-core
     hlint
+    ghcid_0_7
 #    ghc-mod
     hdevtools
     pointfree
@@ -99,15 +133,6 @@ ghc82env = let
     name = "ghc82env";
     inherit paths;
   };
-
-racket = super.racket.overrideDerivation (attr: rec {
-  LD_LIBRARY_PATH = attr.LD_LIBRARY_PATH+":${self.libedit}/lib";
-  postInstall = ''
-    for p in $(ls $out/bin/) ; do
-      wrapProgram $out/bin/$p --set LD_LIBRARY_PATH "${LD_LIBRARY_PATH}";
-    done
-  '';
-});
 
 }; # End of packageOverrides
 

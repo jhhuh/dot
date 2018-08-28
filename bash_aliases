@@ -1,5 +1,6 @@
 # -*- mode:  sh -*-
 
+alias ccat='pygmentize -g'
 alias vi='emacsclient -a "" -nw'
 alias vij='function __vij() { nix-shell -p pythonPackages.jedi vimHugeX --run "vim $@"; }; __vij'
 
