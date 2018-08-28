@@ -75,11 +75,6 @@ myHaskellOverrides = libProf: self: super:
   reroute	       	          = dontCheck super.reroute;
   superbuffer		            = dontCheck super.superbuffer;
 
-  extra_1_6_9               = pkg ./extra_1_6_9 {};
-  ghcid_0_7		              = pkg ./ghcid_0_7 {
-    extra = self.extra_1_6_9;
-  };
-
   extra_1_6_9         = pkg ./extra_1_6_9 {};
   ghcid_0_7           = pkg ./ghcid_0_7 { extra = self.extra_1_6_9; };
 
