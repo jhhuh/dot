@@ -4,8 +4,11 @@ allowUnfree = true;
 
 packageOverrides = super: let self = super.pkgs; in with self; rec {
 
-firefox-devedition-bin-unwrapped = super.firefox-devedition-bin-unwrapped.override {
-  generated = import ./firefox-devedition-update/devedition_sources.nix; };
+firefox-devedition-bin-unwrapped = (super.firefox-devedition-bin-unwrapped.overrideAttrs (attr:{
+  libPath = self.lib.makeLibraryPath (with self.xorg; [ libXcursor libXi ]) + ":" + attr.libPath;
+})).override {
+  generated = import ./firefox-devedition-update/devedition_sources.nix;
+};
 
 vban = self.callPackage ./vban {};
 

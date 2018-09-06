@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p bash nix
 
-cat /nix/store/vwpdkj5ajpm0rs2g7wasqk7rc4my84bm-update-firefox-devedition-bin-unwrapped-61.0b8 |
+cat $(nix-build --no-out-link "<nixpkgs>" -A firefox-devedition-bin-unwrapped.updateScript) |
   sed 's/pushd.*/pushd ./' |
   sed 's/xidel -q/xidel -s/' > update.sh
 
