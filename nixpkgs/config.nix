@@ -43,22 +43,24 @@ BlueALSA = self.callPackage ./BlueALSA {};
 systemToolsEnv = pkgs.buildEnv {
   name = "systemToolsEnv";
   paths = [ file bind inotify-tools gnupg gparted ]
-    ++ [ (haskell.lib.justStaticExecutables haskPkgs.pandoc) ]
+    ++ [ (haskell.lib.justStaticExecutables haskellPackages.pandoc) ]
     ++ [ imagemagick_light lsof p7zip paperkey tree unzip ]
     ++ [ watch xz patchelf sshfs-fuse nixops zip ];
 };
 
 personalToolsEnv = pkgs.buildEnv {
   name = "personalToolsEnv";
-  paths = [ aria2 electrum gimp haskPkgs.git-annex iw ]
+  paths = [ aria2 gimp haskellPackages.git-annex iw ]
+#    ++ [ electrum ]
     ++ [ libressl mplayer pavucontrol ranger reptyr ]
-    ++ [ rfkill sl sshuttle telegram-cli tdesktop tigervnc ]
-    ++ [ usbutils vimpc xorg.xwd youtube-dl zathura firefox ];
+    ++ [ rfkill sl sshuttle tigervnc ]
+    ++ [ usbutils vimpc xorg.xwd youtube-dl zathura ]
+    ++ [ pythonPackages.pygments ];
 };
 
 haskellDevEnv = pkgs.buildEnv {
   name = "haskellDevEnv";
-  paths = [ haskPkgs.cabal-install_1_24_0_2 cabal2nix ];
+  paths = [ haskellPackages.cabal-install cabal2nix ];
 };
 
 pythonDevEnv = let
@@ -69,75 +71,63 @@ pythonDevEnv = let
 in
   myPython;
 
-myHaskellOverrides = libProf: self: super:
+myHaskellOverrides = self: super:
   with pkgs.haskell.lib; let pkg = self.callPackage; in rec {
 
-  diagrams-graphviz         = doJailbreak super.diagrams-graphviz;
-  heap			                = dontCheck super.heap;
-  freer-effects      		    = dontCheck super.freer-effects;
-  reroute	       	          = dontCheck super.reroute;
-  superbuffer		            = dontCheck super.superbuffer;
+  # diagrams-graphviz         = doJailbreak super.diagrams-graphviz;
+  # heap			                = dontCheck super.heap;
+  # freer-effects      		    = dontCheck super.freer-effects;
+  # reroute	       	          = dontCheck super.reroute;
+  # superbuffer		            = dontCheck super.superbuffer;
 
-  extra_1_6_9         = pkg ./extra_1_6_9 {};
-  ghcid_0_7           = pkg ./ghcid_0_7 { extra = self.extra_1_6_9; };
+  # extra_1_6_9               = pkg ./extra_1_6_9 {};
+  # ghcid_0_7		              = pkg ./ghcid_0_7 {
+  #   extra = self.extra_1_6_9;
+  # };
 
-  easyplot            = super.easyplot.overrideDerivation (attr:{
-    patchPhase = ''mv Setup.lhs Setup.hs'';
-  });
-  # ghcWithHoogle = selectFrom:
-  #   let
-  #     packages = selectFrom self;
-  #     hoogle = pkg ./hoogle-local.nix { inherit packages; };
-  #   in self.ghc.withPackages # Actually, it is ghcWithPackages (so confusing)
-  #     (_: packages ++ [ hoogle ]);
- 
-  mkDerivation = args: super.mkDerivation (args // {
-    enableLibraryProfiling = libProf;
-    enableExecutableProfiling = false;
-  });
-  
 };
 
-haskell822Packages = super.haskell.packages.ghc822.override {
-  overrides = myHaskellOverrides false;
-};
+haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
 
-profiledHaskell822Packages = super.haskell.packages.ghc822.override {
-  overrides = myHaskellOverrides true;
-};
+ghcWithMegaPackagesWithHoogle = haskellPackages.ghcWithHoogle (import ./mega-ghc-package-list.nix);
+ghcWithMegaPackages = haskellPackages.ghcWithPackages (import ./mega-ghc-package-list.nix);
 
-haskPkgs = haskellPackages;
-haskellPackages = haskell822Packages;
-
-ghcWithAll = haskPkgs.ghcWithHoogle (import ./hoogle-package-list.nix);
-
-ghc82env = let
-  paths = with haskPkgs;
-  [ ghcWithAll
+ghcEnv = let
+  paths = with haskellPackages;
+  [ ghcWithMegaPackages
     alex happy
     ghc-core
     hlint
-    ghcid_0_7
+    ghcid
 #    ghc-mod
-    hdevtools
+#    hdevtools
     pointfree
     hasktags
-    djinn
+#    djinn
     mueval
     lambdabot
     threadscope
     timeplot
 #    splot
-    #    liquidhaskell
+#    liquidhaskell
     idris
-# Agda
+    Agda
     stylish-haskell
   ];
   in
   pkgs.buildEnv {
-    name = "ghc82env";
+    name = "ghcEnv";
     inherit paths;
   };
+
+racket = super.racket.overrideAttrs (attr: rec {
+  LD_LIBRARY_PATH = attr.LD_LIBRARY_PATH+":${self.libedit}/lib";
+  postInstall = ''
+    for p in $(ls $out/bin/) ; do
+      wrapProgram $out/bin/$p --set LD_LIBRARY_PATH "${LD_LIBRARY_PATH}";
+    done
+  '';
+});
 
 }; # End of packageOverrides
 
