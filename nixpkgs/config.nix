@@ -4,6 +4,8 @@ allowUnfree = true;
 
 packageOverrides = super: let self = super.pkgs; in with self; rec {
 
+xhk = self.callPackage ./xhk {};
+
 firefox-devedition-bin-unwrapped = super.firefox-devedition-bin-unwrapped.override {
   generated = import ./firefox-devedition-update/devedition_sources.nix; };
 
