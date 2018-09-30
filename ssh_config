@@ -14,8 +14,8 @@ Host aws
     Port 22
     User ubuntu
 Host genis
-    HostName genis.ddns.net
-    #Port 2222
+    HostName genis.sphericalcow.company
+    Port 2222
     User jhhuh
 Host lxplus
     HostName lxplus.cern.ch
