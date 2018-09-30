@@ -1,6 +1,10 @@
 !Emacs.FontBackend: xft
 !Emacs.font: Ubuntu Mono-12
 
+!!! Xterm !!!
+XTerm*metaSendsEscape: true
+
+!!! Xft !!!
 Xft.dpi: 108
 Xft.antialias:  1
 Xft.autohint:   0
