@@ -1,4 +1,6 @@
-PATH=/nix/store/920k63py2w97xpfyb5ps9l6wbidvzfjz-coreutils-8.29/bin:/nix/store/wkgszaq2dkc4asapcbx6ypd7xdnzad9f-gnused-4.4/bin:/nix/store/iywd02hbirf506q740z0v6zyrvsa9gcf-gnugrep-3.1/bin:/nix/store/5g9903wnmcl0dypdm8vz1shd2nl8ngvi-xidel-0.9.6/bin:/nix/store/icysmbg4xcfzwd0xn98g9xn15hii7ffx-curl-7.59.0-bin/bin:/nix/store/mnkl2vmb4yf08jjs5masmz5d1qb5dqiv-gnupg-2.2.8/bin
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p stdenv xidel
+PATH=/nix/store/wm8va53fh5158ipi0ic9gir64hrvqv1z-coreutils-8.29/bin:/nix/store/ny5p32137wfyzdm485xfdck21w1gyl3g-gnused-4.5/bin:/nix/store/9f89z51na7w931aja8lqlmhqny9h16cj-gnugrep-3.1/bin:/nix/store/0i08mp7wk8vkmz7d48ivv0q4sm2ixmyz-xidel-0.9.6/bin:/nix/store/4xbcs5wx2h4z60k8v2gdnis9zm5jhdqi-curl-7.61.0-bin/bin:/nix/store/0yighvnwkxriby3gagg589vg6pdbqjyf-gnupg-2.2.9/bin
 set -eux
 pushd .
 

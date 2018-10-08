@@ -4,7 +4,7 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'eagletmt/ghcmod-vim'
+"Plugin 'eagletmt/ghcmod-vim'
 Plugin 'eagletmt/neco-ghc'
 Plugin 'neovimhaskell/haskell-vim'
 "Plugin 'itchyny/vim-haskell-indent'
@@ -12,6 +12,7 @@ Plugin 'neovimhaskell/haskell-vim'
 "Plugin 'vim-scripts/haskell.vim'
 "Plugin 'bitc/vim-hdevtools'
 
+Plugin 'scrooloose/nerdtree'
 Plugin 'LnL7/vim-nix'
 
 Plugin 'davidhalter/jedi-vim'

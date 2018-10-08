@@ -86,6 +86,13 @@ myHaskellOverrides = self: super:
   #   extra = self.extra_1_6_9;
   # };
 
+  temporary_1_2_1_1 = pkg ./temporary_1_2_1_1 {};
+
+  cabal-helper = super.cabal-helper.override {
+    pretty-show = self.pretty-show_1_8_1;
+    temporary = temporary_1_2_1_1;
+  };
+
 };
 
 haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
@@ -95,12 +102,12 @@ ghcWithMegaPackages = haskellPackages.ghcWithPackages (import ./mega-ghc-package
 
 ghcEnv = let
   paths = with haskellPackages;
-  [ ghcWithMegaPackages
+  [ ghcWithMegaPackagesWithHoogle
     alex happy
     ghc-core
     hlint
     ghcid
-#    ghc-mod
+    ghc-mod
 #    hdevtools
     pointfree
     hasktags
