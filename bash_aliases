@@ -4,7 +4,11 @@ alias ccat='pygmentize -g'
 alias vi='emacseditor -nw'
 alias vij='function __vij() { nix-shell -p pythonPackages.jedi vimHugeX --run "vim $@"; }; __vij'
 
-alias ec="emacseditor -c"
+alias l='function _l() { ls --color=always $@|sed -E "s/([a-z0-9]{5,5})[a-z0-9]{27,27}-/[\1]-/"; }; _l'
+alias ec="emacsclient"
+alias ecc="emacsclient -c"
+alias ee="emacseditor -c"
+
 #alias et="emacsclient -a '' -t "
 #alias emacs="emacs -nw"
 #alias qemu="qemu-system-x86_64"

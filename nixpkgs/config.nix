@@ -4,6 +4,16 @@ allowUnfree = true;
 
 packageOverrides = super: let self = super.pkgs; in with self; rec {
 
+x230_icc = self.fetchurl rec {
+         name = "lp125wf2-spb2.icc";
+         url = with meta; "https://github.com/${owner}/${repo}/blob/${rev}/${name}?raw=true";
+         sha256 = "18lidz1k98344i5z6m7mf8sl12syzvrzrlpbjm7hmhhyv96a44rc";
+         meta = {
+              owner = "soleblaze";
+              repo = "icc";
+              rev = "77775bfdeb08a73ba74db6457610be2859b7ce6f";
+         };};
+
 xhk = self.callPackage ./xhk {};
 firefox-devedition-bin-unwrapped = (super.firefox-devedition-bin-unwrapped.overrideAttrs (attr:{
   libPath = self.lib.makeLibraryPath (with self.xorg; [ libXcursor libXi ]) + ":" + attr.libPath;
@@ -55,7 +65,7 @@ personalToolsEnv = pkgs.buildEnv {
 #    ++ [ electrum ]
     ++ [ libressl mplayer pavucontrol ranger reptyr ]
     ++ [ rfkill sl sshuttle tigervnc ]
-    ++ [ usbutils vimpc xorg.xwd youtube-dl zathura ]
+    ++ [ usbutils vimpc xorg.xwd youtube-dl ] #zathura ]
     ++ [ pythonPackages.pygments ];
 };
 
@@ -71,6 +81,14 @@ pythonDevEnv = let
     qrcode ]);
 in
   myPython;
+
+stackage = snapshot: let stackageOverlays = import (fetchTarball {
+                                url = "https://stackage.serokell.io/drczwlyf6mi0ilh3kgv01wxwjfgvq14b-stackage/default.nix.tar.gz";
+                                sha256 = "1bwlbxx6np0jfl6z9gkmmcq22crm0pa07a8zrwhz5gkal64y6jpz"; });
+  in
+    (stackageOverlays.${snapshot} self super).haskell.packages.${snapshot};
+
+hackage-mirror = (stackage "lts-6.35").hackage-mirror;
 
 myHaskellOverrides = self: super:
   with pkgs.haskell.lib; let pkg = self.callPackage; in rec {
@@ -93,6 +111,15 @@ myHaskellOverrides = self: super:
     temporary = temporary_1_2_1_1;
   };
 
+  streaming-commons_0_1_19 = pkg ./streaming-commons_0_1_19 {};
+  aws_0_19 = pkg ./aws_0_19 {};
+  aws_0_18 = pkg ./aws_0_18 {};
+  aws_0_14_1 = pkg ./aws_0_14_1 {};
+  basement_0_0_7 = pkg ./basement_0_0_7 {};
+  conduit_1_2_10 = pkg ./conduit_1_2_10 {};
+  conduit-extra_1_1_16 = pkg ./conduit-extra_1_1_16 {};
+  foundation_0_0_20 = pkg ./foundation_0_0_20 {};
+  stm_2_4_5_0 = pkg ./stm_2_4_5_0 {};
 };
 
 haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
