@@ -23,28 +23,6 @@ firefox-devedition-bin-unwrapped = (super.firefox-devedition-bin-unwrapped.overr
 
 vban = self.callPackage ./vban {};
 
-duktape = self.callPackage (fetchurl {
-  url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/interpreters/duktape/default.nix";
-  sha256 = "0q9nf5dsl7dlblgwzdji3gbhlcg3d0lixwzvypybkavzflrlkx79";
-  }) {};
-
-scrcpy = self.callPackage (fetchurl {
-  url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/misc/scrcpy/default.nix";
-  sha256 = "1g90mn67d9dlybhynx9nwx50zvgqzrrqrgwpm80pzy08ln2rprnq";
-  }) {
-    stdenv = self.stdenv
-             // { lib = self.stdenv.lib
-                        // { maintainers = self.stdenv.lib.maintainers
-                                           // { deltaevo = null; }; }; };
-    platformTools = self.androidenv.platformTools;
-  };
-
-  
-edbrowse = self.callPackage (fetchurl {
-  url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/applications/editors/edbrowse/default.nix";
-  sha256 = "0nvh78dz21kbkmb6vgl452640ci6b271rrzq0rg61pdxf249nsqb";
-  }) {};
-
 brainworkshop = self.callPackage ./brainworkshop {};
 
 ataripp = self.callPackage ./atari++ {};
@@ -82,44 +60,55 @@ pythonDevEnv = let
 in
   myPython;
 
-stackage = snapshot: let stackageOverlays = import (fetchTarball {
-                                url = "https://stackage.serokell.io/drczwlyf6mi0ilh3kgv01wxwjfgvq14b-stackage/default.nix.tar.gz";
-                                sha256 = "1bwlbxx6np0jfl6z9gkmmcq22crm0pa07a8zrwhz5gkal64y6jpz"; });
-  in
-    (stackageOverlays.${snapshot} self super).haskell.packages.${snapshot};
+# stackage = snapshot: let stackageOverlays = import (fetchTarball {
+#                                 url = "https://stackage.serokell.io/drczwlyf6mi0ilh3kgv01wxwjfgvq14b-stackage/default.nix.tar.gz";
+#                                 sha256 = "1bwlbxx6np0jfl6z9gkmmcq22crm0pa07a8zrwhz5gkal64y6jpz"; });
+#   in
+#     (stackageOverlays.${snapshot} self super).haskell.packages.${snapshot};
 
-hackage-mirror = (stackage "lts-6.35").hackage-mirror;
+#hackage-mirror-stack = (stackage "lts-6.35").hackage-mirror;
+
+hackage-mirror = with haskell.lib; let
+  unpatched = haskell.packages.ghc822.hackage-mirror;
+  patched = appendPatch unpatched ./patches/hackage-mirror.patch;
+in patched.overrideScope (self: super: {
+  conduit = self.conduit_1_2_13_1;
+  resourcet = self.resourcet_1_1_11;
+  conduit-extra = self.conduit-extra_1_2_3_2;
+  streaming-commons = self.callHackage "streaming-commons" "0.1.19" {};
+  xml-conduit = self.xml-conduit_1_7_1_2;
+  aeson = doJailbreak (self.callHackage "aeson" "1.4.2.0" {});
+  aws = doJailbreak (dontCheck (self.callHackage "aws" "0.16" {}));
+  conduit-combinators = jailbreakself.callHackage "conduit-combinators" "1.1.2" {};
+  http-conduit = self.http-conduit_2_2_4;
+  cereal = self.cereal_0_5_8_0;
+#  optparse-applicative = doJailbreak (self.callHackage "optparse-applicative" "0.12.1.0" {});
+  });
 
 myHaskellOverrides = self: super:
   with pkgs.haskell.lib; let pkg = self.callPackage; in rec {
-
-  # diagrams-graphviz         = doJailbreak super.diagrams-graphviz;
-  # heap			                = dontCheck super.heap;
-  # freer-effects      		    = dontCheck super.freer-effects;
-  # reroute	       	          = dontCheck super.reroute;
-  # superbuffer		            = dontCheck super.superbuffer;
-
-  # extra_1_6_9               = pkg ./extra_1_6_9 {};
-  # ghcid_0_7		              = pkg ./ghcid_0_7 {
-  #   extra = self.extra_1_6_9;
-  # };
-
-  temporary_1_2_1_1 = pkg ./temporary_1_2_1_1 {};
-
-  cabal-helper = super.cabal-helper.override {
-    pretty-show = self.pretty-show_1_8_1;
-    temporary = temporary_1_2_1_1;
-  };
-
-  streaming-commons_0_1_19 = pkg ./streaming-commons_0_1_19 {};
-  aws_0_19 = pkg ./aws_0_19 {};
-  aws_0_18 = pkg ./aws_0_18 {};
-  aws_0_14_1 = pkg ./aws_0_14_1 {};
-  basement_0_0_7 = pkg ./basement_0_0_7 {};
-  conduit_1_2_10 = pkg ./conduit_1_2_10 {};
-  conduit-extra_1_1_16 = pkg ./conduit-extra_1_1_16 {};
-  foundation_0_0_20 = pkg ./foundation_0_0_20 {};
-  stm_2_4_5_0 = pkg ./stm_2_4_5_0 {};
+    heap = dontCheck super.heap;
+    doctest-prop = dontCheck super.doctest-prop;
+    diagrams-contrib = doJailbreak super.diagrams-contrib;
+    diagrams-graphviz = doJailbreak super.diagrams-graphviz;
+    diagrams-postscript = doJailbreak super.diagrams-postscript;
+    tdigest = doJailbreak super.tdigest;
+    servant-docs = doJailbreak super.servant-docs;
+    compressed = doJailbreak super.compressed ;
+    these = doJailbreak super.these;
+    bytestring-show = doJailbreak super.bytestring-show;
+    gtk2hs-buildtools = appendPatch super.gtk2hs-buildtools ./patches/gtk2hs-buildtools.patch;
+    threadscope = doJailbreak super.threadscope;
+    lambdabot = super.lambdabot.overrideScope (self: super: {
+      hoogle = self.callHackage "hoogle" "5.0.17.3" {};
+    });
+    conduit_1_2_13_1 = super.conduit_1_2_13_1.overrideScope
+      (self: super: {
+        resourcet = self.resourcet_1_1_11;});
+    conduit-extra_1_2_3_2 = super.conduit-extra_1_2_3_2.overrideScope
+      (self: super: {
+        conduit = self.conduit_1_2_13_1;
+        resourcet = self.resourcet_1_1_11;});
 };
 
 haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
@@ -129,24 +118,16 @@ ghcWithMegaPackages = haskellPackages.ghcWithPackages (import ./mega-ghc-package
 
 ghcEnv = let
   paths = with haskellPackages;
-  [ ghcWithMegaPackagesWithHoogle
+  [ ghcWithMegaPackages#WithHoogle
     alex happy
     ghc-core
     hlint
     ghcid
-    ghc-mod
-#    hdevtools
     pointfree
     hasktags
-#    djinn
+    djinn
     mueval
-    lambdabot
     threadscope
-    timeplot
-#    splot
-#    liquidhaskell
-    idris
-    Agda
     stylish-haskell
   ];
   in
@@ -154,15 +135,6 @@ ghcEnv = let
     name = "ghcEnv";
     inherit paths;
   };
-
-racket = super.racket.overrideAttrs (attr: rec {
-  LD_LIBRARY_PATH = attr.LD_LIBRARY_PATH+":${self.libedit}/lib";
-  postInstall = ''
-    for p in $(ls $out/bin/) ; do
-      wrapProgram $out/bin/$p --set LD_LIBRARY_PATH "${LD_LIBRARY_PATH}";
-    done
-  '';
-});
 
 }; # End of packageOverrides
 

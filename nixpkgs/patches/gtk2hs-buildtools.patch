@@ -1,0 +1,63 @@
+diff --git a/c2hs/base/state/StateBase.hs b/c2hs/base/state/StateBase.hs
+index aebd885..df50c77 100644
+--- a/c2hs/base/state/StateBase.hs
++++ b/c2hs/base/state/StateBase.hs
+@@ -58,6 +58,7 @@ where
+ 
+ import Control.Applicative (Applicative(..))
+ import Control.Monad (liftM, ap)
++import Control.Monad.Fail
+ 
+ import Position   (Position)
+ import UNames     (NameSupply)
+@@ -110,6 +111,8 @@ instance Monad (PreCST e s) where
+   (>>=)  = (+>=)
+   (>>)   = (+>)
+ 
++instance MonadFail (PreCST e s) where
++  fail = error
+ 
+ -- unwrapper coercion function (EXPORTED)
+ --
+diff --git a/c2hs/c/CParserMonad.hs b/c2hs/c/CParserMonad.hs
+index 12c4ffa..fb9df09 100644
+--- a/c2hs/c/CParserMonad.hs
++++ b/c2hs/c/CParserMonad.hs
+@@ -56,6 +56,7 @@ module CParserMonad (
+   setLastToken,      -- :: CToken -> P ()
+   ) where
+ 
++import Prelude hiding (fail)
+ import Position  (Position(..), Pos(posOf))
+ import Errors    (interr)
+ import UNames    (Name)
+@@ -67,6 +68,7 @@ import Data.Set  (Set)
+ import qualified Data.Set as Set (fromList, insert, member, delete)
+ 
+ import CTokens (CToken)
++import Control.Monad.Fail
+ 
+ data ParseResult a
+   = POk !PState a
+@@ -93,6 +95,8 @@ instance Applicative P where
+ instance Monad P where
+   return = returnP
+   (>>=) = thenP
++
++instance MonadFail P where
+   fail m = getPos >>= \pos -> failP pos [m]
+ 
+ execParser :: P a -> String -> Position -> [Ident] -> [Name]
+diff --git a/gtk2hs-buildtools.cabal b/gtk2hs-buildtools.cabal
+index fc4a7d5..8b6be30 100644
+--- a/gtk2hs-buildtools.cabal
++++ b/gtk2hs-buildtools.cabal
+@@ -38,7 +38,7 @@ Flag ClosureSignals
+ --        Default:        False
+ 
+ Library
+-        build-depends:   base >= 4 && < 4.12,
++        build-depends:   base >= 4 && < 4.13,
+                          process, array, pretty,
+                          filepath, random,
+                          Cabal >= 1.24.0.0,

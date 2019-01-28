@@ -1,0 +1,13 @@
+diff --git a/tests/S3/Main.hs b/tests/S3/Main.hs
+index 6b8c8d9..80be840 100644
+--- a/tests/S3/Main.hs
++++ b/tests/S3/Main.hs
+@@ -18,7 +18,7 @@ module Main
+ import           Control.Applicative
+ import qualified Data.ByteString              as BS
+ import qualified Data.ByteString.Lazy         as BL
+-import           Conduit
++-- import           Conduit
+ import           Control.Arrow                (second)
+ import           Control.Exception
+ import           Control.Monad
