@@ -4,6 +4,12 @@ allowUnfree = true;
 
 packageOverrides = super: let self = super.pkgs; in with self; rec {
 
+xmonadFull = self.lib.lowPrio (
+  super.xmonad-with-packages.override {
+    packages = hs: with hs;[ xmonad-contrib xmonad-extras ]; });
+
+tinyemu = self.callPackage ./tinyemu {};
+
 x230_icc = self.fetchurl rec {
          name = "lp125wf2-spb2.icc";
          url = with meta; "https://github.com/${owner}/${repo}/blob/${rev}/${name}?raw=true";
@@ -21,28 +27,6 @@ firefox-devedition-bin-unwrapped = super.firefox-devedition-bin-unwrapped.overri
 
 vban = self.callPackage ./vban {};
 
-duktape = self.callPackage (fetchurl {
-  url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/interpreters/duktape/default.nix";
-  sha256 = "0q9nf5dsl7dlblgwzdji3gbhlcg3d0lixwzvypybkavzflrlkx79";
-  }) {};
-
-scrcpy = self.callPackage (fetchurl {
-  url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/misc/scrcpy/default.nix";
-  sha256 = "1g90mn67d9dlybhynx9nwx50zvgqzrrqrgwpm80pzy08ln2rprnq";
-  }) {
-    stdenv = self.stdenv
-             // { lib = self.stdenv.lib
-                        // { maintainers = self.stdenv.lib.maintainers
-                                           // { deltaevo = null; }; }; };
-    platformTools = self.androidenv.platformTools;
-  };
-
-  
-edbrowse = self.callPackage (fetchurl {
-  url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/applications/editors/edbrowse/default.nix";
-  sha256 = "0nvh78dz21kbkmb6vgl452640ci6b271rrzq0rg61pdxf249nsqb";
-  }) {};
-
 brainworkshop = self.callPackage ./brainworkshop {};
 
 ataripp = self.callPackage ./atari++ {};
@@ -59,12 +43,12 @@ systemToolsEnv = pkgs.buildEnv {
 
 personalToolsEnv = pkgs.buildEnv {
   name = "personalToolsEnv";
-  paths = [ aria2 gimp haskellPackages.git-annex iw ]
+  paths = [ aria2 gimp iw ] # haskellPackages.git-annex ]
 #    ++ [ electrum ]
-    ++ [ libressl mplayer pavucontrol ranger reptyr ]
+    ++ [ libressl pavucontrol ranger reptyr ]
     ++ [ rfkill sl sshuttle tigervnc ]
-    ++ [ usbutils vimpc xorg.xwd youtube-dl ] #zathura ]
-    ++ [ pythonPackages.pygments ];
+    ++ [ usbutils vimpc xorg.xwd youtube-dl ]; #zathura ]
+#    ++ [ pythonPackages.pygments ];
 };
 
 haskellDevEnv = pkgs.buildEnv {
@@ -80,36 +64,21 @@ pythonDevEnv = let
 in
   myPython;
 
-stackage = snapshot: let stackageOverlays = import (fetchTarball {
-                                url = "https://stackage.serokell.io/drczwlyf6mi0ilh3kgv01wxwjfgvq14b-stackage/default.nix.tar.gz";
-                                sha256 = "1bwlbxx6np0jfl6z9gkmmcq22crm0pa07a8zrwhz5gkal64y6jpz"; });
-  in
-    (stackageOverlays.${snapshot} self super).haskell.packages.${snapshot};
-
-hackage-mirror = (stackage "lts-6.35").hackage-mirror;
+#stackage = snapshot: let stackageOverlays = import (fetchTarball {
+#                                url = "https://stackage.serokell.io/drczwlyf6mi0ilh3kgv01wxwjfgvq14b-stackage/default.nix.tar.gz";
+#                                sha256 = "1bwlbxx6np0jfl6z9gkmmcq22crm0pa07a8zrwhz5gkal64y6jpz"; });
+#  in
+#    (stackageOverlays.${snapshot} self super).haskell.packages.${snapshot};
+#
+#hackage-mirror = (stackage "lts-6.35").hackage-mirror;
 
 myHaskellOverrides = self: super:
   with pkgs.haskell.lib; let pkg = self.callPackage; in rec {
-
-  # diagrams-graphviz         = doJailbreak super.diagrams-graphviz;
-  # heap			                = dontCheck super.heap;
-  # freer-effects      		    = dontCheck super.freer-effects;
-  # reroute	       	          = dontCheck super.reroute;
-  # superbuffer		            = dontCheck super.superbuffer;
-
-  # extra_1_6_9               = pkg ./extra_1_6_9 {};
-  # ghcid_0_7		              = pkg ./ghcid_0_7 {
-  #   extra = self.extra_1_6_9;
-  # };
-  streaming-commons_0_1_19 = pkg ./streaming-commons_0_1_19 {};
-  aws_0_19 = pkg ./aws_0_19 {};
-  aws_0_18 = pkg ./aws_0_18 {};
-  aws_0_14_1 = pkg ./aws_0_14_1 {};
-  basement_0_0_7 = pkg ./basement_0_0_7 {};
-  conduit_1_2_10 = pkg ./conduit_1_2_10 {};
-  conduit-extra_1_1_16 = pkg ./conduit-extra_1_1_16 {};
-  foundation_0_0_20 = pkg ./foundation_0_0_20 {};
-  stm_2_4_5_0 = pkg ./stm_2_4_5_0 {};
+    lambdabot = super.lambdabot.overrideScope (self: super: {
+      hoogle = self.callHackage "hoogle" "5.0.17.3" {};
+    });
+#  servant-docs = doJailbreak super.servant-docs;
+  
 };
 
 haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
@@ -122,7 +91,7 @@ ghcEnv = let
   [ ghcWithMegaPackagesWithHoogle
     alex happy
     ghc-core
-    hlint
+#    hlint
     ghcid
 #    ghc-mod
 #    hdevtools
@@ -130,14 +99,15 @@ ghcEnv = let
     hasktags
 #    djinn
     mueval
-    lambdabot
+#    lambdabot
     threadscope
     timeplot
 #    splot
 #    liquidhaskell
-    idris
-    Agda
+#    idris
+#    Agda
     stylish-haskell
+    xmonadFull
   ];
   in
   pkgs.buildEnv {

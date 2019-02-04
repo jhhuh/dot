@@ -1,4 +1,4 @@
-!Emacs.FontBackend: xft
+Emacs.FontBackend: xft
 !Emacs.font: Ubuntu Mono-12
 
 !!! Xterm !!!
@@ -15,7 +15,7 @@ Xft.rgba:       rgb
 Xft.embolden: false
 
 !!! URxvt !!!
-URxvt.font: xft:Ubuntu Mono :pixelsize=20
+URxvt.font: xft:DejaVu Sans Mono :pixelsize=14
 URxvt.letterSpace: -1
 URxvt.scrollBar: false
 URxvt.perl-ext-common: font-size,color-themes 

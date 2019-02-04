@@ -55,3 +55,4 @@ Host hashbang
   IdentitiesOnly yes
   User jhhuh
   IdentityFile /home/jhhuh/.ssh/id_rsa
+AddKeysToAgent  yes

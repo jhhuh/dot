@@ -37,7 +37,7 @@ byteorder
 bytes
 bytestring
 bytestring-mmap
-bytestring-show
+#bytestring-show
 case-insensitive
 cassava
 categories
@@ -71,13 +71,13 @@ data-checked
 data-default
 data-default-class
 data-fix
-diagrams
-diagrams-contrib
-diagrams-builder
-diagrams-core
-diagrams-svg
-diagrams-lib
-diagrams-graphviz
+# diagrams
+# diagrams-contrib
+# diagrams-builder
+# diagrams-core
+# diagrams-svg
+# diagrams-lib
+# diagrams-graphviz
 directory
 distributive
 dlist
@@ -135,7 +135,7 @@ io-streams
 json
 json-stream
 kan-extensions
-kdt
+#kdt
 keys
 language-c
 lattices
@@ -223,7 +223,7 @@ servant-blaze
 servant-client
 servant-docs
 servant-foreign
-#servant-js
+servant-js
 servant-server
 shake
 shakespeare
