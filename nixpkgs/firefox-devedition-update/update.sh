@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p stdenv xidel
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 PATH=/nix/store/wm8va53fh5158ipi0ic9gir64hrvqv1z-coreutils-8.29/bin:/nix/store/ny5p32137wfyzdm485xfdck21w1gyl3g-gnused-4.5/bin:/nix/store/9f89z51na7w931aja8lqlmhqny9h16cj-gnugrep-3.1/bin:/nix/store/0i08mp7wk8vkmz7d48ivv0q4sm2ixmyz-xidel-0.9.6/bin:/nix/store/4xbcs5wx2h4z60k8v2gdnis9zm5jhdqi-curl-7.61.0-bin/bin:/nix/store/0yighvnwkxriby3gagg589vg6pdbqjyf-gnupg-2.2.9/bin
 set -eux
 pushd .

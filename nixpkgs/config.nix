@@ -22,8 +22,11 @@ x230_icc = self.fetchurl rec {
 
 xhk = self.callPackage ./xhk {};
 
-firefox-devedition-bin-unwrapped = super.firefox-devedition-bin-unwrapped.override {
-  generated = import ./firefox-devedition-update/devedition_sources.nix; };
+firefox-devedition-bin-unwrapped = (super.firefox-devedition-bin-unwrapped.overrideAttrs (attr:{
+  libPath = self.lib.makeLibraryPath (with self.xorg; [ libXcursor libXi ]) + ":" + attr.libPath;
+})).override {
+  generated = import ./firefox-devedition-update/devedition_sources.nix;
+};
 
 vban = self.callPackage ./vban {};
 
@@ -43,12 +46,12 @@ systemToolsEnv = pkgs.buildEnv {
 
 personalToolsEnv = pkgs.buildEnv {
   name = "personalToolsEnv";
-  paths = [ aria2 gimp iw ] # haskellPackages.git-annex ]
+  paths = [ aria2 gimp haskellPackages.git-annex iw ]
 #    ++ [ electrum ]
-    ++ [ libressl pavucontrol ranger reptyr ]
+    ++ [ libressl mplayer pavucontrol ranger reptyr ]
     ++ [ rfkill sl sshuttle tigervnc ]
-    ++ [ usbutils vimpc xorg.xwd youtube-dl ]; #zathura ]
-#    ++ [ pythonPackages.pygments ];
+    ++ [ usbutils vimpc xorg.xwd youtube-dl ] #zathura ]
+    ++ [ pythonPackages.pygments ];
 };
 
 haskellDevEnv = pkgs.buildEnv {
@@ -64,21 +67,55 @@ pythonDevEnv = let
 in
   myPython;
 
-#stackage = snapshot: let stackageOverlays = import (fetchTarball {
-#                                url = "https://stackage.serokell.io/drczwlyf6mi0ilh3kgv01wxwjfgvq14b-stackage/default.nix.tar.gz";
-#                                sha256 = "1bwlbxx6np0jfl6z9gkmmcq22crm0pa07a8zrwhz5gkal64y6jpz"; });
-#  in
-#    (stackageOverlays.${snapshot} self super).haskell.packages.${snapshot};
-#
-#hackage-mirror = (stackage "lts-6.35").hackage-mirror;
+# stackage = snapshot: let stackageOverlays = import (fetchTarball {
+#                                 url = "https://stackage.serokell.io/drczwlyf6mi0ilh3kgv01wxwjfgvq14b-stackage/default.nix.tar.gz";
+#                                 sha256 = "1bwlbxx6np0jfl6z9gkmmcq22crm0pa07a8zrwhz5gkal64y6jpz"; });
+#   in
+#     (stackageOverlays.${snapshot} self super).haskell.packages.${snapshot};
+
+#hackage-mirror-stack = (stackage "lts-6.35").hackage-mirror;
+
+hackage-mirror = with haskell.lib; let
+  unpatched = haskell.packages.ghc822.hackage-mirror;
+  patched = appendPatch unpatched ./patches/hackage-mirror.patch;
+in patched.overrideScope (self: super: {
+  conduit = self.conduit_1_2_13_1;
+  resourcet = self.resourcet_1_1_11;
+  conduit-extra = self.conduit-extra_1_2_3_2;
+  streaming-commons = self.callHackage "streaming-commons" "0.1.19" {};
+  xml-conduit = self.xml-conduit_1_7_1_2;
+  aeson = doJailbreak (self.callHackage "aeson" "1.4.2.0" {});
+  aws = doJailbreak (dontCheck (self.callHackage "aws" "0.16" {}));
+  conduit-combinators = jailbreakself.callHackage "conduit-combinators" "1.1.2" {};
+  http-conduit = self.http-conduit_2_2_4;
+  cereal = self.cereal_0_5_8_0;
+#  optparse-applicative = doJailbreak (self.callHackage "optparse-applicative" "0.12.1.0" {});
+  });
 
 myHaskellOverrides = self: super:
   with pkgs.haskell.lib; let pkg = self.callPackage; in rec {
+    heap = dontCheck super.heap;
+    doctest-prop = dontCheck super.doctest-prop;
+    diagrams-contrib = doJailbreak super.diagrams-contrib;
+    diagrams-graphviz = doJailbreak super.diagrams-graphviz;
+    diagrams-postscript = doJailbreak super.diagrams-postscript;
+    tdigest = doJailbreak super.tdigest;
+    servant-docs = doJailbreak super.servant-docs;
+    compressed = doJailbreak super.compressed ;
+    these = doJailbreak super.these;
+    bytestring-show = doJailbreak super.bytestring-show;
+    gtk2hs-buildtools = appendPatch super.gtk2hs-buildtools ./patches/gtk2hs-buildtools.patch;
+    threadscope = doJailbreak super.threadscope;
     lambdabot = super.lambdabot.overrideScope (self: super: {
       hoogle = self.callHackage "hoogle" "5.0.17.3" {};
     });
-#  servant-docs = doJailbreak super.servant-docs;
-  
+    conduit_1_2_13_1 = super.conduit_1_2_13_1.overrideScope
+      (self: super: {
+        resourcet = self.resourcet_1_1_11;});
+    conduit-extra_1_2_3_2 = super.conduit-extra_1_2_3_2.overrideScope
+      (self: super: {
+        conduit = self.conduit_1_2_13_1;
+        resourcet = self.resourcet_1_1_11;});
 };
 
 haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
@@ -88,24 +125,16 @@ ghcWithMegaPackages = haskellPackages.ghcWithPackages (import ./mega-ghc-package
 
 ghcEnv = let
   paths = with haskellPackages;
-  [ ghcWithMegaPackagesWithHoogle
+  [ ghcWithMegaPackages#WithHoogle
     alex happy
     ghc-core
-#    hlint
+    hlint
     ghcid
-#    ghc-mod
-#    hdevtools
     pointfree
     hasktags
 #    djinn
     mueval
-#    lambdabot
     threadscope
-    timeplot
-#    splot
-#    liquidhaskell
-#    idris
-#    Agda
     stylish-haskell
     xmonadFull
   ];
@@ -114,15 +143,6 @@ ghcEnv = let
     name = "ghcEnv";
     inherit paths;
   };
-
-racket = super.racket.overrideAttrs (attr: rec {
-  LD_LIBRARY_PATH = attr.LD_LIBRARY_PATH+":${self.libedit}/lib";
-  postInstall = ''
-    for p in $(ls $out/bin/) ; do
-      wrapProgram $out/bin/$p --set LD_LIBRARY_PATH "${LD_LIBRARY_PATH}";
-    done
-  '';
-});
 
 }; # End of packageOverrides
 

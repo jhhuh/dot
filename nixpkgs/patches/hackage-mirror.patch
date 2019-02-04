@@ -1,0 +1,15 @@
+diff --git a/main/Main.hs b/main/Main.hs
+index cb74c6c..c0a071b 100644
+--- a/main/Main.hs
++++ b/main/Main.hs
+@@ -23,8 +23,8 @@ import Options.Applicative
+       info,
+       help,
+       header,
+-      fullDesc,
+-      (<>) )
++      fullDesc )
++import Data.Semigroup ((<>))
+ import Control.Monad.Logger
+        (filterLogger, LogLevel(LevelDebug), runStdoutLoggingT)
+ 

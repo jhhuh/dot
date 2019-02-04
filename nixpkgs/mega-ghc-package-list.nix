@@ -17,7 +17,10 @@ async
 attempt
 attoparsec
 attoparsec-conduit
+<<<<<<< HEAD
 #attoparsec-enumerator
+=======
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 base
 base-unicode-symbols
 base16-bytestring
@@ -27,7 +30,10 @@ bifunctors
 bindings-DSL
 blaze-builder
 blaze-builder-conduit
+<<<<<<< HEAD
 #blaze-builder-enumerator
+=======
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 blaze-html
 blaze-markup
 blaze-textual
@@ -37,7 +43,12 @@ byteorder
 bytes
 bytestring
 bytestring-mmap
+<<<<<<< HEAD
 #bytestring-show
+=======
+bytestring-show
+cabal-doctest
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 case-insensitive
 cassava
 categories
@@ -52,6 +63,10 @@ comonad
 comonad-transformers
 composition
 compressed
+<<<<<<< HEAD
+=======
+concise
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 cond
 conduit
 conduit-combinators
@@ -71,6 +86,7 @@ data-checked
 data-default
 data-default-class
 data-fix
+<<<<<<< HEAD
 # diagrams
 # diagrams-contrib
 # diagrams-builder
@@ -79,12 +95,27 @@ data-fix
 # diagrams-lib
 # diagrams-graphviz
 directory
+=======
+diagrams
+diagrams-contrib
+#diagrams-builder
+diagrams-core
+diagrams-svg
+diagrams-lib
+diagrams-graphviz
+directory
+direct-sqlite
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 distributive
 dlist
 dlist-instances
 dns
 doctest
+<<<<<<< HEAD
 doctest-prop
+=======
+#doctest-prop
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 either
 enclosed-exceptions
 errors
@@ -106,6 +137,10 @@ free-vl
 fsnotify
 fuzzcheck
 #ghc-datasize
+<<<<<<< HEAD
+=======
+generic-arbitrary
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 ghc-paths
 graphviz
 groups
@@ -117,8 +152,15 @@ haskell-lexer
 haskell-src
 haskell-src-exts
 here
+<<<<<<< HEAD
 hslogger
 hspec
+=======
+hscolour
+hslogger
+hspec
+hspec-discover
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 hspec-expectations
 hspec-megaparsec
 hspec-smallcheck
@@ -132,6 +174,7 @@ http-types
 io-memoize
 io-storage
 io-streams
+<<<<<<< HEAD
 json
 json-stream
 kan-extensions
@@ -139,6 +182,19 @@ kan-extensions
 keys
 language-c
 lattices
+=======
+ghci-pretty
+jose
+json
+js-jquery
+json-stream
+kan-extensions
+kdt
+keys
+#lambdabot
+language-c
+#lattices
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 lens
 lens-action
 lens-aeson
@@ -152,8 +208,14 @@ list-extras
 list-t
 logging
 logict
+<<<<<<< HEAD
 machinecell
 machines
+=======
+lucid
+machines
+markdown-unlit
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 megaparsec
 mime-mail
 mime-types
@@ -165,6 +227,10 @@ monad-loops
 monad-par
 monad-par-extras
 monad-stm
+<<<<<<< HEAD
+=======
+monad-time
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 monadloc
 mono-traversable
 monoid-extras
@@ -197,6 +263,10 @@ pipes-zlib
 pointed
 posix-paths
 postgresql-simple
+<<<<<<< HEAD
+=======
+prettyprinter
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 pretty-show
 process
 process-extras
@@ -209,10 +279,18 @@ regex-base
 regex-compat
 regex-posix
 resourcet
+<<<<<<< HEAD
+=======
+resource-pool
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 retry
 safe
 sbv
 scalpel
+<<<<<<< HEAD
+=======
+scalpel-core
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 scientific
 scotty
 semigroupoids
@@ -223,7 +301,11 @@ servant-blaze
 servant-client
 servant-docs
 servant-foreign
+<<<<<<< HEAD
 servant-js
+=======
+#servant-js
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 servant-server
 shake
 shakespeare
@@ -231,14 +313,24 @@ shelly
 simple-reflect
 singletons
 smallcheck
+<<<<<<< HEAD
 speculation
+=======
+# speculation
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 split
 # Spock
 # Spock-lucid
 spoon
+<<<<<<< HEAD
 stm
 stm-chans
 stm-stats
+=======
+sqlite-simple
+stm
+stm-chans
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 streaming
 streaming-bytestring
 strict
@@ -251,10 +343,18 @@ tagged
 tar
 tardis
 tasty
+<<<<<<< HEAD
+=======
+tasty-golden
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 tasty-hspec
 tasty-hunit
 tasty-quickcheck
 tasty-smallcheck
+<<<<<<< HEAD
+=======
+tdigest
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 temporary
 text
 text-format
@@ -264,6 +364,10 @@ thyme
 time
 #time-recurrence
 tls
+<<<<<<< HEAD
+=======
+tls-session-manager
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 total
 transformers
 transformers-base
@@ -278,6 +382,10 @@ vector
 void
 wai
 warp
+<<<<<<< HEAD
+=======
+warp-tls
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
 wreq
 x509
 x509-store
@@ -286,6 +394,7 @@ yaml
 z3
 zippers
 zlib
+<<<<<<< HEAD
 
 ]
 <<<<<<< HEAD
@@ -1266,3 +1375,6 @@ zlib
 #     zlib-bindings-0.1.1.5
 >>>>>>> clean up ghcEnv
 
+=======
+]
+>>>>>>> add77bd0e229a2019a72aa22babdaa6ccf411639
