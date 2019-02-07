@@ -1,5 +1,15 @@
 self: super: rec {
 
+  snack-exe = let
+    src = self.fetchFromGitHub {
+      owner = "nmattia";
+      repo = "snack";
+      rev = "08861356442d867d3bdcd217c4521c53264388c0";
+      sha256 = "0jmdsz44s2a0x7nlm03phkswp5gvk95vdgqq294rwn93n0ssyz6r";
+    };
+    snack-lib = self.callPackage "${src}/snack-lib" { inherit (self.haskellPackages) ghcWithPackages; };
+  in snack-lib.executable "${src}/bin/package.nix" // { name = "snack-exe"; }; 
+
   x230_icc = self.fetchurl rec {
     name = "lp125wf2-spb2.icc";
     url = with meta; "https://github.com/${owner}/${repo}/blob/${rev}/${name}?raw=true";

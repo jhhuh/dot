@@ -1,8 +1,36 @@
 self: super: rec {
 
-  xmonadFull = self.lib.lowPrio (
-    super.xmonad-with-packages.override {
-      packages = hs: with hs;[ xmonad-contrib xmonad-extras ]; });
+  xmonadFull =
+  let
+    wrapper = { stdenv, ghcWithPackages, xmessage, makeWrapper, packages }:
+    let xmonadEnv = ghcWithPackages (self: [ self.xmonad ] ++ packages self);
+    in stdenv.mkDerivation {
+         name = "xmonad-with-packages-${xmonadEnv.version}";
+         
+         nativeBuildInputs = [ makeWrapper ];
+         
+         buildCommand = ''
+           mkdir -p $out/bin $out/share/man/man1
+           ln -s ${xmonadEnv}/share/man/man1/xmonad.1.gz $out/share/man/man1/xmonad.1.gz
+           makeWrapper ${xmonadEnv}/bin/xmonad $out/bin/xmonad \
+             --set NIX_GHC "${xmonadEnv}/bin/ghc" \
+             --set XMONAD_XMESSAGE "${xmessage}/bin/xmessage"
+         '';
+         
+         # trivial derivation
+         preferLocalBuild = true;
+         allowSubstitutes = false; };
+    xmonad-with-packages = self.callPackage wrapper { 
+      inherit (self.haskellPackages) ghcWithPackages;
+      packages = hs: with hs;[ xmonad-contrib xmonad-extras ]; };
+  in xmonad-with-packages.overrideAttrs (drv: { name = "xmonadFull"; });
+
+  cachix = let
+    src = self.fetchzip {
+      url = "https://github.com/cachix/cachix/archive/v0.1.3.tar.gz";
+      sha256 = "09hxrsjmgji2ckxchfskb9km1zqb04sk6kb60p5vqwlvpzy517mb";
+    };
+  in import src {};
 
   hackage-mirror = with haskell.lib; let
     unpatched = haskell.packages.ghc822.hackage-mirror;
@@ -19,17 +47,6 @@ self: super: rec {
       http-conduit = hself.http-conduit_2_2_4; });
   in justStaticExecutables overridenPatched;
 
-  cachix = with self.haskell.lib; let
-    overridenCachix = self.haskellPackages.cachix.overrideScope (hself: hsuper: {
-      tasty = hself.callHackage "tasty" "1.1.0.4" {};
-      servant-server = hself.callHackage "servant-server" "0.14.1" {};
-#      insert-ordered-containers = doJailbreak hsuper.insert-ordered-containers;
-#      servant-streaming-server = doJailbreak hsuper.servant-streaming-server;
-  });
-  in (justStaticExecutables overridenCachix).overrideAttrs (drv: {
-    meta = drv.meta // {
-      hydraPlatforms = stdenv.lib.platforms.unix;};});
-  
   myHaskellOverrides = hself: hsuper:
     with self.haskell.lib; let pkg = hself.callPackage; in rec {
       heap = dontCheck hsuper.heap;

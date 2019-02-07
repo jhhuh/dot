@@ -13,8 +13,11 @@ self: super: rec {
       ++ [ libressl mplayer pavucontrol ranger reptyr ]
       ++ [ rfkill sl sshuttle tigervnc ]
       ++ [ usbutils vimpc xorg.xwd youtube-dl ]
-      ++ [ pythonPackages.pygments ];};
-  
+      ++ [ pythonPackages.pygments ]
+      ++ [ compton st tinyemu tmux vimHugeX qemu gitAndTools.hub radare2 ]
+      ++ [ hackage-mirror snack-exe xmonadFull lambdabot cachix ]
+      ++ [ nix-prefetch-git ];};
+ 
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
     paths = [ haskellPackages.cabal-install cabal2nix ];
