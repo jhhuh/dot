@@ -111,7 +111,7 @@ myHaskellOverrides = self: super:
         resourcet = self.resourcet_1_1_11;});
 };
 
-haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
+haskellPackageOverrides = myHaskellOverrides;
 
 ghcWithMegaPackagesWithHoogle = haskellPackages.ghcWithHoogle (import ./mega-ghc-package-list.nix);
 ghcWithMegaPackages = haskellPackages.ghcWithPackages (import ./mega-ghc-package-list.nix);
@@ -136,6 +136,5 @@ ghcEnv = let
     inherit paths;
   };
 
-}; # End of packageOverrides
-
-} # End of the nix expression
+};
+}
