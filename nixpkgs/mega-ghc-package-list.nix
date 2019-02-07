@@ -51,7 +51,6 @@ comonad
 comonad-transformers
 composition
 compressed
-concise
 cond
 conduit
 conduit-combinators
@@ -220,7 +219,6 @@ regex-base
 regex-compat
 regex-posix
 resourcet
-resource-pool
 retry
 safe
 sbv
@@ -303,4 +301,6 @@ yaml
 z3
 zippers
 zlib
+
 ]
+
