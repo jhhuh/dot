@@ -59,7 +59,7 @@ self: super: rec {
       compressed = doJailbreak hsuper.compressed ;
       these = doJailbreak hsuper.these;
       bytestring-show = doJailbreak hsuper.bytestring-show;
-      gtk2hs-buildtools = appendPatch hsuper.gtk2hs-buildtools ../patches/gtk2hs-buildtools.patch;
+#      gtk2hs-buildtools = appendPatch hsuper.gtk2hs-buildtools ../patches/gtk2hs-buildtools.patch;
       threadscope = doJailbreak hsuper.threadscope;
       lambdabot = hsuper.lambdabot.overrideScope (self: super: {
         hoogle = hself.callHackage "hoogle" "5.0.17.3" {};
