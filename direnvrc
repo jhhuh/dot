@@ -22,14 +22,14 @@ use_nix() {
   fi
   
   if [[ ! -f $drvfile ]]; then
-    mkdir -p "$wd"
+    rm -rf  "$wd/deps"
+    mkdir -p "$wd" "$wd/deps"
     # instanciate the drv like it was in a nix-shell
-    rm $wd/dep*
     IN_NIX_SHELL=1 nix-instantiate \
                      --show-trace \
                      --add-root "$drvfile" --indirect \
                      "$shellfile" >/dev/null
-    nix-store -r $(nix-store --query --references "$drvfile") --add-root "$wd/dep" --indirect > /dev/null
+    nix-store -r $(nix-store --query --references "$drvfile") --add-root "$wd/deps/dep" --indirect > /dev/null
   fi
   
   local dumpfile="$wd/dump-$(sha1sum .envrc|cut -d ' ' -f 1)-$(sha1sum $drvfile|cut -d ' ' -f 1)"
@@ -37,12 +37,10 @@ use_nix() {
   if [[ ! -f $dumpfile ]]; then
     log_status "updateing nix-shell cache"
     rm -f "$(find $wd -name 'dump-*')"
-    nix-shell --pure "$drvfile" --show-trace --run "$(join_args "$direnv" dump)" > "$dumpfile"
+    nix-shell "$drvfile" --show-trace --run "$(join_args "$direnv" dump)" > "$dumpfile"
   fi
   
-  path_backup="$PATH"
   direnv_load cat "$dumpfile" > /dev/null
-  export PATH="$PATH:$path_backup"
   
   watch_file "$shellfile"
 }
