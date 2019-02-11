@@ -1,5 +1,7 @@
 self: super: rec {
 
+  tinyemu = self.callPackage ../tinyemu {};
+
   snack-exe = let
     src = self.fetchFromGitHub {
       owner = "nmattia";

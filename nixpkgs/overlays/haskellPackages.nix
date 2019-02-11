@@ -41,13 +41,20 @@ self: super: rec {
       conduit-extra = hself.conduit-extra_1_2_3_2;
       streaming-commons = hself.callHackage "streaming-commons" "0.1.19" {};
       xml-conduit = hself.xml-conduit_1_7_1_2;
-      aeson = doJailbreak (hself.callHackage "aeson" "1.4.2.0" {});
+      aeson = doJailbreak (hself.callHackage "aeson" "1.4.1.0" {});
       aws = doJailbreak (dontCheck (hself.callHackage "aws" "0.16" {}));
       conduit-combinators = jailbreak hself.callHackage "conduit-combinators" "1.1.2" {};
       http-conduit = hself.http-conduit_2_2_4; });
   in justStaticExecutables overridenPatched;
 
-  myHaskellOverrides = hself: hsuper:
+  myHaskellOverrides = myHaskellOverrides_18_09;
+
+  myHaskellOverrides_18_09 = hself: hsuper:
+    with self.haskell.lib; let pkg = hself.callPackage; in rec {
+    djinn = appendPatch hsuper.djinn ../patches/djinn_2014_9_7.patch;
+  };
+
+  myHaskellOverrides_19_03 = hself: hsuper:
     with self.haskell.lib; let pkg = hself.callPackage; in rec {
       heap = dontCheck hsuper.heap;
       doctest-prop = dontCheck hsuper.doctest-prop;
@@ -87,7 +94,6 @@ self: super: rec {
       ghcid
       pointfree
       hasktags
-  #    djinn
       mueval
       threadscope
       stylish-haskell

@@ -16,7 +16,9 @@ self: super: rec {
       ++ [ pythonPackages.pygments ]
       ++ [ compton st tinyemu tmux vimHugeX qemu gitAndTools.hub radare2 ]
       ++ [ hackage-mirror snack-exe xmonadFull lambdabot cachix ]
-      ++ [ nix-prefetch-git ];};
+      ++ [ nix-prefetch-git ]
+      ++ [ asciinema manpages posix_man_pages]
+      ++ [ direnv ]; };
  
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
