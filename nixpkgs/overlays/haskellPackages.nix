@@ -87,7 +87,7 @@ self: super: rec {
   
   ghcEnv = let
     paths = with self.haskellPackages;
-    [ ghcWithMegaPackages#WithHoogle
+    [ ghcWithMegaPackagesWithHoogle
       alex happy
       ghc-core
       hlint
