@@ -1,5 +1,24 @@
 self: super: rec {
 
+  stackage2nixPackages = let
+    s2np = import ../nixpkgs-stackage/stackage2nix/stackage-packages.nix { nixpkgs = self; };
+  in s2np.override {
+       overrides = self: super: {
+         mtl = null;
+         parsec = null;
+         stm = null;
+         text = null;
+
+         hlibgit2 = super.hlibgit2.overrideAttrs (attr:
+           { hardeningDisable = [ "format" ]; });
+         http-types = super.http-types.override {};
+       };
+     };
+
+  stackage2nix = self.callPackage ../nixpkgs-stackage/stackage2nix {
+    drv = self.haskell.lib.disableSharedExecutables stackage2nixPackages.stackage2nix;
+  };
+
   xmonadFull =
   let
     wrapper = { stdenv, ghcWithPackages, xmessage, makeWrapper, packages }:

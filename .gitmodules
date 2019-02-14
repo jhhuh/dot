@@ -1,0 +1,3 @@
+[submodule "nixpkgs/nixpkgs-stackage"]
+	path = nixpkgs/nixpkgs-stackage
+	url = https://github.com/typeable/nixpkgs-stackage

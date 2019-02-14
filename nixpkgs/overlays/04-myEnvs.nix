@@ -22,7 +22,7 @@ self: super: rec {
  
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
-    paths = [ haskellPackages.cabal-install cabal2nix ];
+    paths = [ haskellPackages.cabal-install cabal2nix stackage2nix ];
   };
   
   pythonDevEnv = with self; let
