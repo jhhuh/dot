@@ -6,19 +6,33 @@ self: super: rec {
       ++ [ (haskell.lib.justStaticExecutables haskellPackages.pandoc) ]
       ++ [ imagemagick_light lsof p7zip paperkey tree unzip ]
       ++ [ watch xz patchelf sshfs-fuse nixops zip ];};
+
+  myVim = self.vim_configurable.customize {
+    name = "vim";
+    vimrcConfig = {
+      customRC = ''
+        colorscheme base16-atelier-plateau-light
+      '';
+      packages.myVimPackage = with self.vimPlugins; {
+        start = [ base16-vim ];
+      };
+    };
+  };
   
-  personalToolsEnv = with self; self.buildEnv {
+  personalToolsEnv = with self; let
+  in self.buildEnv {
     name = "personalToolsEnv";
     paths = [ aria2 gimp haskellPackages.git-annex iw ]
       ++ [ libressl mplayer pavucontrol ranger reptyr ]
-      ++ [ rfkill sl sshuttle tigervnc ]
-      ++ [ usbutils vimpc xorg.xwd youtube-dl ]
+      ++ [ rfkill sshuttle] # sl tigervnc 
+      ++ [ usbutils youtube-dl ] # vimpc xorg.xwd
       ++ [ pythonPackages.pygments ]
-      ++ [ compton st tinyemu tmux vimHugeX qemu gitAndTools.hub radare2 ]
+      ++ [ compton tinyemu tmux qemu gitAndTools.hub radare2 ]
       ++ [ hackage-mirror snack-exe xmonadFull lambdabot cachix ]
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
-      ++ [ direnv ]; };
+      ++ [ direnv st_base16 ]
+      ++ [ myVim ]; };
  
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";

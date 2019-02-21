@@ -39,8 +39,13 @@ use_nix() {
     rm -f "$(find $wd -name 'dump-*')"
     nix-shell "$drvfile" --show-trace --run "$(join_args "$direnv" dump)" > "$dumpfile"
   fi
-  
+
+  SSH_AUTH_SOCK_BACKUP="$SSH_AUTH_SOCK"
+  SSH_AGENT_PID_BACKUP="$SSH_AGENT_PID"
   direnv_load cat "$dumpfile" > /dev/null
-  
+
+  export SSH_AUTH_SOCK="$SSH_AUTH_SOCK_BACKUP"
+  export SSH_AGENT_PID="$SSH_AGENT_PID_BACKUP"
+
   watch_file "$shellfile"
 }
