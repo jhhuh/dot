@@ -54,7 +54,8 @@ myKeys XConfig { modMask = modm } = M.fromList
   , ( (modm .|. controlMask, xK_n), namedScratchpadAction scratchpads "nix-env")
   , ( (modm .|. controlMask, xK_v), namedScratchpadAction scratchpads "pavucontrol")
   , ( (modm .|. controlMask, xK_g), namedScratchpadAction scratchpads "telegram-desktop")
-  , ( (modm .|. controlMask, xK_j), namedScratchpadAction scratchpads "emacseditor") ]
+  , ( (modm .|. controlMask, xK_j), namedScratchpadAction scratchpads "emacseditor")
+  , ( (modm .|. controlMask, xK_k), namedScratchpadAction scratchpads "scrcpy") ]
 
 scratchpads =
   map makeNS [ ( "alsamixer",        "alsamixer",           3/8,  3/8, 1/4,  1/4 ),
@@ -63,8 +64,10 @@ scratchpads =
                ( "ranger",           "ranger",              1/6,  1/6, 2/3,  2/3 ),
                ( "nix-env",          "nix-env -qaPA nixos", 2/3,  2/3, 1/3,  1/3 ) ]
     ++
-     [ NS "emacseditor"      "emacsclient -c"   (className =? "Emacs")
-          (customFloating $ W.RationalRect (1/32) (1/16) (19/32) (14/16) )
+     [ NS "scrcpy"      "scrcpy"   (className =? ".scrcpy-wrapped")
+          (customFloating $ W.RationalRect (22/32) (1/16) (8/32) (12/16) )
+     , NS "emacseditor"      "emacsclient -c"   (className =? "Emacs")
+          (customFloating $ W.RationalRect (4/32) (1/16) (24/32) (14/16) )
      , NS "zathura"          "zathura"          (className =? "Zathura")
           (customFloating $ W.RationalRect (1/8) (1/16) (6/8) (14/16) ) 
      , NS "pavucontrol"      "pavucontrol"      (className =? "Pavucontrol")

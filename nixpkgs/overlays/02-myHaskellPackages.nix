@@ -70,7 +70,9 @@ self: super: rec {
 
   myHaskellOverrides_18_09 = hself: hsuper:
     with self.haskell.lib; let pkg = hself.callPackage; in rec {
-    djinn = appendPatch hsuper.djinn ../patches/djinn_2014_9_7.patch;
+    djinn = assert hsuper.djinn.version == "2014.9.7";
+          appendPatch hsuper.djinn ../patches/djinn_2014_9_7.patch;
+    yeshql-postgresql-simple = dontCheck hsuper.yeshql-postgresql-simple;
   };
 
   myHaskellOverrides_19_03 = hself: hsuper:

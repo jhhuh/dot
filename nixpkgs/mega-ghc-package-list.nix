@@ -117,6 +117,8 @@ hashtables
 haskell-lexer
 haskell-src
 haskell-src-exts
+HDBC
+HDBC-postgresql
 here
 hscolour
 hslogger
@@ -190,6 +192,7 @@ parallel
 parallel-io
 parsec
 parsers
+persistent
 pipes
 pipes-attoparsec
 pipes-binary
@@ -221,6 +224,7 @@ regex-posix
 resourcet
 retry
 safe
+safe-money
 sbv
 scalpel
 scalpel-core
@@ -298,6 +302,9 @@ x509
 x509-store
 x509-system
 yaml
+yeshql
+yeshql-postgresql-simple
+yeshql-hdbc
 z3
 zippers
 zlib

@@ -32,7 +32,7 @@ self: super: rec {
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
       ++ [ direnv st_base16 ]
-      ++ [ myVim ]; };
+      ++ [ myVim scrcpy ]; };
  
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
@@ -46,5 +46,4 @@ self: super: rec {
       qrcode ]);
   in
     myPython;
-
 }
