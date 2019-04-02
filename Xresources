@@ -1,6 +1,5 @@
 Emacs.FontBackend: xft
-Emacs.font: Ubuntu Mono-12
-Emacs*UseXIM: false
+!Emacs.font: Ubuntu Mono-12
 
 !!! Xterm !!!
 XTerm*metaSendsEscape: true
@@ -15,11 +14,8 @@ Xft.lcdfilter:  lcddefault
 Xft.rgba:       rgb
 Xft.embolden: false
 
-!!! dzen2
-dzen2.font: xft:Ubuntu Mono :pixelsize=16
-
 !!! URxvt !!!
-URxvt.font: xft:Ubuntu Mono :pixelsize=20
+URxvt.font: xft:DejaVu Sans Mono :pixelsize=14
 URxvt.letterSpace: -1
 URxvt.scrollBar: false
 URxvt.perl-ext-common: font-size,color-themes 

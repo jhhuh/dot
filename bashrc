@@ -118,3 +118,8 @@ export DTK_PROGRAM=espeak
 export SYSTEMD_LESS=FRXMK
 
 export NO_AT_BRIDGE=1
+
+if [ -f ~/.dot/base16-shell/scripts/base16-atelier-plateau-light.sh ]; then
+  source ~/.dot/base16-shell/scripts/base16-atelier-plateau-light.sh 
+fi
+
