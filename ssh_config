@@ -2,7 +2,7 @@ Host debian-x230
     HostName 192.168.25.18
     User jhhuh
 Host cantos
-    HostName 192.168.25.61
+    HostName 192.168.25.63
     Port 2223
     User jhhuh
 Host jhnote

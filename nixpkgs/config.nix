@@ -4,6 +4,8 @@ allowUnfree = true;
 
 packageOverrides = super: let self = super.pkgs; in with self; rec {
 
+SoundWireServer = self.callPackage ./SoundWireServer {};
+
 x230_icc = self.fetchurl rec {
          name = "lp125wf2-spb2.icc";
          url = with meta; "https://github.com/${owner}/${repo}/blob/${rev}/${name}?raw=true";
@@ -69,6 +71,17 @@ personalToolsEnv = pkgs.buildEnv {
     ++ [ pythonPackages.pygments ];
 };
 
+personalToolsEnv2 = pkgs.buildEnv {
+  name = "personalToolsEnv2";
+  paths = [ cabal-install cabal2nix cachix ghcEnv ]
+    ++ [ discord ffmpeg-full inetutils ipfs irssi jq keynav ]
+    ++ [ loc mosh nmap openssl pavucontrol ]
+    ++ [ pv python qutebrowser ranger ]
+    ++ [ rxvt_unicode-with-plugins ]
+    ++ [ scrcpy tmate xcalib xorg.xev xorg.xeyes xkbcomp yasr ]
+    ++ [ youtube-dl zathura-with-plugins ];
+};
+
 haskellDevEnv = pkgs.buildEnv {
   name = "haskellDevEnv";
   paths = [ haskellPackages.cabal-install cabal2nix ];
@@ -111,6 +124,8 @@ myHaskellOverrides = self: super:
     temporary = temporary_1_2_1_1;
   };
 
+  goa = dontHaddock super.goa;
+
   streaming-commons_0_1_19 = pkg ./streaming-commons_0_1_19 {};
   aws_0_19 = pkg ./aws_0_19 {};
   aws_0_18 = pkg ./aws_0_18 {};
@@ -120,6 +135,8 @@ myHaskellOverrides = self: super:
   conduit-extra_1_1_16 = pkg ./conduit-extra_1_1_16 {};
   foundation_0_0_20 = pkg ./foundation_0_0_20 {};
   stm_2_4_5_0 = pkg ./stm_2_4_5_0 {};
+
+  hyper-haskell-server = doJailbreak super.hyper-haskell-server; 
 };
 
 haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
@@ -134,7 +151,7 @@ ghcEnv = let
     ghc-core
     hlint
     ghcid
-    ghc-mod
+#    ghc-mod
 #    hdevtools
     pointfree
     hasktags

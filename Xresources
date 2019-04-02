@@ -1,5 +1,6 @@
-!Emacs.FontBackend: xft
-!Emacs.font: Ubuntu Mono-12
+Emacs.FontBackend: xft
+Emacs.font: Ubuntu Mono-12
+Emacs*UseXIM: false
 
 !!! Xterm !!!
 XTerm*metaSendsEscape: true
@@ -13,6 +14,9 @@ Xft.hintstyle:  hintslight
 Xft.lcdfilter:  lcddefault
 Xft.rgba:       rgb
 Xft.embolden: false
+
+!!! dzen2
+dzen2.font: xft:Ubuntu Mono :pixelsize=16
 
 !!! URxvt !!!
 URxvt.font: xft:Ubuntu Mono :pixelsize=20
