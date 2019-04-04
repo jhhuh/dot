@@ -18,7 +18,7 @@ self: super: rec {
       };
     };
   };
-  
+
   personalToolsEnv = with self; let
   in self.buildEnv {
     name = "personalToolsEnv";
@@ -33,11 +33,12 @@ self: super: rec {
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
       ++ [ direnv st_base16 ]
-      ++ [ myVim scrcpy ]; };
+      ++ [ myVim scrcpy ]; }; #vimb ]; };
  
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
-    paths = [ haskellPackages.cabal-install cabal2nix ]; #stackage2nix ];
+    paths = [ haskellPackages.cabal-install cabal2nix stack ];
+    #stackage2nix -- Hard to maintain
   };
   
   pythonDevEnv = with self; let

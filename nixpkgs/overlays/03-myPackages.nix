@@ -2,6 +2,17 @@ self: super: rec {
 
   st_base16 = self.callPackage ../st_base16 {};
 
+  webkitgtk = self.callPackage ../webkitgtk (with self; {
+    harfbuzz = harfbuzzFull;
+    inherit (gst_all_1) gst-plugins-base gst-plugins-bad;
+    stdenv = overrideCC stdenv gcc6;
+    gobject-introspection = gobjectIntrospection;
+  });
+
+  vimb-unwrapped = self.callPackage ../vimb {};
+
+  uzbl = super.uzbl.override { webkit = self.webkitgtk; };
+
   base16-st = self.fetchFromGitHub {
       owner = "honza";
       repo = "base16-st";
