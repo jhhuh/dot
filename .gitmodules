@@ -7,3 +7,6 @@
 [submodule "nixpkgs/hackage-mirror"]
 	path = nixpkgs/hackage-mirror
 	url = https://github.com/jwiegley/hackage-mirror
+[submodule "nixpkgs/metapkgs"]
+	path = nixpkgs/metapkgs
+	url = https://github.com/matthewbauer/metapkgs
