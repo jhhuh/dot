@@ -2,7 +2,7 @@
 #!nix-shell -i bash -p bash nix
 
 echo "#!/usr/bin/env nix-shell" > update.sh
-echo "#!nix-shell -i bash -p stdenv xidel" >> update.sh
+echo "#!nix-shell -i bash -p stdenv xidel gnupg" >> update.sh
 
 cat $(nix-build --no-out-link "<nixpkgs>" -A firefox-devedition-bin-unwrapped.updateScript) |
   sed 's/pushd.*/pushd ./' |
