@@ -28,7 +28,8 @@ self: super: rec {
       ++ [ usbutils youtube-dl ] # vimpc xorg.xwd
       ++ [ pythonPackages.pygments ]
       ++ [ compton tinyemu tmux qemu gitAndTools.hub radare2 ]
-      ++ [ hackage-mirror snack-exe xmonadFull lambdabot cachix ]
+      #++ [ hackage-mirror
+      ++ [ snack-exe xmonadFull cachix ] #lambdabot cachix ]
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
       ++ [ direnv st_base16 ]
@@ -36,7 +37,7 @@ self: super: rec {
  
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
-    paths = [ haskellPackages.cabal-install cabal2nix stackage2nix ];
+    paths = [ haskellPackages.cabal-install cabal2nix ]; #stackage2nix ];
   };
   
   pythonDevEnv = with self; let

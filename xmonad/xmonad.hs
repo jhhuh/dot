@@ -66,7 +66,7 @@ scratchpads =
     ++
      [ NS "scrcpy"      "scrcpy"   (className =? ".scrcpy-wrapped")
           (customFloating $ W.RationalRect (22/32) (1/16) (8/32) (12/16) )
-     , NS "emacseditor"      "emacsclient -c"   (className =? "Emacs")
+     , NS "emacseditor"      "emacsclient --eval '(select-frame (make-frame `((name . \"emacs-scratch\") (window-system . x))))'" (title =? "emacs-scratch")
           (customFloating $ W.RationalRect (4/32) (1/16) (24/32) (14/16) )
      , NS "zathura"          "zathura"          (className =? "Zathura")
           (customFloating $ W.RationalRect (1/8) (1/16) (6/8) (14/16) ) 

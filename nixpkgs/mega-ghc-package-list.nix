@@ -108,6 +108,7 @@ fuzzcheck
 #ghc-datasize
 generic-arbitrary
 ghc-paths
+goa
 graphviz
 groups
 hakyll
@@ -301,6 +302,9 @@ wreq
 x509
 x509-store
 x509-system
+xmonad
+xmonad-contrib
+xmonad-extras
 yaml
 yeshql
 #yeshql-postgresql-simple

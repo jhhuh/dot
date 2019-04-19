@@ -53,20 +53,24 @@ self: super: rec {
     };
   in import src {};
 
-  hackage-mirror = with haskell.lib; let
-    unpatched = haskell.packages.ghc822.hackage-mirror;
-    patched = appendPatch unpatched ../patches/hackage-mirror.patch;
-    overridenPatched = patched.overrideScope (hself: hsuper: {
-      conduit = hself.conduit_1_2_13_1;
-      resourcet = hself.resourcet_1_1_11;
-      conduit-extra = hself.conduit-extra_1_2_3_2;
-      streaming-commons = hself.callHackage "streaming-commons" "0.1.19" {};
-      xml-conduit = hself.xml-conduit_1_7_1_2;
-      aeson = doJailbreak (hself.callHackage "aeson" "1.4.1.0" {});
-      aws = doJailbreak (dontCheck (hself.callHackage "aws" "0.16" {}));
-      conduit-combinators = jailbreak hself.callHackage "conduit-combinators" "1.1.2" {};
-      http-conduit = hself.http-conduit_2_2_4; });
-  in justStaticExecutables overridenPatched;
+  # hackage-mirror = with haskell.lib; let
+  #   unpatched = haskell.packages.ghc822.hackage-mirror;
+  #   patched = appendPatch unpatched ../patches/hackage-mirror.patch;
+  #   overridenPatched = patched.overrideScope (hself: hsuper: {
+  #     conduit = hself.conduit_1_2_13_1;
+  #     resourcet = hself.resourcet_1_1_11;
+  #     conduit-extra = hself.conduit-extra_1_2_3_2;
+  #     streaming-commons = hself.callHackage "streaming-commons" "0.1.19" {};
+  #     xml-conduit = hself.xml-conduit_1_7_1_2;
+  #     aeson = doJailbreak (hself.callHackage "aeson" "1.4.1.0" {});
+  #     aws = doJailbreak (dontCheck (hself.callHackage "aws" "0.16" {}));
+  #     conduit-combinators = jailbreak hself.callHackage "conduit-combinators" "1.1.2" {};
+  #     http-conduit = hself.http-conduit_2_2_4; });
+  # in justStaticExecutables overridenPatched;
+
+  hackage-mirror = with self.haskell.lib; justStaticExecutables (
+    self.haskellPackages.callPackage ../hackage-mirror {}
+  );
 
   myHaskellOverrides = myHaskellOverrides_18_09;
 
