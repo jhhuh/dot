@@ -35,7 +35,7 @@ byteorder
 bytes
 bytestring
 bytestring-mmap
-bytestring-show
+#bytestring-show
 cabal-doctest
 case-insensitive
 cassava
@@ -50,7 +50,7 @@ cmdargs
 comonad
 comonad-transformers
 composition
-compressed
+#compressed
 cond
 conduit
 conduit-combinators
@@ -76,7 +76,7 @@ diagrams-contrib
 diagrams-core
 diagrams-svg
 diagrams-lib
-diagrams-graphviz
+#diagrams-graphviz
 directory
 direct-sqlite
 distributive
@@ -143,7 +143,7 @@ json
 js-jquery
 json-stream
 kan-extensions
-kdt
+#kdt
 keys
 #lambdabot
 language-c
@@ -224,7 +224,7 @@ regex-posix
 resourcet
 retry
 safe
-safe-money
+#safe-money
 sbv
 scalpel
 scalpel-core
@@ -303,7 +303,7 @@ x509-store
 x509-system
 yaml
 yeshql
-yeshql-postgresql-simple
+#yeshql-postgresql-simple
 yeshql-hdbc
 z3
 zippers

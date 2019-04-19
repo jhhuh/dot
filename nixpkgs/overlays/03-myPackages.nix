@@ -1,5 +1,16 @@
 self: super: rec {
 
+  vimb-unwrapped = self.callPackages ../vimb {};
+
+  webkitgtk = self.callPackages ../webkitgtk (with self; {
+    harfbuzz = harfbuzzFull;
+    inherit (gst_all_1) gst-plugins-base gst-plugins-bad;
+    stdenv = overrideCC stdenv gcc6;
+    gobject-introspection = gobjectIntrospection;
+    gtk2 = self.gtk2;
+    enableGtk2Plugins = true;
+  });
+
   st_base16 = self.callPackage ../st_base16 {};
 
   base16-st = self.fetchFromGitHub {

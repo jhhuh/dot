@@ -19,6 +19,8 @@ self: super: rec {
     drv = self.haskell.lib.disableSharedExecutables stackage2nixPackages.stackage2nix;
   };
 
+  metapkgs = import ../metapkgs;
+
   xmonadFull =
   let
     wrapper = { stdenv, ghcWithPackages, xmessage, makeWrapper, packages }:
@@ -116,7 +118,7 @@ self: super: rec {
       pointfree
       hasktags
       mueval
-      threadscope
+#      threadscope
       stylish-haskell
     ];
     in
