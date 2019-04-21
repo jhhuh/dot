@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, pkgconfig, libsoup, webkit, gtk3, glib-networking
+{ stdenv, fetchFromGitHub, pkgconfig, libsoup, webkit, gtk2, glib-networking
 , gsettings-desktop-schemas, wrapGAppsHook
 }:
 

@@ -6,6 +6,7 @@
 , enableGeoLocation ? true, geoclue2, sqlite
 , enableGtk2Plugins ? false, gtk2 ? null
 , gst-plugins-base, gst-plugins-bad, woff2
+, cairo
 }:
 
 assert enableGeoLocation -> geoclue2 != null;
@@ -66,6 +67,7 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
+    cairo
     libintl libwebp enchant2 libnotify gnutls pcre nettle libidn libgcrypt woff2
     libxml2 libsecret libxslt harfbuzz libpthreadstubs libtasn1 p11-kit
     sqlite gst-plugins-base gst-plugins-bad libxkbcommon epoxy at-spi2-core
