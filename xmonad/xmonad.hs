@@ -55,6 +55,7 @@ myKeys XConfig { modMask = modm } = M.fromList
   , ( (modm .|. controlMask, xK_v), namedScratchpadAction scratchpads "pavucontrol")
   , ( (modm .|. controlMask, xK_g), namedScratchpadAction scratchpads "telegram-desktop")
   , ( (modm .|. controlMask, xK_j), namedScratchpadAction scratchpads "emacseditor")
+  , ( (modm .|. controlMask, xK_f), namedScratchpadAction scratchpads "emacseditor")
   , ( (modm .|. controlMask, xK_k), namedScratchpadAction scratchpads "scrcpy") ]
 
 scratchpads =

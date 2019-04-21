@@ -115,8 +115,8 @@ self: super: rec {
       ghcid
       pointfree
       hasktags
-      mueval
-      threadscope
+#      mueval
+#      threadscope
       stylish-haskell
     ];
     in

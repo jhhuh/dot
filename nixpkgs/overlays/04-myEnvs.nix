@@ -29,7 +29,7 @@ self: super: rec {
       ++ [ pythonPackages.pygments ]
       ++ [ compton tinyemu tmux qemu gitAndTools.hub radare2 ]
       #++ [ hackage-mirror
-      ++ [ snack-exe xmonadFull lambdabot cachix ]
+      ++ [ snack-exe xmonadFull cachix ] #lambdabot 
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
       ++ [ direnv st_base16 ]
