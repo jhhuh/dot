@@ -44,7 +44,7 @@ self: super: rec {
     xmonad-with-packages = self.callPackage wrapper { 
       inherit (self.haskellPackages) ghcWithPackages;
       packages = hs: with hs;[ xmonad-contrib xmonad-extras ]; };
-  in xmonad-with-packages.overrideAttrs (drv: { name = "xmonadFull"; });
+  in self.hiPrio (xmonad-with-packages.overrideAttrs (drv: { name = "xmonadFull"; }));
 
   cachix = let
     src = self.fetchzip {
