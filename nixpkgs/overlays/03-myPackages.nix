@@ -1,4 +1,5 @@
 self: super: rec {
+  nbstripout = self.callPackages ../nbstripout {};
 
   vimb-unwrapped = self.callPackages ../vimb {};
 
@@ -11,7 +12,24 @@ self: super: rec {
     enableGtk2Plugins = true;
   });
 
-  st_base16 = self.callPackage ../st_base16 {};
+#  st = let
+#    st-ime = self.fetchurl {
+#      url = "https://st.suckless.org/patches/fix_ime/st-ime-20190202-3be4cf1.diff";
+#      sha256 = "0n4sq5xjx5shkdwv9hfwzjpiknra3076m8k1aimsjfqyw6gklnng";
+#    };
+#      in
+#    super.st.override { patches = [ st-ime ]; };
+
+  st = let
+     version = "0.8.2-3";
+     name = "st-${version}";
+     src = self.fetchurl {
+       url = "https://github.com/odknt/st/archive/${version}.tar.gz";
+       sha256 = "0s0q6qa53llpazzrvvnnfqcc0kv6akhvc8v9ppk38rkzmyjd9avy";
+     };
+   in super.st.overrideDerivation (attr: { inherit version name src; });
+
+  myEmacs = self.emacsWithPackages (epkg: with epkg; [ emacs-libvterm ]);
 
 #  webkitgtk = self.callPackage ../webkitgtk (with self; {
 #    harfbuzz = harfbuzzFull;
@@ -23,13 +41,6 @@ self: super: rec {
 #  vimb-unwrapped = self.callPackage ../vimb {};
 
   uzbl = super.uzbl.override { webkit = self.webkitgtk; };
-
-  base16-st = self.fetchFromGitHub {
-      owner = "honza";
-      repo = "base16-st";
-      rev = "b3d0d4fbdf86d9b3eda06f42a5bdf261b1f7d1d1";
-      sha256 = "1z08abn9g01nnr1v4m4p8gp1j8cwlvcadgpjb7ngjy8ghrk8g0sh";
-  };
 
   tinyemu = self.callPackage ../tinyemu {};
 

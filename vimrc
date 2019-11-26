@@ -46,6 +46,8 @@ filetype plugin indent on
 set laststatus=2
 set statusline=%f\ %y\ %l/%L\ 
 
+set completeopt-=preview
+
 " Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}

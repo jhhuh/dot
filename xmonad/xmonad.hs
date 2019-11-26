@@ -1,6 +1,6 @@
 import XMonad
 
-import XMonad.Config.Kde (kde4Config)
+--import XMonad.Config.Kde (kde4Config)
 
 import XMonad.Layout.Spacing (spacingRaw, Border(..))
 import XMonad.Prompt (XPConfig(..),XPPosition(..))
@@ -11,18 +11,18 @@ import XMonad.Util.NamedScratchpad ( defaultFloating, namedScratchpadAction
 
 import qualified XMonad.StackSet as W
 
-import XMonad.Hooks.DynamicLog (dzenWithFlags)
+import XMonad.Hooks.DynamicLog (statusBar,xmobarPP,PP(..),xmobarColor,xmobarStrip,shorten,wrap)
 import XMonad.Hooks.ManageDocks (manageDocks, docks, avoidStruts) --, ToggleStruts(..))
 import XMonad.Prompt.Shell (shellPrompt)
 import XMonad.Prompt.Ssh (sshPrompt)
 
 import qualified Data.Map as M
 
-desktop = kde4Config
+desktop = def -- kde4Config
 
 conf = desktop { borderWidth = 2
                , focusedBorderColor = "#ff8267"
-               , terminal = "st -f \"Liberation Mono:pixelsize=14\""
+               , terminal = "st -f \"Liberation Mono:pixelsize=18\""
                , modMask = mod4Mask
                , keys = keys desktop <+> myKeys
                , manageHook = scratchpadHook
@@ -33,8 +33,11 @@ conf = desktop { borderWidth = 2
                                                    (Border 8 8 8 8) True
                                 $ layoutHook desktop
                , startupHook = myStartupHook <+> startupHook desktop }
+
 myStartupHook = spawn "xset r rate 250 50" 
+                  <+> spawn "feh --bg-scale /home/jhhuh/wallpapers/railWay.png"
                   <+> spawn "compton -CGcf -i 0.7 -I 1.0 -O 1.0 -D 0 --detect-client-leader"
+
 myKeys XConfig { modMask = modm } = M.fromList
   [ ( (modm .|. controlMask, xK_p), shellPrompt $ def { alwaysHighlight = True
                                                       , height = 24
@@ -47,6 +50,10 @@ myKeys XConfig { modMask = modm } = M.fromList
                                                       , bgHLight = "#ffffff" } )
   , ( (modm .|. controlMask, xK_b), namedScratchpadAction scratchpads "zathura")
   , ( (modm .|. controlMask, xK_q), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi")
+  , ( (modm .|. controlMask, xK_F7), spawn "xrandr --auto && xrandr --output LVDS-1-1 --auto --right-of DP-3")
+  , ( (modm .|. controlMask, xK_F8), spawn "xrandr --output LVDS-1-1 --auto --output DP-3 --off")
+  , ( (modm .|. controlMask, xK_F9), spawn "xrandr --output DP-3 --auto --output LVDS-1-1  --off")
+  , ( (modm .|. controlMask, xK_F10), spawn "xrandr --auto")
   , ( (modm .|. controlMask, xK_s), sshPrompt def)
   , ( (modm .|. controlMask, xK_h), namedScratchpadAction scratchpads "htop")
   , ( (modm .|. controlMask, xK_m), namedScratchpadAction scratchpads "vimpc")
@@ -86,5 +93,21 @@ myManageHook = composeAll . concat $ [ [ resource  =? t  --> doFloat | t <- myFl
         myFloatsByClass = [ ]
         myFloatsByTitle = [ "Open Document", "Open Files" , "Developer Tools" ]
 
+-- Command to launch the bar.
+myBar = "/home/jhhuh/.xmonad/xmobar.sh /home/jhhuh/.xmonad/xmobar.hs"
+
+-- Custom PP.
+myXmobarPP = xmobarPP
+    { ppCurrent = xmobarColor "#f8f8f8" "DodgerBlue4" . wrap " " " "
+    , ppVisible = xmobarColor "#f8f8f8" "LightSkyBlue4" . wrap " " " "
+    , ppUrgent  = xmobarColor "#f8f8f8" "red4" . wrap " " " " . xmobarStrip
+    , ppLayout  = wrap "" "" . xmobarColor "DarkOrange" "" . wrap " [" "] "
+    , ppTitle   = xmobarColor "#61ce3c" "" . shorten 50
+    , ppSep     = ""
+    , ppWsSep   = " "
+    }
+
+toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
+
 main :: IO ()
-main = xmonad conf
+main = xmonad =<< statusBar myBar myXmobarPP toggleStrutsKey conf 

@@ -22,7 +22,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'Shougo/vimproc.vim'
 
 "Plugin 'chriskempson/base16-vim'
-"Plugin 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 "Plugin 'tpope/vim-fugitive'
 
 call vundle#end()

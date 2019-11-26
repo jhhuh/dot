@@ -3,9 +3,12 @@ Emacs.FontBackend: xft
 
 !!! Xterm !!!
 XTerm*metaSendsEscape: true
+!!! XTerm*font: xft:DejaVu Sans Mono :pixelsize=14
+XTerm*font: xft:Liberation Mono :pixelsize=18
+XTerm*ximFont: xft:Noto Sans Mono CJK KR:pixelsize=18
 
 !!! Xft !!!
-Xft.dpi: 108
+Xft.dpi: 125
 Xft.antialias:  1
 Xft.autohint:   0
 Xft.hinting:    1
@@ -15,7 +18,7 @@ Xft.rgba:       rgb
 Xft.embolden: false
 
 !!! URxvt !!!
-URxvt.font: xft:DejaVu Sans Mono :pixelsize=14
+URxvt.font: xft:Liberation Mono :pixelsize=18
 URxvt.letterSpace: -1
 URxvt.scrollBar: false
 URxvt.perl-ext-common: font-size,color-themes 

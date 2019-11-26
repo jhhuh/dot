@@ -1,7 +1,7 @@
 Host debian-x230 
     HostName 192.168.25.18
     User jhhuh
-Host cantos
+Host cantos.local
     HostName cantos.local
     Port 2223
     User jhhuh
@@ -23,6 +23,10 @@ Host aws
 Host genis
     HostName genis.sphericalcow.company
     Port 2222
+    User jhhuh
+Host cantos
+    HostName cantos.sphericalcow.company
+    Port 2223
     User jhhuh
 Host lxplus
     HostName lxplus.cern.ch

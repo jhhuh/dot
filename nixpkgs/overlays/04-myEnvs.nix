@@ -11,10 +11,24 @@ self: super: rec {
     name = "vim";
     vimrcConfig = {
       customRC = ''
+        :imap jk <Esc>
+
+        let base16colorspace=256
         colorscheme base16-atelier-plateau-light
+
+        let g:jedi#use_tabs_not_buffers = 1
+
+        function! SourceIfExists(file)
+          if filereadable(expand(a:file))
+            exe 'source' a:file
+          endif
+        endfunction
+
+        let $MYVIMRC="~/.vimrc"
+        call SourceIfExists($MYVIMRC)
       '';
       packages.myVimPackage = with self.vimPlugins; {
-        start = [ base16-vim ];
+        start = [ jedi-vim base16-vim ];
       };
     };
   };
@@ -29,11 +43,12 @@ self: super: rec {
       ++ [ pythonPackages.pygments ]
       ++ [ compton tinyemu tmux qemu gitAndTools.hub radare2 ]
       #++ [ hackage-mirror
-      ++ [ snack-exe xmonadFull cachix ] #lambdabot 
+      ++ [ xmonadFull ] #cachix ] #lambdabot snack-exe 
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
-      ++ [ direnv st_base16 ]
-      ++ [ myVim scrcpy ]; }; #vimb ]; };
+      ++ [ direnv st ]
+      ++ [ scrcpy ]
+      ++ [ ]; }; #vimb nbstripout ]; };
  
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
@@ -48,4 +63,9 @@ self: super: rec {
       qrcode ]);
   in
     myPython;
+
+  all-hies = let
+    all-hies_HEAD = import (fetchTarball "https://github.com/infinisil/all-hies/tarball/master") {};
+  in all-hies_HEAD.selection { selector = p: p; };
+
 }
