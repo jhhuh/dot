@@ -43,11 +43,13 @@ use_nix() {
   SSH_AUTH_SOCK_BACKUP="$SSH_AUTH_SOCK"
   SSH_AGENT_PID_BACKUP="$SSH_AGENT_PID"
   DISPLAY_BACKUP="$DISPLAY"
+  XAUTHORITY_BACKUP="$XAUTHORITY"
   direnv_load cat "$dumpfile" > /dev/null
 
   export SSH_AUTH_SOCK="$SSH_AUTH_SOCK_BACKUP"
   export SSH_AGENT_PID="$SSH_AGENT_PID_BACKUP"
   export DISPLAY="$DISPLAY_BACKUP"
+  export XAUTHORITY="$XAUTHORITY_BACKUP"
 
   watch_file "$shellfile"
 }
