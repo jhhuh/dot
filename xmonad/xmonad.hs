@@ -36,7 +36,7 @@ conf = desktop { borderWidth = 2
 
 myStartupHook = spawn "xset r rate 250 50" 
                   <+> spawn "feh --bg-scale /home/jhhuh/wallpapers/railWay.png"
-                  <+> spawn "compton -CGcf -i 0.7 -I 1.0 -O 1.0 -D 0 --detect-client-leader"
+--                  <+> spawn "compton -CGcf -i 0.7 -I 1.0 -O 1.0 -D 0 --detect-client-leader"
 
 myKeys XConfig { modMask = modm } = M.fromList
   [ ( (modm .|. controlMask, xK_p), shellPrompt $ def { alwaysHighlight = True

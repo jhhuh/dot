@@ -17,7 +17,7 @@ Plugin 'LnL7/vim-nix'
 
 Plugin 'davidhalter/jedi-vim'
 
-Plugin 'scrooloose/syntastic'
+"""""""""Plugin 'scrooloose/syntastic'
 
 Plugin 'Shougo/vimproc.vim'
 

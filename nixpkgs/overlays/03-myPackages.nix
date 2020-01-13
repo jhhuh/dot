@@ -72,11 +72,5 @@ self: super: rec {
   };
   
   vban = self.callPackage ../vban {};
-  
-  brainworkshop = self.callPackage ../brainworkshop {};
-  
-  ataripp = self.callPackage ../atari++ {};
-  
-  BlueALSA = self.callPackage ../BlueALSA {};
-
+ 
 }

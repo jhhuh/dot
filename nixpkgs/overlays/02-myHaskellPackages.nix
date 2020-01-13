@@ -68,9 +68,9 @@ self: super: rec {
   #     http-conduit = hself.http-conduit_2_2_4; });
   # in justStaticExecutables overridenPatched;
 
-  hackage-mirror = with self.haskell.lib; justStaticExecutables (
-    self.haskellPackages.callPackage ../hackage-mirror {}
-  );
+#  hackage-mirror = with self.haskell.lib; justStaticExecutables (
+#    self.haskellPackages.callPackage ../hackage-mirror {}
+#  );
 
   myHaskellOverrides = myHaskellOverrides_18_09;
 
