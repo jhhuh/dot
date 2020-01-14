@@ -46,33 +46,22 @@ filetype plugin indent on
 set laststatus=2
 set statusline=%f\ %y\ %l/%L\ 
 
-" haskell-vim
-let g:haskell_indent_if = 3
-let g:haskell_indent_case = 2
-let g:haskell_indent_let = 4
-let g:haskell_indent_where = 6
-let g:haskell_indent_before_where = 2
-let g:haskell_indent_after_bare_where = 2
-let g:haskell_indent_do = 3
-let g:haskell_indent_in = 1
-let g:haskell_indent_guard = 2
-let g:haskell_indent_case_alternative = 1
-let g:cabal_indent_section = 2
+set completeopt-=preview
 
 " Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height = 5
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_cpp_compiler = "g++"
-let g:syntastic_cpp_compiler_options = "-std=c++11 -Wall -Wextra -Wpedantic"
-"let g:syntastic_debug = 3
-
-let g:syntastic_haskell_checkers = [ 'hlint' ]
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"let g:syntastic_auto_loc_list = 0
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_loc_list_height = 5
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_cpp_compiler = "g++"
+"let g:syntastic_cpp_compiler_options = "-std=c++11 -Wall -Wextra -Wpedantic"
+""let g:syntastic_debug = 3
+"
+"let g:syntastic_haskell_checkers = [ 'hlint' ]
 
 nmap > :lnext<CR>
 nmap < :lprev<CR>

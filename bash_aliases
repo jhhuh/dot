@@ -1,5 +1,7 @@
 # -*- mode:  sh -*-
 
+alias pipy-deps='function __pipy-deps() { curl -sL https://pypi.org/pypi/$1/json | jq ".info.requires_dist"; }; __pipy-deps'
+
 alias ccat='pygmentize -g'
 alias vi='emacseditor -nw'
 alias vij='function __vij() { nix-shell -p pythonPackages.jedi vimHugeX --run "vim $@"; }; __vij'
@@ -50,6 +52,8 @@ alias nixpkgs-help='nix-X-help-in-Y $(nix-build --no-out-link "<nixpkgs/doc>") n
 alias nixos-help='nix-X-help-in-Y $(nix-build "<nixpkgs/nixos/release.nix>" --arg supportedSystems "[ \"x86_64-linux\" ]" -A manual --no-out-link) nixos/index.html'
 
 alias nix-outpath='nix-build --no-out-link "<nixpkgs>" -A'
+
+alias nix-repl='nix repl "<nixpkgs>"'
 
 # yasr aliases
 alias yed='$(nix-where yasr)/bin/yasr $(nix-where edbrowse)/bin/edbrowse' 

@@ -14,9 +14,9 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ wrapGAppsHook pkgconfig ];
-  buildInputs = [ gtk2 libsoup webkit glib-networking gsettings-desktop-schemas ];
+  buildInputs = [ gtk3 libsoup webkit glib-networking gsettings-desktop-schemas ];
 
-  makeFlags = [ "PREFIX=${placeholder "out"}" "GTK=2"];
+  makeFlags = [ "PREFIX=${placeholder "out"}" ];
 
   meta = {
     description = "A Vim-like browser";

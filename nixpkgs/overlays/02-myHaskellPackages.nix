@@ -46,12 +46,12 @@ self: super: rec {
       packages = hs: with hs;[ xmonad-contrib xmonad-extras ]; };
   in xmonad-with-packages.overrideAttrs (drv: { name = "xmonadFull"; });
 
-  cachix = let
-    src = self.fetchzip {
-      url = "https://github.com/cachix/cachix/archive/v0.1.3.tar.gz";
-      sha256 = "09hxrsjmgji2ckxchfskb9km1zqb04sk6kb60p5vqwlvpzy517mb";
-    };
-  in import src {};
+#  cachix = let
+#    src = self.fetchzip {
+#      url = "https://github.com/cachix/cachix/archive/v0.1.3.tar.gz";
+#      sha256 = "09hxrsjmgji2ckxchfskb9km1zqb04sk6kb60p5vqwlvpzy517mb";
+#    };
+#  in import src {};
 
   # hackage-mirror = with haskell.lib; let
   #   unpatched = haskell.packages.ghc822.hackage-mirror;
@@ -68,9 +68,9 @@ self: super: rec {
   #     http-conduit = hself.http-conduit_2_2_4; });
   # in justStaticExecutables overridenPatched;
 
-  hackage-mirror = with self.haskell.lib; justStaticExecutables (
-    self.haskellPackages.callPackage ../hackage-mirror {}
-  );
+#  hackage-mirror = with self.haskell.lib; justStaticExecutables (
+#    self.haskellPackages.callPackage ../hackage-mirror {}
+#  );
 
   myHaskellOverrides = myHaskellOverrides_18_09;
 
@@ -83,28 +83,28 @@ self: super: rec {
 
   myHaskellOverrides_19_03 = hself: hsuper:
     with self.haskell.lib; let pkg = hself.callPackage; in rec {
-      heap = dontCheck hsuper.heap;
-      doctest-prop = dontCheck hsuper.doctest-prop;
-      diagrams-contrib = doJailbreak hsuper.diagrams-contrib;
-      diagrams-graphviz = doJailbreak hsuper.diagrams-graphviz;
-      diagrams-postscript = doJailbreak hsuper.diagrams-postscript;
-      tdigest = doJailbreak hsuper.tdigest;
-      servant-docs = doJailbreak hsuper.servant-docs;
-      compressed = doJailbreak hsuper.compressed ;
-      these = doJailbreak hsuper.these;
-      bytestring-show = doJailbreak hsuper.bytestring-show;
-#      gtk2hs-buildtools = appendPatch hsuper.gtk2hs-buildtools ../patches/gtk2hs-buildtools.patch;
-      threadscope = doJailbreak hsuper.threadscope;
-      lambdabot = hsuper.lambdabot.overrideScope (self: super: {
-        hoogle = hself.callHackage "hoogle" "5.0.17.3" {};
-      });
-      conduit_1_2_13_1 = hsuper.conduit_1_2_13_1.overrideScope
-        (_self: _super: {
-          resourcet = _self.resourcet_1_1_11;});
-      conduit-extra_1_2_3_2 = hsuper.conduit-extra_1_2_3_2.overrideScope
-        (_self: _super: {
-          conduit = _self.conduit_1_2_13_1;
-          resourcet = _self.resourcet_1_1_11;});
+#       heap = dontCheck hsuper.heap;
+#       doctest-prop = dontCheck hsuper.doctest-prop;
+#       diagrams-contrib = doJailbreak hsuper.diagrams-contrib;
+#       diagrams-graphviz = doJailbreak hsuper.diagrams-graphviz;
+#       diagrams-postscript = doJailbreak hsuper.diagrams-postscript;
+#       tdigest = doJailbreak hsuper.tdigest;
+#       servant-docs = doJailbreak hsuper.servant-docs;
+#       compressed = doJailbreak hsuper.compressed ;
+#       these = doJailbreak hsuper.these;
+#       bytestring-show = doJailbreak hsuper.bytestring-show;
+# #      gtk2hs-buildtools = appendPatch hsuper.gtk2hs-buildtools ../patches/gtk2hs-buildtools.patch;
+#       threadscope = doJailbreak hsuper.threadscope;
+#       lambdabot = hsuper.lambdabot.overrideScope (self: super: {
+#         hoogle = hself.callHackage "hoogle" "5.0.17.3" {};
+#       });
+#       conduit_1_2_13_1 = hsuper.conduit_1_2_13_1.overrideScope
+#         (_self: _super: {
+#           resourcet = _self.resourcet_1_1_11;});
+#       conduit-extra_1_2_3_2 = hsuper.conduit-extra_1_2_3_2.overrideScope
+#         (_self: _super: {
+#           conduit = _self.conduit_1_2_13_1;
+#           resourcet = _self.resourcet_1_1_11;});
   };
   
   haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
