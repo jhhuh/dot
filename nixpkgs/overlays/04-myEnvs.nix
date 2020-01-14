@@ -67,8 +67,4 @@ self: super: rec {
   in
     myPython;
 
-  all-hies = let
-    all-hies_HEAD = import (fetchTarball "https://github.com/infinisil/all-hies/tarball/master") {};
-  in all-hies_HEAD.selection { selector = p: p; };
-
 }
