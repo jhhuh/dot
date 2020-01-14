@@ -298,13 +298,14 @@ void
 wai
 warp
 warp-tls
+websockets
 wreq
 x509
 x509-store
 x509-system
-xmonad
-xmonad-contrib
-xmonad-extras
+# xmonad
+# xmonad-contrib
+# xmonad-extras
 yaml
 yeshql
 #yeshql-postgresql-simple

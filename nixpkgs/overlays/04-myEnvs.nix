@@ -33,13 +33,18 @@ self: super: rec {
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
       ++ [ direnv st_base16 ]
-      ++ [ myVim scrcpy ]; };
+      ++ [ scrcpy ws ]; };
  
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
     paths = [ haskellPackages.cabal-install cabal2nix ]; #stackage2nix ];
   };
-  
+
+  all-hies = let
+    all-hies_master = import (fetchTarball "https://github.com/infinisil/all-hies/tarball/master") {};
+  in
+    all-hies_master.selection { selector = p: p; };
+
   pythonDevEnv = with self; let
     myPython = python36.withPackages (p: with p; [
       jupyter
