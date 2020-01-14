@@ -298,6 +298,7 @@ void
 wai
 warp
 warp-tls
+websockets
 wreq
 x509
 x509-store

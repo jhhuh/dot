@@ -53,7 +53,12 @@ self: super: rec {
     paths = [ haskellPackages.cabal-install cabal2nix stack ];
     #stackage2nix -- Hard to maintain
   };
-  
+
+  all-hies = let
+    all-hies_master = import (fetchTarball "https://github.com/infinisil/all-hies/tarball/master") {};
+  in
+    all-hies_master.selection { selector = p: p; };
+
   pythonDevEnv = with self; let
     myPython = python36.withPackages (p: with p; [
       jupyter

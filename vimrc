@@ -1,5 +1,4 @@
 set nocompatible
-set bs=2
 syntax on
 set nonumber
 set ignorecase
@@ -7,8 +6,9 @@ set smarttab expandtab tabstop=4 shiftwidth=4
 
 set nobackup noswapfile
 set wildmode=longest,list,full
-"set backspace=indent,eol,start
-set autoindent
+
+set backspace=indent,eol,start
+"set autoindent
 
 " Tab specific option
 " key-bindings

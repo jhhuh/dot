@@ -1,7 +1,7 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i bash -p stdenv xidel
+#!nix-shell -i bash -p stdenv xidel gnupg
 #!/nix/store/cinw572b38aln37glr0zb8lxwrgaffl4-bash-4.4-p23/bin/bash
-PATH=/nix/store/d9s1kq1bnwqgxwcvv4zrc36ysnxg8gv7-coreutils-8.30/bin:/nix/store/x1khw8x0465xhkv6w31af75syyyxc65j-gnused-4.7/bin:/nix/store/wnjv27b3j6jfdl0968xpcymlc7chpqil-gnugrep-3.3/bin:/nix/store/dbmzwxc6z5nsgqibadvzyr4w1ndrnbnk-xidel-0.9.6/bin:/nix/store/1w5kx3j1ics34pgq8cb19n15ffmdzj8p-curl-7.64.0-bin/bin:/nix/store/z96xlqwx0ra2niv9igcwjr2gsp0a080j-gnupg-2.2.13/bin
+PATH=/nix/store/d9s1kq1bnwqgxwcvv4zrc36ysnxg8gv7-coreutils-8.30/bin:/nix/store/x1khw8x0465xhkv6w31af75syyyxc65j-gnused-4.7/bin:/nix/store/wnjv27b3j6jfdl0968xpcymlc7chpqil-gnugrep-3.3/bin:/nix/store/dbmzwxc6z5nsgqibadvzyr4w1ndrnbnk-xidel-0.9.6/bin:/nix/store/yb6s1k41s7sydr6q3nzmayhvbkzhydvf-curl-7.64.0-bin/bin:/nix/store/kfhb1dzcx80nvgfdj29v5s45j0zrinq8-gnupg-2.2.13/bin
 set -eux
 pushd .
 

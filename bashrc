@@ -119,13 +119,9 @@ export SYSTEMD_LESS=FRXMK
 
 export NO_AT_BRIDGE=1
 
-color-theme () {
-  if [ -f ~/.dot/base16-shell/scripts/base16-$1.sh ]; then
-    source ~/.dot/base16-shell/scripts/base16-$1.sh 
-  fi
-}
-
-BASE16THEME=flat
-color-theme $BASE16THEME
+export MYBASE16THEME=flat
+if [ "${-#*i}" != "$-" ] && [ -n "$PS1" ] && [ -f ~/.dot/base16-shell/scripts/base16-$MYBASE16THEME.sh ]; then
+  source ~/.dot/base16-shell/scripts/base16-$MYBASE16THEME.sh 
+fi
 
 eval "$(direnv hook bash)"
