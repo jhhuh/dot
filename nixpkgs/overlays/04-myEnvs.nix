@@ -5,7 +5,9 @@ self: super: rec {
     paths = [ file bind inotify-tools gnupg gparted ]
       ++ [ (haskell.lib.justStaticExecutables haskellPackages.pandoc) ]
       ++ [ imagemagick_light lsof p7zip paperkey tree unzip ]
-      ++ [ watch xz patchelf sshfs-fuse nixops zip ];};
+      ++ [ watch xz patchelf sshfs-fuse nixops zip ]
+      ++ [ xorg.xev scrot pciutils ntfs3g nmap lshw inetutils git ]
+      ++ [ acpi acpilight bluez binutils feh htop jq loc mosh powertop ] ;};
 
   myVim = self.vim_configurable.customize {
     name = "vim";
@@ -40,13 +42,16 @@ self: super: rec {
       ++ [ libressl mplayer pavucontrol ranger reptyr ]
       ++ [ rfkill sshuttle] # sl tigervnc 
       ++ [ usbutils youtube-dl ] # vimpc xorg.xwd
-      ++ [ pythonPackages.pygments ]
       ++ [ compton tmux qemu gitAndTools.hub radare2 ]
-      ++ [ xmonadFull ]
+      ++ [ xmonadFull xmobar ]
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
       ++ [ direnv st ]
-      ++ [ scrcpy ]; };
+      ++ [ scrcpy irssi magic-wormhole taskwarrior ]
+      ++ [ tmate smtube virtmanager virt-viewer ws xar xorg.xclock ]
+      ++ [ xpra zathura zeal scummvm myVim appimage-run cachix electrum emacs ]
+      ++ [ go-ethereum rclone ]
+      ++ [ firefox google-chrome ]; };
 
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
@@ -60,8 +65,8 @@ self: super: rec {
     all-hies_master.selection { selector = p: p; };
 
   pythonDevEnv = with self; let
-    myPython = python36.withPackages (p: with p; [
-      jupyter
+    myPython = python37.withPackages (p: with p; [
+      jupyter pip
       scipy numpy pandas matplotlib
       qrcode ]);
   in
