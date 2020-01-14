@@ -41,15 +41,13 @@ self: super: rec {
       ++ [ rfkill sshuttle] # sl tigervnc 
       ++ [ usbutils youtube-dl ] # vimpc xorg.xwd
       ++ [ pythonPackages.pygments ]
-      ++ [ compton tinyemu tmux qemu gitAndTools.hub radare2 ]
-      #++ [ hackage-mirror
-      ++ [ xmonadFull ] #cachix ] #lambdabot snack-exe 
+      ++ [ compton tmux qemu gitAndTools.hub radare2 ]
+      ++ [ xmonadFull ]
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
       ++ [ direnv st ]
-      ++ [ scrcpy ]
-      ++ [ ]; }; #vimb nbstripout ]; };
- 
+      ++ [ scrcpy ]; };
+
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
     paths = [ haskellPackages.cabal-install cabal2nix stack ];
