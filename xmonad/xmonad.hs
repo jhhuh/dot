@@ -50,9 +50,9 @@ myKeys XConfig { modMask = modm } = M.fromList
                                                       , bgHLight = "#ffffff" } )
   , ( (modm .|. controlMask, xK_b), namedScratchpadAction scratchpads "zathura")
   , ( (modm .|. controlMask, xK_q), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi")
-  , ( (modm .|. controlMask, xK_F7), spawn "xrandr --auto && xrandr --output LVDS-1-1 --auto --right-of DP-3")
-  , ( (modm .|. controlMask, xK_F8), spawn "xrandr --output LVDS-1-1 --auto --output DP-3 --off")
-  , ( (modm .|. controlMask, xK_F9), spawn "xrandr --output DP-3 --auto --output LVDS-1-1  --off")
+  , ( (modm .|. controlMask, xK_F7), spawn "xrandr --auto && xrandr --output LVDS-1-2 --auto --right-of DP-3")
+  , ( (modm .|. controlMask, xK_F8), spawn "xrandr --output LVDS-1-2 --auto --output DP-3 --off")
+  , ( (modm .|. controlMask, xK_F9), spawn "xrandr --output DP-3 --auto --output LVDS-1-2  --off")
   , ( (modm .|. controlMask, xK_F10), spawn "xrandr --auto")
   , ( (modm .|. controlMask, xK_s), sshPrompt def)
   , ( (modm .|. controlMask, xK_h), namedScratchpadAction scratchpads "htop")
@@ -88,10 +88,12 @@ scratchpadHook = namedScratchpadManageHook scratchpads
                                                         
 myManageHook = composeAll . concat $ [ [ resource  =? t  --> doFloat | t <- myFloatsByResource ]
                                      , [ className =? c  --> doFloat | c <- myFloatsByClass ]
-                                     , [ title     =? t  --> doFloat | t <- myFloatsByTitle ] ]
+                                     , [ title     =? t  --> doFloat | t <- myFloatsByTitle ]
+                                     , [ stringProperty "WM_WINDOW_ROLE" =? r --> doFloat | r <- myFloatsByRole ] ]
   where myFloatsByResource = [ "Devtools", "plasmashell" ]
         myFloatsByClass = [ ]
         myFloatsByTitle = [ "Open Document", "Open Files" , "Developer Tools" ]
+        myFloatsByRole = [ "pop-up" ]
 
 -- Command to launch the bar.
 myBar = "/home/jhhuh/.xmonad/xmobar.sh /home/jhhuh/.xmonad/xmobar.hs"
