@@ -1,5 +1,7 @@
 haskellPackages:
 with haskellPackages; [
+ghc
+ghc.doc
 Boolean
 HTTP
 HUnit
@@ -46,6 +48,11 @@ charset
 chunked-data
 classy-prelude
 classy-prelude-conduit
+Chart
+Chart-cairo
+Chart-gtk
+Chart-diagrams
+#Chart-simple
 cmdargs
 comonad
 comonad-transformers
@@ -207,6 +214,7 @@ pipes-parse
 pipes-safe
 #pipes-text
 pipes-zlib
+#plot
 pointed
 posix-paths
 postgresql-simple
@@ -278,6 +286,7 @@ text
 text-format
 text-show
 these
+threepenny-gui
 thyme
 time
 #time-recurrence
@@ -300,17 +309,21 @@ warp
 warp-tls
 websockets
 wreq
+wx
+wxc
+wxcore
+wxdirect
 x509
 x509-store
 x509-system
-#xmonad
-#xmonad-contrib
-#xmonad-extras
+xmonad
+xmonad-contrib
+xmonad-extras
 yaml
 yeshql
 #yeshql-postgresql-simple
 yeshql-hdbc
-z3
+#z3
 zippers
 zlib
 

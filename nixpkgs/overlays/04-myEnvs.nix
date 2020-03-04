@@ -1,13 +1,13 @@
 self: super: rec {
 
-  systemToolsEnv = with self; self.buildEnv {
+  systemToolsEnv = with self; hiPrio (buildEnv {
     name = "systemToolsEnv";
     paths = [ file bind inotify-tools gnupg gparted ]
       ++ [ (haskell.lib.justStaticExecutables haskellPackages.pandoc) ]
       ++ [ imagemagick_light lsof p7zip paperkey tree unzip ]
       ++ [ watch xz patchelf sshfs-fuse nixops zip ]
       ++ [ xorg.xev scrot pciutils ntfs3g nmap lshw inetutils git ]
-      ++ [ acpi acpilight bluez binutils feh htop jq loc mosh powertop ] ;};
+      ++ [ acpi acpilight bluez binutils feh htop jq loc mosh powertop ] ;});
 
   myVim = self.vim_configurable.customize {
     name = "vim";
@@ -35,8 +35,11 @@ self: super: rec {
     };
   };
 
+  qemu = super.qemu.overrideAttrs (attr: {
+    buildInputs = attr.buildInputs ++ [ self.libxkbcommon ];});
+
   personalToolsEnv = with self; let
-  in self.buildEnv {
+  in hiPrio (self.buildEnv {
     name = "personalToolsEnv";
     paths = [ aria2 gimp haskellPackages.git-annex iw ]
       ++ [ libressl mplayer pavucontrol ranger reptyr ]
@@ -49,9 +52,10 @@ self: super: rec {
       ++ [ direnv st ]
       ++ [ scrcpy irssi magic-wormhole taskwarrior ]
       ++ [ tmate smtube virtmanager virt-viewer ws xar xorg.xclock ]
-      ++ [ xpra zathura zeal scummvm myVim appimage-run cachix electrum emacs ]
+      ++ [ xpra zathura zeal scummvm myVim appimage-run cachix electrum ]
       ++ [ go-ethereum rclone ]
-      ++ [ firefox google-chrome ]; };
+      ++ [ firefox google-chrome ]
+      ++ (with nodePackages; [ node2nix http-server ]); });
 
   haskellDevEnv = with self; self.buildEnv {
     name = "haskellDevEnv";
@@ -68,7 +72,7 @@ self: super: rec {
     myPython = python37.withPackages (p: with p; [
       jupyter pip
       scipy numpy pandas matplotlib
-      qrcode ]);
+      qrcode selenium ]);
   in
     myPython;
 

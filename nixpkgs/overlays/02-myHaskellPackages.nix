@@ -53,33 +53,63 @@ self: super: rec {
 #    };
 #  in import src {};
 
-  # hackage-mirror = with haskell.lib; let
-  #   unpatched = haskell.packages.ghc822.hackage-mirror;
-  #   patched = appendPatch unpatched ../patches/hackage-mirror.patch;
-  #   overridenPatched = patched.overrideScope (hself: hsuper: {
-  #     conduit = hself.conduit_1_2_13_1;
-  #     resourcet = hself.resourcet_1_1_11;
-  #     conduit-extra = hself.conduit-extra_1_2_3_2;
-  #     streaming-commons = hself.callHackage "streaming-commons" "0.1.19" {};
-  #     xml-conduit = hself.xml-conduit_1_7_1_2;
-  #     aeson = doJailbreak (hself.callHackage "aeson" "1.4.1.0" {});
-  #     aws = doJailbreak (dontCheck (hself.callHackage "aws" "0.16" {}));
-  #     conduit-combinators = jailbreak hself.callHackage "conduit-combinators" "1.1.2" {};
-  #     http-conduit = hself.http-conduit_2_2_4; });
-  # in justStaticExecutables overridenPatched;
+  hackage-mirror = with self.haskell.lib; let
+    unpatched = self.haskell.packages.ghc822.hackage-mirror;
+    patched = appendPatch unpatched ../patches/hackage-mirror.patch;
+    overridenPatched = patched.overrideScope (hself: hsuper: {
+      conduit = hself.conduit_1_2_13_1;
+      resourcet = hself.resourcet_1_1_11;
+      conduit-extra = hself.conduit-extra_1_2_3_2;
+      streaming-commons = hself.callHackage "streaming-commons" "0.1.19" {};
+      xml-conduit = hself.xml-conduit_1_7_1_2;
+      aeson = doJailbreak (hself.callHackage "aeson" "1.4.1.0" {});
+      th-abstraction = hself.callHackage "th-abstraction" "0.2.10.0" {};
+      bifunctors = hself.callHackage "bifunctors" "5.5.3" {};
+      aws = doJailbreak (dontCheck (hself.callHackage "aws" "0.16" {}));
+      conduit-combinators = jailbreak hself.callHackage "conduit-combinators" "1.1.2" {};
+      http-conduit = hself.http-conduit_2_2_4;
+      http-client = hself.callHackage "http-client" "0.5.14" {};
+      retry = hself.callHackage "retry" "0.7.7.0" {};
+    });
+  in justStaticExecutables overridenPatched;
 
-#  hackage-mirror = with self.haskell.lib; justStaticExecutables (
-#    self.haskellPackages.callPackage ../hackage-mirror {}
-#  );
+ # hackage-mirror = with self.haskell.lib; justStaticExecutables (
+ #   self.haskellPackages.callPackage ../hackage-mirror {}
+ # );
 
-  myHaskellOverrides = myHaskellOverrides_18_09;
+  haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
 
-  myHaskellOverrides_18_09 = hself: hsuper:
-    with self.haskell.lib; let pkg = hself.callPackage; in rec {
-    djinn = assert hsuper.djinn.version == "2014.9.7";
-          appendPatch hsuper.djinn ../patches/djinn_2014_9_7.patch;
-    yeshql-postgresql-simple = dontCheck hsuper.yeshql-postgresql-simple;
+  myHaskellOverrides = myHaskellOverrides_19_09;
+
+  myHaskellOverrides_19_09 = hself: hsuper: with self.haskell.lib;
+    let pkg = hself.callPackage;
+    in rec {
+      wxdirect =  appendPatch (appendConfigureFlag hsuper.wxdirect "-fsplitbase") ../patches/wxdirect-0_92_3_0.patch;
+      wxc = appendPatch hsuper.wxc ../patches/wxc-0_92_3_0.patch;
+      wxcore = appendPatch (appendConfigureFlag hsuper.wxcore "-fsplitbase") ../patches/wxcore-0_92_3_0.patch;
   };
+  
+  ghcWithMegaPackagesWithHoogle = self.haskellPackages.ghcWithHoogle (import ../mega-ghc-package-list.nix);
+  ghcWithMegaPackages = self.haskellPackages.ghcWithPackages (import ../mega-ghc-package-list.nix);
+  
+  ghcEnv = let
+    paths = with self.haskellPackages;
+    [ ghcWithMegaPackagesWithHoogle
+      alex happy
+      ghc-core
+      hlint
+      ghcid
+      pointfree
+      hasktags
+      mueval
+#      threadscope
+      stylish-haskell
+    ];
+    in
+    self.buildEnv {
+      name = "ghcEnv";
+      inherit paths;
+    };
 
   myHaskellOverrides_19_03 = hself: hsuper:
     with self.haskell.lib; let pkg = hself.callPackage; in rec {
@@ -106,28 +136,12 @@ self: super: rec {
 #           conduit = _self.conduit_1_2_13_1;
 #           resourcet = _self.resourcet_1_1_11;});
   };
+
+  myHaskellOverrides_18_09 = hself: hsuper:
+    with self.haskell.lib; let pkg = hself.callPackage; in rec {
+    djinn = assert hsuper.djinn.version == "2014.9.7";
+          appendPatch hsuper.djinn ../patches/djinn_2014_9_7.patch;
+    yeshql-postgresql-simple = dontCheck hsuper.yeshql-postgresql-simple;
+  };
   
-  haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
-  
-  ghcWithMegaPackagesWithHoogle = self.haskellPackages.ghcWithHoogle (import ../mega-ghc-package-list.nix);
-  ghcWithMegaPackages = self.haskellPackages.ghcWithPackages (import ../mega-ghc-package-list.nix);
-  
-  ghcEnv = let
-    paths = with self.haskellPackages;
-    [ ghcWithMegaPackagesWithHoogle
-      alex happy
-      ghc-core
-      hlint
-      ghcid
-      pointfree
-      hasktags
-      mueval
-#      threadscope
-      stylish-haskell
-    ];
-    in
-    self.buildEnv {
-      name = "ghcEnv";
-      inherit paths;
-    };
 }

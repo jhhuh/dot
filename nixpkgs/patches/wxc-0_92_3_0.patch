@@ -1,0 +1,40 @@
+--- a/Setup.hs	2017-04-29 02:40:12.000000000 +0900
++++ b/Setup.hs	2020-02-26 22:31:21.599171259 +0900
+@@ -19,7 +19,7 @@
+                                  , InstallFlags, installVerbosity
+                                  , fromFlag, fromFlagOrDefault, copyDest
+                                  )
+-import Distribution.Simple.Utils (installOrdinaryFile, rawSystemExitWithEnv, rawSystemStdInOut, die)
++import Distribution.Simple.Utils (installOrdinaryFile, rawSystemExitWithEnv, rawSystemStdInOut, die, IOData(IODataText), IODataMode(IODataModeText))
+ import Distribution.System (OS (..), Arch (..), buildOS, buildArch)
+ import Distribution.Verbosity (Verbosity, normal, verbose)
+ import Distribution.Compat.Exception (catchIO)
+@@ -79,7 +79,9 @@
+                        -> FilePath                      -- Path to command
+                        -> [String]                      -- Command arguments
+                        -> IO (String, String, ExitCode) -- (Command result, Errors, Command exit status)
+-rawShellSystemStdInOut v f as = rawSystemStdInOut v "sh" (f:as) Nothing Nothing Nothing False
++rawShellSystemStdInOut v f as = do
++  (IODataText r,e,ec) <- rawSystemStdInOut v "sh" (f:as) Nothing Nothing Nothing IODataModeText
++  return (r,e,ec)
+ 
+ 
+ isWindowsMsys :: IO Bool
+@@ -436,7 +438,7 @@
+     if b
+     then do
+         let cor ph = do
+-            (r, e, c ) <- rawSystemStdInOut normal "sh" ["-c", "cd " ++ ph ++ "; pwd -W"] Nothing Nothing Nothing False
++            (IODataText r, e, c ) <- rawSystemStdInOut normal "sh" ["-c", "cd " ++ ph ++ "; pwd -W"] Nothing Nothing Nothing IODataModeText
+             unless (c == ExitSuccess) (putStrLn ("Error: failed to convert MSYS path to native path \n" ++ e) >> exitFailure)
+             return . head . lines $ r
+         elds  <- mapM cor (extraLibDirs bi)
+@@ -502,7 +504,7 @@
+       OSX     -> "lib" ++ addExtension basename ".dylib"
+       _       -> "lib" ++ basename ++ ".so." ++ full_ver
+         where
+-          full_ver = (concat . intersperse "." . map show . versionBranch) ver
++          full_ver = (concat . intersperse "." . map show . versionNumbers) ver
+ 
+ -- | Return any linker options required to support shared library creation
+ linkCxxOpts :: Version  -- ^ Version information to be used for Unix shared libraries

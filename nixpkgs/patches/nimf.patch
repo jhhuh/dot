@@ -1,0 +1,61 @@
+--- a/configure.ac	2020-03-04 02:11:31.624910425 +0900
++++ b/configure.ac	2020-03-04 02:38:03.486776824 +0900
+@@ -143,19 +143,19 @@
+   AC_MSG_ERROR([moc for qt5 not found])
+ fi
+ 
+-QT5_LIB_DIR=`pkg-config --variable=libdir Qt5Core`
++dnl QT5_LIB_DIR=`pkg-config --variable=libdir Qt5Core`
+ 
+-case `pkg-config --variable=includedir Qt5Core` in
+-  */qt5)
+-    QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt5/plugins/platforminputcontexts
+-    ;;
+-  */qt)
+-    QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt/plugins/platforminputcontexts
+-    ;;
+-  *)
+-    AC_MSG_ERROR(Can not determine Qt5 plugins/platforminputcontexts directory)
+-    ;;
+-esac
++dnl case `pkg-config --variable=includedir Qt5Core` in
++dnl   */qt5)
++dnl     QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt5/plugins/platforminputcontexts
++dnl     ;;
++dnl   */qt)
++dnl     QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt/plugins/platforminputcontexts
++dnl     ;;
++dnl   *)
++dnl     AC_MSG_ERROR(Can not determine Qt5 plugins/platforminputcontexts directory)
++dnl     ;;
++dnl esac
+ 
+ AC_SUBST(QT5_IM_MODULE_DIR)
+ 
+@@ -181,7 +181,7 @@
+ AC_SUBST(GTK3_BINARY_VERSION)
+ AC_PATH_PROGS([GTK_QUERY_IMMODULES3],
+               [gtk-query-immodules-3.0 gtk-query-immodules-3.0-$BITS], [no],
+-              [/usr/bin:$GTK3_LIBDIR/libgtk-3-0])
++              [/usr/bin:$GTK3_DEVDIR/bin])
+ if test "x$GTK_QUERY_IMMODULES3" = "xno"; then
+   AC_MSG_ERROR([gtk-query-immodules-3.0 or gtk-query-immodules-3.0-$BITS not found])
+ fi
+@@ -192,7 +192,7 @@
+ AC_SUBST(GTK2_BINARY_VERSION)
+ AC_PATH_PROGS([GTK_QUERY_IMMODULES2],
+               [gtk-query-immodules-2.0 gtk-query-immodules-2.0-$BITS], [no],
+-              [/usr/bin:$GTK2_LIBDIR/libgtk2.0-0])
++              [/usr/bin:$GTK2_DEVDIR/bin])
+ if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
+   AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
+ fi
+@@ -203,7 +203,7 @@
+ 
+ AC_PATH_PROGS([GTK_UPDATE_ICON_CACHE],
+               [gtk-update-icon-cache-3.0 gtk-update-icon-cache], [no],
+-              [/usr/bin:$GTK3_LIBDIR/libgtk-3-0:$GTK2_LIBDIR/libgtk2.0-0])
++              [/usr/bin:$GTK3_DIR/bin])
+ if test "x$GTK_UPDATE_ICON_CACHE" = "xno"; then
+   AC_MSG_ERROR([gtk-update-icon-cache-3.0 or gtk-update-icon-cache not found])
+ fi
