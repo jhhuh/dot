@@ -113,8 +113,6 @@ myKeys XConfig { modMask = modm }
         sshPrompt def),
       ( (modm .|. controlMask, xK_h),
         namedScratchpadAction scratchpads "htop"),
-      ( (modm .|. controlMask, xK_m),
-        namedScratchpadAction scratchpads "vimpc"),
       ( (modm .|. controlMask, xK_space),
         namedScratchpadAction scratchpads "ranger"),
       ( (modm .|. controlMask, xK_n),
@@ -142,7 +140,7 @@ scratchpads =
     ("htop",      "htop",      21/32, 1/16, 10/32, 14/16),
     ("vimpc",     "vimpc",     1/2,   1/6,  5/12,  2/3),
     ("ranger",    "ranger",    1/6,   1/6,  2/3,   2/3) ] ++
-  [ NS "xst" "xst -A 64 -T xst-alpha"
+  [ NS "xst" "xst -A 64 -T xst-alpha -f \"Noto Sans Mono CJK KR:pixelsize=20\""
        (title =? "xst-alpha")
        (customFloating $
          W.RationalRect (4/32) (1/16) (24/32) (14/16)),
