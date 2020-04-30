@@ -1,5 +1,8 @@
 # -*- mode:  sh -*-
 
+# xbacklight
+alias xbacklight='xbacklight -ctrl intel_backlight'
+
 alias pipy-deps='function __pipy-deps() { curl -sL https://pypi.org/pypi/$1/json | jq ".info.requires_dist"; }; __pipy-deps'
 
 alias ccat='pygmentize -g'
