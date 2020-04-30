@@ -79,15 +79,9 @@ self: super: rec {
 
   haskell = super.haskell // { packageOverrides = myHaskellOverrides;};
 
-  myHaskellOverrides = myHaskellOverrides_19_09;
+  myHaskellOverrides = myHaskellOverrides_20_03;
 
-  myHaskellOverrides_19_09 = hself: hsuper: with self.haskell.lib;
-    let pkg = hself.callPackage;
-    in rec {
-      wxdirect =  appendPatch (appendConfigureFlag hsuper.wxdirect "-fsplitbase") ../patches/wxdirect-0_92_3_0.patch;
-      wxc = appendPatch hsuper.wxc ../patches/wxc-0_92_3_0.patch;
-      wxcore = appendPatch (appendConfigureFlag hsuper.wxcore "-fsplitbase") ../patches/wxcore-0_92_3_0.patch;
-  };
+  myHaskellOverrides_20_03 = hself: hsuper: {};
   
   ghcWithMegaPackagesWithHoogle = self.haskellPackages.ghcWithHoogle (import ../mega-ghc-package-list.nix);
   ghcWithMegaPackages = self.haskellPackages.ghcWithPackages (import ../mega-ghc-package-list.nix);
@@ -130,6 +124,14 @@ self: super: rec {
       name = "ghcEnv";
       inherit paths;
     };
+
+  myHaskellOverrides_19_09 = hself: hsuper: with self.haskell.lib;
+    let pkg = hself.callPackage;
+    in rec {
+      wxdirect =  appendPatch (appendConfigureFlag hsuper.wxdirect "-fsplitbase") ../patches/wxdirect-0_92_3_0.patch;
+      wxc = appendPatch hsuper.wxc ../patches/wxc-0_92_3_0.patch;
+      wxcore = appendPatch (appendConfigureFlag hsuper.wxcore "-fsplitbase") ../patches/wxcore-0_92_3_0.patch;
+  };
 
   myHaskellOverrides_19_03 = hself: hsuper:
     with self.haskell.lib; let pkg = hself.callPackage; in rec {

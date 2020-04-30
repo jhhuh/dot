@@ -49,7 +49,7 @@ self: super: rec {
       ++ [ xmonadFull xmobar ]
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
-      ++ [ direnv st ]
+      ++ [ direnv st xst rxvt_unicode-with-plugins ]
       ++ [ scrcpy irssi magic-wormhole taskwarrior ]
       ++ [ tmate smtube virtmanager virt-viewer ws xar xorg.xclock ]
       ++ [ xpra zathura zeal scummvm myVim appimage-run cachix electrum ]
