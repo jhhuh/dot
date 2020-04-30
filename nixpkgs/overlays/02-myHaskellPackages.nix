@@ -91,7 +91,27 @@ self: super: rec {
   
   ghcWithMegaPackagesWithHoogle = self.haskellPackages.ghcWithHoogle (import ../mega-ghc-package-list.nix);
   ghcWithMegaPackages = self.haskellPackages.ghcWithPackages (import ../mega-ghc-package-list.nix);
-  
+
+  auto-mega-ghc-packages = hp: with self.lib;
+    let isNotBroken = p: p ? meta && (if p.meta ? broken then !p.meta.broken else true);
+        isAvailable = p: p ? meta && (if p.meta ? available then p.meta.available else true);
+        isCandidate = p: isNotBroken p && isAvailable p && isDerivation p;
+        isGoodCandidate = name:
+          (builtins.tryEval hp.${name}).success
+          && hp.${name} ? drvPath
+          && (builtins.tryEval hp.${name}.drvPath).success
+          && isCandidate hp.${name};
+        names = filter isGoodCandidate (attrNames hp);
+    in map (name: hp.${name}) names;
+
+  ghcWithAlmostAll =
+    let hpkg_list = auto-mega-ghc-packages self.haskellPackages;
+    in self.writeText "almost-all-ghc-packages" ''
+         ${self.lib.concatMapStrings (n: ''
+           ${n}
+         '') hpkg_list}
+       '';
+
   ghcEnv = let
     paths = with self.haskellPackages;
     [ ghcWithMegaPackagesWithHoogle
