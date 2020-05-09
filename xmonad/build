@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p "haskellPackages.ghcWithPackages (hs: with hs;[xmonad xmonad-contrib xmonad-extras])"
+#! nix-shell -i bash -p "(import <nixos> {}).haskellPackages.ghcWithPackages (hs: with hs;[xmonad xmonad-contrib xmonad-extras])"
 
 outFile="$1"; shift
 
