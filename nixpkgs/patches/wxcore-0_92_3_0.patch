@@ -1,0 +1,24 @@
+diff -ur wxcore-0.92.3.0-old/src/haskell/Graphics/UI/WXCore/WxcTypes.hs wxcore-0.92.3.0/src/haskell/Graphics/UI/WXCore/WxcTypes.hs
+--- wxcore-0.92.3.0-old/src/haskell/Graphics/UI/WXCore/WxcTypes.hs	2017-04-29 02:39:58.000000000 +0900
++++ wxcore-0.92.3.0/src/haskell/Graphics/UI/WXCore/WxcTypes.hs	2020-02-26 23:06:29.312903903 +0900
+@@ -123,7 +123,7 @@
+ 
+ import Control.Exception 
+ import Data.Ix
+-import Foreign.C
++import Foreign.C hiding (CBool)
+ import Foreign.Ptr
+ import Foreign.Storable
+ import Foreign.Marshal.Alloc
+diff -ur wxcore-0.92.3.0-old/wxcore.cabal wxcore-0.92.3.0/wxcore.cabal
+--- wxcore-0.92.3.0-old/wxcore.cabal	2020-02-26 23:01:17.391255730 +0900
++++ wxcore-0.92.3.0/wxcore.cabal	2020-02-26 23:05:51.012687969 +0900
+@@ -84,7 +84,7 @@
+     build-depends:
+       array >= 0.2 && < 0.6,
+       base >= 4 && < 5,
+-      containers >= 0.2 && < 0.6
++      containers >= 0.2 && < 0.7
+   else
+     build-depends:
+       array >= 0.1 && < 0.3,

@@ -17,12 +17,14 @@ Plugin 'LnL7/vim-nix'
 
 Plugin 'davidhalter/jedi-vim'
 
-Plugin 'scrooloose/syntastic'
+"""""""""Plugin 'scrooloose/syntastic'
 
 Plugin 'Shougo/vimproc.vim'
 
 "Plugin 'chriskempson/base16-vim'
-"Plugin 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 "Plugin 'tpope/vim-fugitive'
+
+Bundle 'neoclide/coc.nvim', {'branch': 'release'}
 
 call vundle#end()

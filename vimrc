@@ -1,5 +1,4 @@
 set nocompatible
-set bs=2
 syntax on
 set nonumber
 set ignorecase
@@ -7,8 +6,9 @@ set smarttab expandtab tabstop=4 shiftwidth=4
 
 set nobackup noswapfile
 set wildmode=longest,list,full
-"set backspace=indent,eol,start
-set autoindent
+
+set backspace=indent,eol,start
+"set autoindent
 
 " Tab specific option
 " key-bindings
@@ -46,20 +46,22 @@ filetype plugin indent on
 set laststatus=2
 set statusline=%f\ %y\ %l/%L\ 
 
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height = 5
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_cpp_compiler = "g++"
-let g:syntastic_cpp_compiler_options = "-std=c++11 -Wall -Wextra -Wpedantic"
-"let g:syntastic_debug = 3
+set completeopt-=preview
 
-let g:syntastic_haskell_checkers = [ 'hlint' ]
+" Syntastic
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"let g:syntastic_auto_loc_list = 0
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_loc_list_height = 5
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_cpp_compiler = "g++"
+"let g:syntastic_cpp_compiler_options = "-std=c++11 -Wall -Wextra -Wpedantic"
+""let g:syntastic_debug = 3
+"
+"let g:syntastic_haskell_checkers = [ 'hlint' ]
 
 nmap > :lnext<CR>
 nmap < :lprev<CR>

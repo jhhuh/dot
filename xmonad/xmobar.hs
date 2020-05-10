@@ -30,10 +30,9 @@ Config { font = "xft:Ubuntu Mono:pixelsize=12"
                 "-O", "<fc=#dAA520>Charging(<left>%)</fc>",
                 "-i", "<fc=green>Charged(<left>%)</fc>" ] 50,
             Run Volume "default" "Master" ["-t", "Vol: <volume>%"] 10,
-            Run XMonadLog
+            Run StdinReader 
        ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%XMonadLog% | %cpu% | %memory% | %wlp3s0% } \
-                    \{ %battery% | %default:Master% | %date% | %uname%"
+       , template = "%StdinReader% }{ %cpu% | %memory% | %wlp3s0% | %battery% | %default:Master% | %date% | %uname%"
        }

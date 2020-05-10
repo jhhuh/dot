@@ -4,5 +4,5 @@
 -- :def nocolor (\_ -> return ":set -interactive-print=print\n:set prompt \"%s> \"\n:set prompt2 \"%s| \"")
 -- 
 -- :color
-:set prompt "\ESC[34m\STXλ> \ESC[m\STX"
+-- :set prompt "\ESC[34m\STXλ> \ESC[m\STX"
 
