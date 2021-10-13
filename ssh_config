@@ -1,3 +1,10 @@
+Host dasan
+    HostName dasan.asgard-labs.com
+    Port 2002
+    User jhhuh
+Host vpn-tokyo
+    HostName 13.230.4.40
+    User root
 Host debian-x230 
     HostName 192.168.25.18
     User jhhuh
