@@ -2,8 +2,11 @@
 
 {
   home.packages = with pkgs; [
-    htop
-    kotatogram-desktop
+    bat htop tree
+    nextcloud-client
+    kotatogram-desktop gnome.gnome-tweaks mattermost-desktop
+    google-chrome
+    gnomeExtensions.appindicator
   ];
 
   programs = {
