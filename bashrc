@@ -63,6 +63,9 @@ is_in_nixshell() {
     if [ $IN_NIX_SHELL ]
     then
         echo "$1$name$2"
+    elif [[ "$PATH" =~ "/nix/store/" ]]
+    then
+        echo "$PATH" | sed -e "s#.*/nix/store/[^-]*-\([^/:]*\).*#$1\1$2#"
     fi
 }
 

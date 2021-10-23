@@ -42,14 +42,15 @@ self: super: rec {
   in hiPrio (self.buildEnv {
     name = "personalToolsEnv";
     paths = [ aria2 gimp haskellPackages.git-annex iw ]
-      ++ [ libressl mplayer pavucontrol ranger reptyr ]
-      ++ [ rfkill sshuttle] # sl tigervnc 
+      ++ [ libressl pavucontrol ranger reptyr ] # mplayer 
+      ++ [ sshuttle] # rfkill sl tigervnc 
       ++ [ usbutils youtube-dl ] # vimpc xorg.xwd
-      ++ [ compton tmux qemu gitAndTools.hub radare2 ]
+      ++ [ compton tmux gitAndTools.hub radare2 ] # qemu 
       ++ [ xmonadFull xmobar ]
       ++ [ nix-prefetch-git ]
       ++ [ asciinema manpages posix_man_pages]
-      ++ [ direnv st xst rxvt_unicode-with-plugins ]
+      ++ [ direnv (nix-direnv.override { enableFlakes = true; }) ]
+      ++ [ st xst rxvt_unicode-with-plugins ]
       ++ [ scrcpy irssi magic-wormhole taskwarrior ]
       ++ [ tmate smtube virtmanager virt-viewer ws xar xorg.xclock ]
       ++ [ xpra zathura zeal scummvm myVim appimage-run cachix electrum ]

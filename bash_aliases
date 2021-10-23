@@ -75,3 +75,7 @@ alias xset-rate='xset r rate 330 50'
 # load-env
 alias freeze-env-ghc80env='nix-instantiate "<nixpkgs>" -k -A ghc80env --indirect --add-root $HOME/ghc80env.drv'
 alias load-env-ghc80env='nix-shell $HOME/ghc80env.drv'
+
+# nix flake
+alias flake-src-path='function __flake-src-path() { nix flake metadata $1 --json|jq .path|xargs echo; }; __flake-src-path'
+alias show-flake='function __show-flake() { bat $(flake-src-path $1)/flake.nix; }; __show-flake'

@@ -1,5 +1,7 @@
 set -eo pipefail
 
+source $HOME/.nix-profile/share/nix-direnv/direnvrc
+
 use_nix() {
   local wd=$PWD/.direnv/nix
   

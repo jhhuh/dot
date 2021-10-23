@@ -51,7 +51,7 @@ desktop = ewmh def {
 conf = desktop {
   borderWidth = 2,
   focusedBorderColor = "#ff8267",
-  terminal = "st -f 'Fira Mono:pixelsize=20'",
+  terminal = "st -f 'Liberation Mono:pixelsize=14'",
   modMask = mod4Mask,
   keys = keys desktop <+> myKeys,
   manageHook = scratchpadHook
@@ -60,9 +60,9 @@ conf = desktop {
   layoutHook = avoidStruts
     $ gaps [(D,5)]
     $ spacingRaw False
-                 (Border 4 4 8 8)
+                 (Border 1 1 2 2)
                  True
-                 (Border 8 8 8 8)
+                 (Border 2 2 2 2)
                  True
     $ layoutHook desktop,
   startupHook = myStartupHook <+> startupHook desktop }
@@ -70,7 +70,7 @@ conf = desktop {
 myStartupHook =
   spawn "xset r rate 250 50"
   <+> spawn "feh --bg-scale /home/jhhuh/wallpapers/theWallpaper"
--- <+> spawn "compton -CGcf -i 0.7 -I 1.0 -O 1.0 -D 0 --detect-client-leader"
+ <+> spawn "compton -CGcf -i 0.7 -I 1.0 -O 1.0 -D 0 --detect-client-leader"
 
 myKeys XConfig { modMask = modm }
   = M.fromList
@@ -97,16 +97,16 @@ myKeys XConfig { modMask = modm }
       ( (modm .|. controlMask, xK_F7),
         spawn $ unwords [
           "xrandr --auto &&",
-          "xrandr --output LVDS-1-2",
-          "--auto --right-of DP-3"] ),
+          "xrandr --output LVDS-1",
+          "--auto --right-of HDMI-1"] ),
       ( (modm .|. controlMask, xK_F8),
         spawn $ unwords [
-          "xrandr --output LVDS-1-2",
-          "--auto --output DP-3 --off"] ),
+          "xrandr --output LVDS-1",
+          "--auto --output HDMI-1 --off"] ),
       ( (modm .|. controlMask, xK_F9),
         spawn $ unwords [
-          "xrandr --output DP-3 --auto",
-          "--output LVDS-1-2  --off"] ),
+          "xrandr --output HDMI-1 --auto",
+          "--output LVDS-1  --off"] ),
       ( (modm .|. controlMask, xK_F10),
         spawn "xrandr --auto" ),
       ( (modm .|. controlMask, xK_s),
@@ -140,10 +140,10 @@ scratchpads =
     ("htop",      "htop",      21/32, 1/16, 10/32, 14/16),
     ("vimpc",     "vimpc",     1/2,   1/6,  5/12,  2/3),
     ("ranger",    "ranger",    1/6,   1/6,  2/3,   2/3) ] ++
-  [ NS "xst" "xst -A 64 -T xst-alpha -f \"Noto Sans Mono CJK KR:pixelsize=20\""
+  [ NS "xst" "xst -A 192 -T xst-alpha -f \"Liberation Mono:pixelsize=14\""
        (title =? "xst-alpha")
        (customFloating $
-         W.RationalRect (4/32) (1/16) (24/32) (14/16)),
+         W.RationalRect (0/32) (0/32) (32/32) (18/32)),
     NS "scrcpy" "scrcpy"
        (className =? ".scrcpy-wrapped")
        (customFloating $
@@ -156,7 +156,7 @@ scratchpads =
                            "(window-system . x))))'"])
        (title =? "emacs-scratch")
        (customFloating $
-         W.RationalRect (4/32) (1/16) (24/32) (14/16)),
+         W.RationalRect (1/32) (1/32) (30/32) (29/32)),
     NS "zathura" "zathura"
        (className =? "Zathura")
        (customFloating $
@@ -169,10 +169,10 @@ scratchpads =
           = NS name (terminalCmd++cmd)
                (title =? name )
                (customFloating $ W.RationalRect px py w h)
-        terminalCmd = "st -e "                          
-                                                        
-scratchpadHook = namedScratchpadManageHook scratchpads  
-                                                        
+        terminalCmd = "st -e "
+
+scratchpadHook = namedScratchpadManageHook scratchpads
+
 myManageHook = composeAll . concat $
     [ [resource=?t   --> doFloat | t <- myFloatsByResource],
       [className=?c  --> doFloat | c <- myFloatsByClass ],
@@ -218,4 +218,4 @@ toggleStrutsKey XConfig {XMonad.modMask = modMask}
   = (modMask, xK_b)
 
 main :: IO ()
-main = xmonad =<< statusBar myBar myXmobarPP toggleStrutsKey conf 
+main = xmonad =<< statusBar myBar myXmobarPP toggleStrutsKey conf

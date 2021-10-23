@@ -1,12 +1,14 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p stdenv xidel gnupg
-#!/nix/store/cinw572b38aln37glr0zb8lxwrgaffl4-bash-4.4-p23/bin/bash
-PATH=/nix/store/d9s1kq1bnwqgxwcvv4zrc36ysnxg8gv7-coreutils-8.30/bin:/nix/store/x1khw8x0465xhkv6w31af75syyyxc65j-gnused-4.7/bin:/nix/store/wnjv27b3j6jfdl0968xpcymlc7chpqil-gnugrep-3.3/bin:/nix/store/dbmzwxc6z5nsgqibadvzyr4w1ndrnbnk-xidel-0.9.6/bin:/nix/store/yb6s1k41s7sydr6q3nzmayhvbkzhydvf-curl-7.64.0-bin/bin:/nix/store/kfhb1dzcx80nvgfdj29v5s45j0zrinq8-gnupg-2.2.13/bin
+#!/nix/store/jdi2v7ir1sr6vp7pc5x0nhb6lpcmg6xg-bash-4.4-p23/bin/bash
+PATH=/nix/store/lr96h3dlny8aiba9p3rmxcxfda0ijj08-coreutils-8.32/bin:/nix/store/4nf4ih03fcq7gk08spjzxvwph1vyx1kr-gnused-4.8/bin:/nix/store/3v5i98i92j0f3lbb7d58kvf8nxnhw7s7-gnugrep-3.6/bin:/nix/store/vgj078ynmmbh4agdrj6iy6n63h07fmxq-xidel-0.9.6/bin:/nix/store/m287y71wwzcv6sy0ir113nbrh8zym4dd-curl-7.74.0-bin/bin:/nix/store/afhs46mg5cn8ckf8hw5nf95kgg4sqbll-gnupg-2.2.27/bin
 set -eux
 pushd .
 
 HOME=`mktemp -d`
-cat /nix/store/3bv14sgrx5wp39krx3pk5wcxi8anybv5-firefox.key | gpg --import
+export GNUPGHOME=`mktemp -d`
+
+gpg --import /nix/store/rp5vgjkyz6naiga5fl7sfs9gzr6a78kh-mozilla.asc
 
 tmpfile=`mktemp`
 url=http://archive.mozilla.org/pub/devedition/releases/
@@ -29,12 +31,13 @@ version=`xidel -s $url --extract "//a" | \
          grep -e "b\([[:digit:]]\|[[:digit:]][[:digit:]]\)$" |  \
          tail -1`
 
-curl --silent -o $HOME/shasums "$url$version/SHA512SUMS"
-curl --silent -o $HOME/shasums.asc "$url$version/SHA512SUMS.asc"
-gpgv --keyring=$HOME/.gnupg/pubring.kbx $HOME/shasums.asc $HOME/shasums
+curl --silent -o $HOME/shasums "$url$version/SHA256SUMS"
+curl --silent -o $HOME/shasums.asc "$url$version/SHA256SUMS.asc"
+gpgv --keyring=$GNUPGHOME/pubring.kbx $HOME/shasums.asc $HOME/shasums
 
-# this is a list of sha512 and tarballs for both arches
-shasums=`cat $HOME/shasums`
+# this is a list of sha256 and tarballs for both arches
+# Upstream files contains python repr strings like b'somehash', hence the sed dance
+shasums=`cat $HOME/shasums | sed -E s/"b'([a-f0-9]{64})'?(.*)"/'\1\2'/ | grep tar.bz2`
 
 cat > $tmpfile <<EOF
 {
@@ -56,7 +59,7 @@ for arch in linux-x86_64 linux-i686; do
     { url = "$url$version/`echo $line | cut -d":" -f3`";
       locale = "`echo $line | cut -d":" -f3 | sed "s/$arch\///" | sed "s/\/.*//"`";
       arch = "$arch";
-      sha512 = "`echo $line | cut -d":" -f1`";
+      sha256 = "`echo $line | cut -d":" -f1`";
     }
 EOF
   done
