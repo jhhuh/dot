@@ -127,4 +127,6 @@ if [ "${-#*i}" != "$-" ] && [ -n "$PS1" ] && [ -f ~/.dot/base16-shell/scripts/ba
   source ~/.dot/base16-shell/scripts/base16-$MYBASE16THEME.sh 
 fi
 
+$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+
 eval "$(direnv hook bash)"
