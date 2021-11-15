@@ -1,11 +1,34 @@
 { pkgs, ... }:
-
-{
+let
+  emacsCommand = emacs: "TERM=xterm-direct ${emacs}/bin/emacsclient -nw";
+in rec {
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
+      url = https://github.com/nix-community/emacs-overlay/archive/13fbae4d83ec6ef6f4b72e01bc48b65e74f5a103.tar.gz;
+      sha256 = "05yzzyxls46vvmjnv2jdzcrrb8jzqr6zmfv6hhg6qihj9qsq6a4a";
     }))
   ];
+
+  imports = [
+    (let
+      declCachixRev = "1986455ab3e55804458bf6e7d2a5f5b8a68defce";
+      declCachix = builtins.fetchTarball
+        "https://github.com/jonascarpay/declarative-cachix/archive/${declCachixRev}.tar.gz";
+    in import "${declCachix}/home-manager.nix")
+  ];
+
+  caches = {
+    cachix = [
+      "nix-community"
+    ];
+
+    extraCaches = [
+      {
+        url = "https://hydra.iohk.io";
+        key = "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ";
+      }
+    ];
+  };
 
   home = {
     sessionPath = [
@@ -17,6 +40,9 @@
     };
 
     packages = (with pkgs; [
+      appimage-run
+      git
+      git-lfs
       cabal-install
       ghc
       ws
@@ -67,6 +93,13 @@
   };
 
   programs = {
+    git = {
+      enable = true;
+      extraConfig = {
+        init.defaultBranch = "master";
+      };
+    };
+
     home-manager = {
       enable = true;
     };
@@ -75,15 +108,12 @@
       enable = true;
       shellAliases = {
         "nix-repl" = "nix repl '<nixpkgs>'";
+        "vi" = emacsCommand programs.emacs.package;
       };
       bashrcExtra = ''
         # git-prompt
-        if [ -f ~/.nix-profile/share/git/contrib/completion/git-prompt.sh ]; then
-            source ~/.nix-profile/share/git/contrib/completion/git-prompt.sh
-        elif [ -f $(readlink `which git`|xargs dirname)/../share/git/contrib/completion/git-prompt.sh ]; then
-            source $(readlink `which git`|xargs dirname)/../share/git/contrib/completion/git-prompt.sh
-        fi
-        
+        source ${pkgs.git}/share/git/contrib/completion/git-prompt.sh
+
         get_sha() {
             git rev-parse --short HEAD 2>/dev/null
         }
