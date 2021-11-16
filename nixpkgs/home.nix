@@ -23,10 +23,10 @@ in rec {
     ];
 
     extraCaches = [
-      {
-        url = "https://hydra.iohk.io";
-        key = "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ";
-      }
+      #{
+      #  url = "https://hydra.iohk.io";
+      #  key = "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ";
+      #}
     ];
   };
 
