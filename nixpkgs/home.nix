@@ -43,6 +43,7 @@ in rec {
       appimage-run
       git
       git-lfs
+      vimHugeX st xmobar
       cabal-install
       ghc
       ws
@@ -53,7 +54,7 @@ in rec {
       sqlite
       wordnet
       sbcl
-      bat htop tree
+      htop tree
       nextcloud-client
       kotatogram-desktop gnome.gnome-tweaks mattermost-desktop
       google-chrome
@@ -100,6 +101,7 @@ in rec {
       };
     };
 
+    alacritty.enable = true;
     home-manager = {
       enable = true;
     };
@@ -159,7 +161,7 @@ in rec {
     bat = {
       enable = true;
       config = {
-        theme = "GitHub";
+        theme = "ansi";
       };
     };
 
@@ -167,7 +169,7 @@ in rec {
 
     emacs = {
       enable = true;
-      package = pkgs.emacsGcc;
+      package = pkgs.emacs; #Gcc;
       extraPackages = epkgs: with epkgs; [vterm pdf-tools];
     };
   };

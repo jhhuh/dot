@@ -6,7 +6,8 @@ alias xbacklight='xbacklight -ctrl intel_backlight'
 alias pipy-deps='function __pipy-deps() { curl -sL https://pypi.org/pypi/$1/json | jq ".info.requires_dist"; }; __pipy-deps'
 
 alias ccat='pygmentize -g'
-alias vi='TMPDIR=/tmp emacseditor -nw'
+#alias vi='TMPDIR=/tmp emacseditor -nw'
+alias vi='emacs -nw'
 alias vij='function __vij() { nix-shell -p pythonPackages.jedi vimHugeX --run "vim $@"; }; __vij'
 
 alias l='function _l() { ls --color=always $@|sed -E "s/([a-z0-9]{5,5})[a-z0-9]{27,27}-/[\1]-/"; }; _l'

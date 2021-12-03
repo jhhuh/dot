@@ -51,7 +51,7 @@ desktop = ewmh def {
 conf = desktop {
   borderWidth = 2,
   focusedBorderColor = "#ff8267",
-  terminal = "st -f 'Liberation Mono:pixelsize=14'",
+  terminal = "alacritty",
   modMask = mod4Mask,
   keys = keys desktop <+> myKeys,
   manageHook = scratchpadHook
