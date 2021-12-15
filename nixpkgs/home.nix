@@ -2,50 +2,22 @@
 let
   emacsCommand = emacs: "TERM=xterm-direct ${emacs}/bin/emacsclient -nw";
 in rec {
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/emacs-overlay/archive/13fbae4d83ec6ef6f4b72e01bc48b65e74f5a103.tar.gz;
-      sha256 = "05yzzyxls46vvmjnv2jdzcrrb8jzqr6zmfv6hhg6qihj9qsq6a4a";
-    }))
-  ];
-
-  imports = [
-    (let
-      declCachixRev = "1986455ab3e55804458bf6e7d2a5f5b8a68defce";
-      declCachix = builtins.fetchTarball
-        "https://github.com/jonascarpay/declarative-cachix/archive/${declCachixRev}.tar.gz";
-    in import "${declCachix}/home-manager.nix")
-  ];
-
-  caches = {
-    cachix = [
-      "nix-community"
-    ];
-
-    extraCaches = [
-      #{
-      #  url = "https://hydra.iohk.io";
-      #  key = "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ";
-      #}
-    ];
-  };
-
   home = {
-    sessionPath = [
-      "$HOME/.emacs.d/bin"
-    ];
-
-    sessionVariables = {
-      EDITOR = "vim";
-    };
-
     packages = (with pkgs; [
+      cabal2nix
+      loc
+      vimpc
+      webtorrent_desktop
+      niv
+      browsh
+      magic-wormhole
       appimage-run
+      ghcid
+      (ghc.withPackages (hp: with hp; [ haskell-language-server ]))
       git
       git-lfs
       vimHugeX st xmobar
       cabal-install
-      ghc
       ws
       wget
       acpi
@@ -90,6 +62,54 @@ in rec {
         url = "https://github.com/shopify/comma/archive/4a62ec17e20ce0e738a8e5126b4298a73903b468.tar.gz";
         sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
       })) { })
+      (pkgs.callPackage (import (builtins.fetchTarball {
+        name = "mach-nix-src";
+        url = "https://github.com/DavHau/mach-nix/archive/31b21203a1350bff7c541e9dfdd4e07f76d874be.tar.gz";
+        sha256 = "0przsgmbbcnnqdff7n43zv5girix83ky4mjlxq7m2ksr3wyj2va2";
+      })) { }).mach-nix
+    ];
+
+    sessionPath = [
+      "$HOME/.emacs.d/bin"
+      "$HOME/mutable_node_modules/bin"
+    ];
+
+    sessionVariables = {
+      EDITOR = "vim";
+    };
+
+  };
+
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [
+      (import (builtins.fetchTarball {
+        url = https://github.com/nix-community/emacs-overlay/archive/13fbae4d83ec6ef6f4b72e01bc48b65e74f5a103.tar.gz;
+        sha256 = "05yzzyxls46vvmjnv2jdzcrrb8jzqr6zmfv6hhg6qihj9qsq6a4a";
+      }))
+    ];
+  };
+
+  imports = [
+    # (let
+    #   declCachixRev = "1986455ab3e55804458bf6e7d2a5f5b8a68defce";
+    #   declCachix = builtins.fetchTarball {
+    #     url = "https://github.com/jonascarpay/declarative-cachix/archive/${declCachixRev}.tar.gz";
+    #     sha256 = "0y7zi5pgc9raawh4ll3dww61cqq7rafki757f6njq9k08zkks62j";
+    #   };
+    # in import "${declCachix}/home-manager.nix")
+  ];
+
+  caches = {
+    cachix = [
+      { name = "nix-community"; sha256 = "00lpx4znr4dd0cc4w4q8fl97bdp7q19z1d3p50hcfxy26jz5g21g"; }
+    ];
+
+    extraCaches = [
+      {
+        url = "https://hydra.iohk.io";
+        key = "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ";
+      }
     ];
   };
 
@@ -154,7 +174,7 @@ in rec {
       enableBashIntegration = true;
       nix-direnv = {
         enable = true;
-        enableFlakes = true;
+        # enableFlakes = true;
       };
     };
 
@@ -175,6 +195,7 @@ in rec {
   };
 
   services = {
+    mpd.enable = false;
     emacs = {
       enable = true;
       client.enable = true;
