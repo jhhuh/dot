@@ -57,16 +57,6 @@ in rec {
       unite
     ]) ++
     [
-      (pkgs.callPackage (import (builtins.fetchTarball {
-        name = "comma-src";
-        url = "https://github.com/shopify/comma/archive/4a62ec17e20ce0e738a8e5126b4298a73903b468.tar.gz";
-        sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
-      })) { })
-      (pkgs.callPackage (import (builtins.fetchTarball {
-        name = "mach-nix-src";
-        url = "https://github.com/DavHau/mach-nix/archive/31b21203a1350bff7c541e9dfdd4e07f76d874be.tar.gz";
-        sha256 = "0przsgmbbcnnqdff7n43zv5girix83ky4mjlxq7m2ksr3wyj2va2";
-      })) { }).mach-nix
     ];
 
     sessionPath = [
