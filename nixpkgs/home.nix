@@ -127,6 +127,8 @@ in rec {
 
     git = {
       enable = true;
+      userEmail = "jhhuh.note@gmail.com";
+      userName = "Ji-Haeng Huh";
       extraConfig = {
         init.defaultBranch = "master";
       };
