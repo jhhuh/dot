@@ -108,6 +108,7 @@ in rec {
       enable = true;
       prefix = "C-j";
       keyMode = "vi";
+      sensibleOnTop = true;
       extraConfig = ''
         bind-key ^u copy-mode
         bind-key j new-window
@@ -141,10 +142,29 @@ in rec {
 
     bash = {
       enable = true;
+
       shellAliases = {
-        "nix-repl" = "nix repl '<nixpkgs>'";
-        "vi" = emacsCommand programs.emacs.package;
+        vi = emacsCommand programs.emacs.package;
+        nix-repl = "nix repl '<nixpkgs>'";
+        nix-which = "function __nix-which() { readlink $(which $1); }; __nix-which";
+        nix-unpack-from = "function __nix-unpack-from() { nix-shell $1 -A $2 --run unpackPhase; }; __nix-unpack-from";
+        nix-unpack = "nix-unpack-from '<nixpkgs>'";
+        nix-where-from = "function __nix-where-from() { nix-build $1 -A $2 --no-out-link; }; __nix-where-from";
+        nix-where = "nix-where-from '<nixpkgs>'";
+        nix-show-tree = "function __nix-show-tree() { nix-shell -p tree --run 'tree $(nix-where $1)'; }; __nix-show-tree";
+        nix-visit = "function __nix-visit() { pushd $(nix-where $1); }; __nix-visit";
+        nix-X-help-in-Y = "function __nix-X-help-in-Y() { $(nix-where w3m)/bin/w3m $1/share/doc/$2; }; __nix-X-help-in-Y";
+        nix-help = "nix-X-help-in-Y $(nix-where nix.doc) nix/manual/index.html";
+        nixpkgs-help = "nix-X-help-in-Y $(nix-build --no-out-link '<nixpkgs/doc>') nixpkgs/manual.html";
+
+        nixos-help = "nix-X-help-in-Y $(nix-build '<nixpkgs/nixos/release.nix>' --arg supportedSystems '[ \"x86_64-linux\" ]' -A manual --no-out-link) nixos/index.html";
+
+        nix-outpath = "nix-build --no-out-link '<nixpkgs>' -A";
+        nix-position = "function __nix-position() { nix-instantiate '<nixpkgs>' --eval -A $1.meta.position; }; __nix-position";
+
+        nix-build--no-out-link = "nix-build --no-out-link";
       };
+
       bashrcExtra = ''
         # git-prompt
         source ${pkgs.git}/share/git/contrib/completion/git-prompt.sh
