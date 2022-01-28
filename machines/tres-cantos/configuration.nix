@@ -57,6 +57,7 @@
     ];
   };
 
+  hardware.pulseaudio.enable = true;
 
   services = {
      xserver = {
@@ -81,7 +82,7 @@
 
   users.users."jhhuh" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" ];
     uid = 1000;
   };
 
