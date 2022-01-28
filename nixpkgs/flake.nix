@@ -19,7 +19,7 @@
   outputs = inputs: {
     inherit inputs;
     homeConfigurations = {
-      jhhuh = inputs.home-manager.lib.homeManagerConfiguration rec {
+      "jhhuh" = inputs.home-manager.lib.homeManagerConfiguration rec {
         system = "x86_64-linux";
         homeDirectory = "/home/jhhuh";
         username = "jhhuh";

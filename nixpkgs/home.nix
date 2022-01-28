@@ -104,6 +104,27 @@ in rec {
   };
 
   programs = {
+    tmux = {
+      enable = true;
+      prefix = "C-j";
+      keyMode = "vi";
+      extraConfig = ''
+        bind-key ^u copy-mode
+        bind-key j new-window
+        
+        bind-key '"' split-window -c '#{pane_current_path}' 
+        bind-key '%' split-window -h -c '#{pane_current_path}' 
+        
+        set-option -g status-right "[#(acpi --battery | grep -oE '(Discharging|Charging|Unknown), [0-9.]+%')] #{=21:pane_title} %H:%M:%S %d-%b-%y"
+        
+        set-option -g status-interval 5
+        set-option -g automatic-rename on
+        set-option -g automatic-rename-format '#{b:pane_current_path}'
+        
+        set -s escape-time 0
+      '';
+    };
+
     git = {
       enable = true;
       extraConfig = {
