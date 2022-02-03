@@ -25,6 +25,12 @@
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
+    inputMethod = {
+      enabled = "kime";
+      kime.config = {
+        indicator.icon_color = "White";
+      };
+    };
   };
 
   programs = {
@@ -33,6 +39,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    nixos-option
     pciutils hdparm powertop htop
     acpitool
     wget git vim tmux
@@ -60,11 +67,16 @@
   hardware.pulseaudio.enable = true;
 
   services = {
+    ipfs.enable = true;
+
      xserver = {
        enable = true;
        xkbOptions = "ctrl:swapcaps";
-       autoRepeatDelay = 250;
-       autoRepeatInterval = 20;
+       displayManager.sessionCommands = ''
+         ${pkgs.xlibs.xset}/bin/xset r rate 200 50
+       '';
+       #autoRepeatDelay = 250;
+       #autoRepeatInterval = 20;
        desktopManager = {
          gnome.enable = true;
        };
