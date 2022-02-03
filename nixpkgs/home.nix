@@ -4,6 +4,19 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      linux-manual
+      scheme-manpages
+      nixos-shell
+      dasht
+      man-pages
+      man-pages-posix
+      binutils
+      gh
+      darcs
+      asciinema
+      termtosvg
+      pandoc
+      nix-template
       cabal2nix
       loc
       vimpc
@@ -126,6 +139,8 @@ in rec {
       '';
     };
 
+    man.generateCaches = true;
+
     git = {
       enable = true;
       userEmail = "jhhuh.note@gmail.com";
@@ -234,4 +249,6 @@ in rec {
       client.enable = true;
     };
   };
+
+  manual.html.enable = true;
 }
