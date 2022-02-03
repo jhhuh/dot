@@ -85,23 +85,10 @@ in rec {
 
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [
-      (import (builtins.fetchTarball {
-        url = https://github.com/nix-community/emacs-overlay/archive/13fbae4d83ec6ef6f4b72e01bc48b65e74f5a103.tar.gz;
-        sha256 = "05yzzyxls46vvmjnv2jdzcrrb8jzqr6zmfv6hhg6qihj9qsq6a4a";
-      }))
-    ];
+    overlays = [];
   };
 
-  imports = [
-    # (let
-    #   declCachixRev = "1986455ab3e55804458bf6e7d2a5f5b8a68defce";
-    #   declCachix = builtins.fetchTarball {
-    #     url = "https://github.com/jonascarpay/declarative-cachix/archive/${declCachixRev}.tar.gz";
-    #     sha256 = "0y7zi5pgc9raawh4ll3dww61cqq7rafki757f6njq9k08zkks62j";
-    #   };
-    # in import "${declCachix}/home-manager.nix")
-  ];
+  imports = [ ];
 
   caches = {
     cachix = [
