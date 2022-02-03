@@ -45,7 +45,7 @@
             configuration.imports = [
               declarative-cachix-module
               emacs-overlay-module
-              home-pacakges-module
+              home-packages-module
               ./home.nix
             ];
           };

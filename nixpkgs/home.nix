@@ -225,7 +225,7 @@ in rec {
 
     emacs = {
       enable = true;
-      package = pkgs.emacs; #Gcc;
+      package = pkgs.emacsGcc;
       extraPackages = epkgs: with epkgs; [vterm pdf-tools];
     };
   };
