@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   emacsCommand = emacs: "TERM=xterm-direct ${emacs}/bin/emacsclient -nw";
 in rec {
@@ -239,4 +239,35 @@ in rec {
   };
 
   manual.html.enable = true;
+
+  dconf.settings =
+    let
+      mkTuple = lib.hm.gvariant.mkTuple;
+    in
+    {
+      "org/gnome/desktop/input-sources" = {
+        per-window = false;
+        sources = [(mkTuple ["xkb" "kr"])];
+        xkb-options = ["ctrl:swapcaps" "lv3:ralt_switch"];
+      };
+
+      "org/gnome/desktop/peripherals/keyboard" = {
+        repeat = true;
+        delay = 250;
+        repeat-interval = 20;
+      };
+
+      "org/gnome/desktop/peripherals/touchpad" = {
+        two-finger-scrolling-enabled = true;
+      };
+
+      "org/gnome/desktop/privacy" = {
+        disable-microphone = false;
+      };
+
+      "org/gnome/settings-daemon/plugins/power" = {
+        sleep-inactive-ac-type = "nothing";
+      };
+    };
 }
+

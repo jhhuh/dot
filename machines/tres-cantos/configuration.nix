@@ -73,7 +73,7 @@
        enable = true;
        xkbOptions = "ctrl:swapcaps";
        displayManager.sessionCommands = ''
-         ${pkgs.xlibs.xset}/bin/xset r rate 200 50
+         ${pkgs.xlibs.xset}/bin/xset r rate 250 50
        '';
        #autoRepeatDelay = 250;
        #autoRepeatInterval = 20;
