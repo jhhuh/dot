@@ -17,6 +17,7 @@ in rec {
       termtosvg
       pandoc
       nix-template
+      chia
       cabal2nix
       loc
       vimpc
