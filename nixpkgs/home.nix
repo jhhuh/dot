@@ -130,7 +130,7 @@ in rec {
       '';
     };
 
-    man.generateCaches = true;
+    man.generateCaches = false;
 
     git = {
       enable = true;
