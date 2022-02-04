@@ -53,7 +53,7 @@
       ubuntu_font_family
       #google-fonts
       #noto-fonts
-      #noto-fonts-cjk
+      noto-fonts-cjk
       #noto-fonts-emoji
       #terminus_font_ttf
       #inconsolata
