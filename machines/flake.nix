@@ -1,4 +1,5 @@
 {
+
   description = "flake for machines";
 
   inputs = {
@@ -17,7 +18,7 @@
 
     deploy.nodes = {
       tres-cantos = {
-        hostname = "localhost";
+        hostname = "tres-cantos.jhhuh-korea.gmail.com.beta.tailscale.net";
         sshOpts = [ "-A" ];
         profiles."system" = {
           user = "root";

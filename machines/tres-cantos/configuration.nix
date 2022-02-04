@@ -67,6 +67,8 @@
   hardware.pulseaudio.enable = true;
 
   services = {
+    tailscale.enable = true;
+
     ipfs.enable = true;
 
      xserver = {
