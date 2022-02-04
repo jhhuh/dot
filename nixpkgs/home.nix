@@ -4,6 +4,9 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      (with python3Packages; toPythonApplication (
+        clvm-tools.overridePythonAttrs (old: {
+          propagatedBuildInputs = old.propagatedBuildInputs ++ [setuptools];})))
       linux-manual
       scheme-manpages
       nixos-shell
