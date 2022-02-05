@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 let
   emacsCommand = emacs: "TERM=xterm-direct ${emacs}/bin/emacsclient -nw";
 in rec {
@@ -83,6 +83,11 @@ in rec {
 
     sessionVariables = {
       EDITOR = "vim";
+    };
+
+    file = {
+      home-manager.source = inputs.home-manager;
+      nixpkgs.source = inputs.nixpkgs;
     };
 
   };

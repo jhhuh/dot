@@ -48,6 +48,9 @@
               home-packages-module
               ./home.nix
             ];
+            extraSpecialArgs = {
+              inherit inputs;
+            };
           };
         };
       };
