@@ -1,4 +1,8 @@
 Host dasan
+    HostName dasan.jhhuh-korea.gmail.com.beta.tailscale.net
+    Port 22
+    User jhhuh
+Host dasan-asgard
     HostName dasan.asgard-labs.com
     Port 2002
     User jhhuh
