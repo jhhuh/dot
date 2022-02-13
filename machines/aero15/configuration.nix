@@ -26,12 +26,22 @@
     };
 
     firewall = {
+      enable = true;
+      package = pkgs.iptables;
+
       allowedTCPPortRanges = [{ from = 1714; to = 1764; }]; # KDE connect
       allowedUDPPortRanges = [{ from = 1714; to = 1764; }]; # KDE connect
       allowedTCPPorts = [ 4001 ]; # ipfs
       allowedUDPPorts = [ 4001 ]; # ipfs
-      checkReversePath = false;
     };
+
+    nat = {
+      enable = true;
+      internalInterfaces = ["ve-+"];
+      externalInterface = "wlp4s0";
+    };
+
+    networkmanager.unmanaged = ["interface-name:ve-*"];
   };
 
   time.timeZone = "Asia/Seoul";
