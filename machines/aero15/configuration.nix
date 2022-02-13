@@ -92,7 +92,7 @@
 
       dpi = 192;
 
-      #videoDrivers = ["nvidia"];
+      videoDrivers = ["nvidia"];
 
       libinput.enable = true;
 
@@ -104,15 +104,16 @@
       };
 
       displayManager = {
-        gdm = {
-          enable = true;
-          wayland = false;
+       lightdm.enable = true;
+       # gdm = {
+       #   enable = true;
+       #   wayland = true;
        #   nvidiaWayland = true;
-        };
-       # sessionCommands = ''
-       #   ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource modesetting NVIDIA-0
-       #   ${pkgs.xorg.xrandr}/bin/xrandr --auto
-       # '';
+       # };
+      # sessionCommands = ''
+      #   ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource modesetting NVIDIA-0
+      #   ${pkgs.xorg.xrandr}/bin/xrandr --auto
+      # '';
       };
 
       useGlamor = true;
@@ -164,14 +165,14 @@
       package = pkgs.pulseaudioFull;
     };
     video.hidpi.enable = true;
-   # nvidia = {
-   #   prime = {
-   #     sync.enable = true;
-   #     intelBusId = "PCI:0:2:0";
-   #     nvidiaBusId = "PCI:1:0:0";
-   #   };
-   #   modesetting.enable = true;
-   # };
+    nvidia = {
+      prime = {
+        sync.enable = true;
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
+      modesetting.enable = true;
+    };
   };
 
   #powerManagement.powertop.enable = true;
