@@ -79,7 +79,9 @@
     kmscon.enable = true;
     kmscon.hwRender = true;
 
-    redis.enable = true;
+    redis.servers = {
+      "cryptostore".enable = true;
+    };
 
     udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
 
@@ -147,7 +149,7 @@
       bash-prompt-suffix = \[\033[1;33m\]\n(nix develop)\$ \[\033[0m\]
       experimental-features = nix-command flakes
     '';
-    trustedUsers = [ "root" "jhhuh" ];
+    trustedUsers = [ "root" "@wheel" ];
   };
 
   # Enable sound.
