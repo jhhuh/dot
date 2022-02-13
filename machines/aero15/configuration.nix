@@ -196,7 +196,7 @@
       enable = true;
       dockerCompat = true;
     };
-    libvirtd.enable = true;
+    #libvirtd.enable = true;
     virtualbox.host = {
       enable = false;
       enableExtensionPack = true;
@@ -204,6 +204,7 @@
   };
 
   programs = {
+    gpg.enable = true;
     ssh.startAgent = true;
     slock.enable = true;
   };
