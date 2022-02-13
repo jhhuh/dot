@@ -59,17 +59,22 @@
 
   security.pam.enableSSHAgentAuth = true;
 
-  systemd.tmpfiles.rules = let
-    cfg = config.services.ipfs;
-  in [
-    "f '${cfg.dataDir}/config' 0644 ${cfg.user} ${cfg.group} - -"
-  ];
+  security.wrappers = {
+    ipfs = let
+      cfg = config.services.ipfs;
+    in {
+      setuid = true;
+      permissions = "u+rx,g+x";
+      owner = cfg.user;
+      group = cfg.group;
+      source = "${cfg.package}/bin/ipfs";
+    };
+  };
 
   services = {
     ipfs = {
       enable = true;
-      localDiscovery = true;
-      autoMount = true;
+    #  autoMount = true;
     };
     kmscon.enable = true;
     kmscon.hwRender = true;
@@ -173,8 +178,10 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."jhhuh" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "libvirtd" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "libvirtd" "ipfs" ]; # Enable ‘sudo’ for the user.
   };
+
+  users.users."guest".isNormalUser = true;
 
   environment.systemPackages = with pkgs; [
     nixos-option
