@@ -4,6 +4,9 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      pass
+      jq
+      koreader
       (with python3Packages; toPythonApplication (
         clvm-tools.overridePythonAttrs (old: {
           propagatedBuildInputs = old.propagatedBuildInputs ++ [setuptools];})))
@@ -113,6 +116,7 @@ in rec {
   };
 
   programs = {
+    gpg.enable = true;
     tmux = {
       enable = true;
       prefix = "C-j";
@@ -239,6 +243,7 @@ in rec {
   };
 
   services = {
+    gpg-agent.enable = true;
     mpd.enable = false;
     emacs = {
       enable = true;
