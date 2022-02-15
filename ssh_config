@@ -1,3 +1,7 @@
+Host m1
+    HostName 51.159.120.131
+    Port 22
+    User m1
 Host dasan
     HostName dasan.jhhuh-korea.gmail.com.beta.tailscale.net
     Port 22
