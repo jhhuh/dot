@@ -34,6 +34,7 @@
   };
 
   programs = {
+    singularity.enable = true;
     ssh.startAgent = true;
     slock.enable = true;
   };
