@@ -204,7 +204,7 @@
   };
 
   programs = {
-    gpg.enable = true;
+    gnupg.agent.enable = true;
     ssh.startAgent = true;
     slock.enable = true;
   };
