@@ -4,6 +4,7 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      mosh
       pass
       jq
       koreader
