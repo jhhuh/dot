@@ -17,8 +17,14 @@
   networking.hostName = "tres-cantos";
   networking.networkmanager.enable = true;
 
-  nix.trustedUsers = [ "root" "@wheel" ];
-  nix.extraOptions = "experimental-features = nix-command flakes";
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      bash-prompt-suffix = \[\033[1;33m\]\n(nix devlop)\$ \[\033[0m\]
+      experimental-features = nix-command flakes
+    '';
+    trustedUsers = [ "root" "@wheel" ];
+  };
 
   console.font = "latarcyrheb-sun32";
   console.useXkbConfig = true;
@@ -67,10 +73,73 @@
 
   hardware.pulseaudio.enable = true;
 
+  security.wrappers = {
+    ipfs = let
+      cfg = config.services.ipfs;
+    in {
+      setuid = true;
+      permissions = "u+rx,g+x";
+      owner = cfg.user;
+      group = cfg.group;
+      source = "${cfg.package}/bin/ipfs";
+    };
+  };
+
   services = {
+    redis.servers = {
+      "cryptostore".enable = true;
+      "cryptostore".bind = "127.0.0.1";
+      "cryptostore".port = 6379;
+    };
+
     tailscale.enable = true;
 
-    ipfs.enable = true;
+    ipfs = {
+      enable = true;
+      autoMount = true;
+      extraConfig = {
+        Addresses = {
+          NoAnnounce = [
+            "/ip4/10.0.0.0/ipcidr/8"
+            #"/ip4/100.64.0.0/ipcidr/10"
+            "/ip4/169.254.0.0/ipcidr/16"
+            "/ip4/172.16.0.0/ipcidr/12"
+            "/ip4/192.0.0.0/ipcidr/24"
+            "/ip4/192.0.2.0/ipcidr/24"
+            "/ip4/192.168.0.0/ipcidr/16"
+            "/ip4/198.18.0.0/ipcidr/15"
+            "/ip4/198.51.100.0/ipcidr/24"
+            "/ip4/203.0.113.0/ipcidr/24"
+            "/ip4/240.0.0.0/ipcidr/4"
+            "/ip6/100::/ipcidr/64"
+            "/ip6/2001:2::/ipcidr/48"
+            "/ip6/2001:db8::/ipcidr/32"
+            "/ip6/fc00::/ipcidr/7"
+            "/ip6/fe80::/ipcidr/10"
+          ];
+        };
+        Swarm = {
+          AddrFilters = [
+            "/ip4/10.0.0.0/ipcidr/8"
+            #"/ip4/100.64.0.0/ipcidr/10"
+            "/ip4/169.254.0.0/ipcidr/16"
+            "/ip4/172.16.0.0/ipcidr/12"
+            "/ip4/192.0.0.0/ipcidr/24"
+            "/ip4/192.0.2.0/ipcidr/24"
+            "/ip4/192.168.0.0/ipcidr/16"
+            "/ip4/198.18.0.0/ipcidr/15"
+            "/ip4/198.51.100.0/ipcidr/24"
+            "/ip4/203.0.113.0/ipcidr/24"
+            "/ip4/240.0.0.0/ipcidr/4"
+            "/ip6/100::/ipcidr/64"
+            "/ip6/2001:2::/ipcidr/48"
+            "/ip6/2001:db8::/ipcidr/32"
+            "/ip6/fc00::/ipcidr/7"
+            "/ip6/fe80::/ipcidr/10"
+          ];
+        };
+      };
+    };
 
      xserver = {
        enable = true;
@@ -97,7 +166,7 @@
 
   users.users."jhhuh" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "audio" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "ipfs" ];
     uid = 1000;
   };
 
