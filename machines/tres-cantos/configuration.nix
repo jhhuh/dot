@@ -97,8 +97,17 @@
     ipfs = {
       enable = true;
       autoMount = true;
+
       extraConfig = {
         Addresses = {
+          Swarm = [
+            "/ip4/100.79.188.51/tcp/4001"  
+            "/ip4/100.79.188.51/udp/4001/quic" 
+            #"/ip4/0.0.0.0/tcp/4001"   
+            "/ip6/::/tcp/4001"
+            #"/ip4/0.0.0.0/udp/4001/quic"
+            "/ip6/::/udp/4001/quic"
+          ];                 
           NoAnnounce = [
             "/ip4/10.0.0.0/ipcidr/8"
             #"/ip4/100.64.0.0/ipcidr/10"

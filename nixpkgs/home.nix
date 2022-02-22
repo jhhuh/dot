@@ -223,7 +223,6 @@ in rec {
       enableBashIntegration = true;
       nix-direnv = {
         enable = true;
-        # enableFlakes = true;
       };
     };
 
