@@ -16,6 +16,7 @@
 
   networking.hostName = "tres-cantos";
   networking.networkmanager.enable = true;
+  networking.firewall.trustedInterfaces = ["tailscale0"];
 
   nix = {
     package = pkgs.nixFlakes;
