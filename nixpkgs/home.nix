@@ -4,6 +4,8 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      mplayer
+      google-drive-ocamlfuse
       mosh
       pass
       jq
