@@ -3,7 +3,7 @@ Host m1
     Port 22
     User m1
 Host dasan
-    HostName dasan.jhhuh-korea.gmail.com.beta.tailscale.net
+    HostName dasan.admin.asgard-labs.com.beta.tailscale.net
     Port 22
     User jhhuh
 Host dasan-asgard
