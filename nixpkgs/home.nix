@@ -4,6 +4,8 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      patchelf
+      overmind
       mplayer
       google-drive-ocamlfuse
       mosh
@@ -101,6 +103,10 @@ in rec {
   nixpkgs = {
     config.allowUnfree = true;
     overlays = [];
+  };
+
+  nix.registry = {
+    nixpkgs.flake = inputs.nixpkgs;
   };
 
   imports = [ ];
