@@ -4,6 +4,8 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      xclip
+      steam-run
       patchelf
       overmind
       mplayer
