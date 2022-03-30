@@ -4,6 +4,7 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      qemu
       xclip
       steam-run
       patchelf
@@ -41,7 +42,6 @@ in rec {
       appimage-run
       ghcid
       (ghc.withPackages (hp: with hp; [ haskell-language-server ]))
-      git
       git-lfs
       vimHugeX st xmobar
       cabal-install
@@ -127,6 +127,11 @@ in rec {
   };
 
   programs = {
+    keychain = {
+      enable = true;
+      extraFlags = [ "-Q" ];
+      keys = [ "id_ed25519" ];
+    };
     gpg.enable = true;
     tmux = {
       enable = true;
@@ -159,6 +164,7 @@ in rec {
       extraConfig = {
         init.defaultBranch = "master";
       };
+      package = pkgs.gitFull;
     };
 
     alacritty.enable = true;
