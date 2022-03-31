@@ -46,6 +46,8 @@
     slock.enable = true;
   };
 
+  virtualisation.podman.enable = true;
+
   environment.systemPackages = with pkgs; [
     nixos-option
     pciutils hdparm powertop htop
@@ -87,6 +89,8 @@
   };
 
   services = {
+    pipewire.wireplumber.enable = false;
+
     redis.servers = {
       "cryptostore".enable = true;
       "cryptostore".bind = "127.0.0.1";
