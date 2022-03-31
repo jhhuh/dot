@@ -98,7 +98,7 @@
     ipfs = {
       enable = true;
       autoMount = true;
-      gatewayAddress = "/ip4/100.79.188.51/tcp/8080";
+      gatewayAddress = "/ip4/100.86.176.106/tcp/8080";
       swarmAddress = [
         "/ip4/100.79.188.51/tcp/4001"
         "/ip4/100.79.188.51/udp/4001/quic"
@@ -167,7 +167,7 @@
        enable = true;
        xkbOptions = "ctrl:swapcaps";
        displayManager.sessionCommands = ''
-         ${pkgs.xlibs.xset}/bin/xset r rate 250 50
+         ${pkgs.xorg.xset}/bin/xset r rate 250 50
        '';
        #autoRepeatDelay = 250;
        #autoRepeatInterval = 20;
