@@ -4,11 +4,15 @@
 
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
-    utils.url = github:numtide/flake-utils;
+    flake-utils.url = github:numtide/flake-utils;
     deploy-rs.url = github:serokell/deploy-rs;
   };
 
-  outputs = inputs@{ self, nixpkgs, utils, deploy-rs }: {
+  outputs = inputs@{ self, nixpkgs, flake-utils, ... }:
+
+  {
+    inherit inputs self;
+
     nixosConfigurations = {
 
       aero15 = nixpkgs.lib.nixosSystem {
@@ -22,41 +26,75 @@
       };
 
     };
+  }
 
-    deploy.nodes = {
+  //
 
-      aero15 = {
-        hostname = "aero15.jhhuh-korea.gmail.com.beta.tailscale.net";
-        sshOpts = [ "-A" ];
-        profiles."system" = {
-          user = "root";
-          path = deploy-rs.lib."x86_64-linux".activate.nixos self.nixosConfigurations.aero15;
-        };
-      };
-
-      tres-cantos = {
-        hostname = "tres-cantos.jhhuh-korea.gmail.com.beta.tailscale.net";
-        sshOpts = [ "-A" ];
-        profiles."system" = {
-          user = "root";
-          path = deploy-rs.lib."x86_64-linux".activate.nixos self.nixosConfigurations.tres-cantos;
-        };
-      };
-
-    };
-  } // utils.lib.eachSystem ["x86_64-linux"] (system:
-  let
-    pkgs = import nixpkgs { inherit system; };
+  (let
+    inherit (inputs) deploy-rs;
+    inherit (deploy-rs.lib.x86_64-linux) activate deployChecks;
   in
   {
 
-    devShell = pkgs.mkShell {
-      buildInputs = [
-        deploy-rs.defaultPackage."${system}"
-      ];
+    deploy.nodes =
+      {
+
+        aero15 = {
+          hostname = "aero15.jhhuh-korea.gmail.com.beta.tailscale.net";
+          sshOpts = [ "-A" ];
+          profiles."system" = {
+            user = "root";
+            path = activate.nixos self.nixosConfigurations.aero15;
+          };
+        };
+
+        tres-cantos = {
+          hostname = "tres-cantos.jhhuh-korea.gmail.com.beta.tailscale.net";
+          sshOpts = [ "-A" ];
+          profiles."system" = {
+            user = "root";
+            path = activate.nixos self.nixosConfigurations.tres-cantos;
+          };
+        };
+
+      };
+
+    checks = deployChecks self.deploy;
+
+  })
+
+  //
+
+  flake-utils.lib.eachSystem ["x86_64-linux"] (system:
+  let
+    pkgs = import nixpkgs { inherit system; };
+    inherit (inputs.deploy-rs.packages.${system}) deploy-rs;
+  in
+  {
+    packages = {
+      local-deploy = pkgs.writeScriptBin "local-deploy" ''
+        HOSTNAME=`hostname`
+        echo "***************************************************"
+        echo "$ sudo nixos-rebuild switch --flake \".#$HOSTNAME\""
+        echo "***************************************************"
+        sudo nixos-rebuild switch --flake ".#$HOSTNAME"
+      '';
     };
 
-    checks = deploy-rs.lib."${system}".deployChecks self.deploy;
+    apps = {
+      local-deploy = {
+        type = "app";
+        program = "${self.packages.${system}.local-deploy}/bin/local-deploy";
+      };
+    };
+
+    defaultApp = self.apps.${system}.local-deploy;
+
+    devShell = pkgs.mkShell {
+      buildInputs = [
+        deploy-rs
+      ];
+    };
 
   });
 
