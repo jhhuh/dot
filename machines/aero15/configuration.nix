@@ -74,7 +74,7 @@
   services = {
     ipfs = {
       enable = true;
-    #  autoMount = true;
+      autoMount = true;
     };
     kmscon.enable = true;
     kmscon.hwRender = true;
