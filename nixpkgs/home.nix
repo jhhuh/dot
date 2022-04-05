@@ -11,6 +11,8 @@ in rec {
       overmind
       mplayer
       google-drive-ocamlfuse
+      niv
+      nodePackages.node2nix
       mosh
       pass
       jq
