@@ -47,6 +47,7 @@
   };
 
   virtualisation.podman.enable = true;
+  virtualisation.podman.dockerCompat = true;
 
   environment.systemPackages = with pkgs; [
     nixos-option
@@ -75,6 +76,8 @@
   };
 
   hardware.pulseaudio.enable = true;
+
+  security.unprivilegedUsernsClone = true;
 
   security.wrappers = {
     ipfs = let
