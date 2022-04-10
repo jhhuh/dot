@@ -129,6 +129,11 @@ in rec {
   };
 
   programs = {
+    vscode = {
+      enable = true;
+      package = pkgs.vscode-fhs;
+    };
+
     keychain = {
       enable = true;
       extraFlags = [ "-Q" ];
@@ -261,6 +266,7 @@ in rec {
   };
 
   services = {
+    keynav.enable = true;
     gpg-agent.enable = true;
     mpd.enable = false;
     emacs = {
