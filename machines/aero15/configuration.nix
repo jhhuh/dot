@@ -12,6 +12,7 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [ ];
 
   networking = {
     hostName = "aero15";
@@ -104,16 +105,16 @@
       };
 
       displayManager = {
+       gdm = {
+         enable = false;
+         wayland = false;
+       };
        lightdm.enable = true;
-       # gdm = {
-       #   enable = true;
-       #   wayland = true;
-       #   nvidiaWayland = true;
-       # };
-      # sessionCommands = ''
-      #   ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource modesetting NVIDIA-0
-      #   ${pkgs.xorg.xrandr}/bin/xrandr --auto
-      # '';
+       sessionCommands = ''
+         ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource modesetting NVIDIA-0
+         ${pkgs.xorg.xrandr}/bin/xrandr --auto
+         xset r rate 250 50
+       '';
       };
 
       useGlamor = true;
@@ -172,6 +173,7 @@
         nvidiaBusId = "PCI:1:0:0";
       };
       modesetting.enable = true;
+      powerManagement.enable = true;
     };
   };
 
@@ -204,6 +206,7 @@
   };
 
   programs = {
+    xwayland.enable = true;
     gnupg.agent.enable = true;
     ssh.startAgent = true;
     slock.enable = true;
