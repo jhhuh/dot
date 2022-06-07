@@ -4,6 +4,11 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      kmscube
+#      kmsxx
+      libdrm
+      kmscon
+      mpv
       (writeScriptBin "toggle_touchpad.sh"
        ''
          #!{bash}/bin/bash

@@ -60,25 +60,31 @@
 
   security.pam.enableSSHAgentAuth = true;
 
-  security.wrappers = {
-    ipfs = let
-      cfg = config.services.ipfs;
-    in {
-      setuid = true;
-      permissions = "u+rx,g+x";
-      owner = cfg.user;
-      group = cfg.group;
-      source = "${cfg.package}/bin/ipfs";
-    };
-  };
+  #security.wrappers = {
+  #  ipfs = let
+  #    cfg = config.services.ipfs;
+  #  in {
+  #    setuid = true;
+  #    permissions = "u+rx,g+x";
+  #    owner = cfg.user;
+  #    group = cfg.group;
+  #    source = "${cfg.package}/bin/ipfs";
+  #  };
+  #};
 
   services = {
-    ipfs = {
+   # ipfs = {
+   #   enable = true;
+   #   autoMount = true;
+   # };
+    kmscon = {
       enable = true;
-      autoMount = true;
+      hwRender = true;
+      extraConfig = ''
+        font-dpi=192
+        xkb-options=ctrl:swapcaps
+      '';   
     };
-    kmscon.enable = true;
-    kmscon.hwRender = true;
 
     redis.servers = {
       "cryptostore".enable = true;
@@ -89,13 +95,20 @@
     xserver = {
       enable = true;
 
+      autoRepeatDelay = 200;
+
+      autoRepeatInterval = 20;
+
       layout = "us";
 
       dpi = 192;
 
       videoDrivers = ["nvidia"];
 
-      libinput.enable = true;
+      libinput = {
+        enable = true;
+        touchpad.disableWhileTyping = true;
+      };
 
       xkbOptions = "ctrl:swapcaps";
 
@@ -106,10 +119,10 @@
 
       displayManager = {
        gdm = {
-         enable = false;
+         enable = true;
          wayland = false;
        };
-       lightdm.enable = true;
+       #lightdm.enable = true;
        sessionCommands = ''
          ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource modesetting NVIDIA-0
          ${pkgs.xorg.xrandr}/bin/xrandr --auto
