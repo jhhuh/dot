@@ -4,6 +4,7 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      sshuttle
       kmscube
 #      kmsxx
       libdrm
@@ -62,7 +63,9 @@ else
       ghcid
       (ghc.withPackages (hp: with hp; [ haskell-language-server ]))
       git-lfs
-      vimHugeX st xmobar
+      vimHugeX
+      #st
+      xmobar
       cabal-install
       ws
       wget
@@ -134,7 +137,7 @@ else
 
   caches = {
     cachix = [
-      { name = "nix-community"; sha256 = "00lpx4znr4dd0cc4w4q8fl97bdp7q19z1d3p50hcfxy26jz5g21g"; }
+      { name = "nix-community"; sha256 = "1955r436fs102ny80wfzy99d4253bh2i1vv1x4d4sh0zx2ssmhrk"; }
     ];
 
     extraCaches = [
@@ -277,7 +280,7 @@ else
 
     emacs = {
       enable = true;
-      package = pkgs.emacsGcc;
+      package = pkgs.emacsNativeComp;
       extraPackages = epkgs: with epkgs; [vterm pdf-tools];
     };
   };

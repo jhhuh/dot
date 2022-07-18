@@ -3,7 +3,7 @@
 
   inputs = {
 
-    nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+    nixpkgs.url = github:nixos/nixpkgs/nixos-22.05;
 
     home-manager.url = github:nix-community/home-manager;
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -26,23 +26,29 @@
       emacs-overlay-module = {pkgs, ...}: {
         nixpkgs.overlays = [inputs.emacs-overlay.overlay];
       };
-      home-packages-module = {pkgs, ...}: {
-        home.packages = [
-          (pkgs.callPackage inputs.comma { nix = pkgs.nix_2_3; })
-          (pkgs.callPackage inputs.x86-manpages-nix {
-            pkgs = pkgs // { stdenv = pkgs.stdenv // { lib = pkgs.lib; }; };
-            sources = null;
-            nixpkgs = null; })
-        ];};
+      home-packages-module = {};
+      #home-packages-module = {pkgs, ...}: {
+      #  home.packages = [
+      #    (pkgs.callPackage inputs.comma { nix = pkgs.nix_2_3; })
+      #    (pkgs.callPackage inputs.x86-manpages-nix {
+      #      pkgs = pkgs // { stdenv = pkgs.stdenv // { lib = pkgs.lib; }; };
+      #      sources = null;
+      #      nixpkgs = null; })
+      #  ];};
     in
       {
         inherit inputs;
         homeConfigurations = {
-          jhhuh = inputs.home-manager.lib.homeManagerConfiguration rec {
-            system = "x86_64-linux";
-            homeDirectory = "/home/jhhuh";
-            username = "jhhuh";
-            configuration.imports = [
+          jhhuh = inputs.home-manager.lib.homeManagerConfiguration {
+            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+            modules = [
+              {
+                home = {
+                  username = "jhhuh";
+                  homeDirectory = "/home/jhhuh";
+                  stateVersion = "22.05";
+                };
+              }
               declarative-cachix-module
               emacs-overlay-module
               home-packages-module

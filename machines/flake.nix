@@ -3,7 +3,7 @@
   description = "flake for machines";
 
   inputs = {
-    nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+    nixpkgs.url = github:nixos/nixpkgs/nixos-22.05;
     flake-utils.url = github:numtide/flake-utils;
     deploy-rs.url = github:serokell/deploy-rs;
   };
@@ -18,6 +18,11 @@
       aero15 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [ ./aero15/configuration.nix ];
+      };
+
+      p1gen3 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [ ./p1gen3/configuration.nix ];
       };
 
       tres-cantos = nixpkgs.lib.nixosSystem {
@@ -38,6 +43,15 @@
 
     deploy.nodes =
       {
+
+        p1gen3 = {
+          hostname = "p1gen3.jhhuh-korea.gmail.com.beta.tailscale.net";
+          sshOpts = [ "-A" ];
+          profiles."system" = {
+            user = "root";
+            path = activate.nixos self.nixosConfigurations.p1gen3;
+          };
+        };
 
         aero15 = {
           hostname = "aero15.jhhuh-korea.gmail.com.beta.tailscale.net";
