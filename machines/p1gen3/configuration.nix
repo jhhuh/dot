@@ -48,7 +48,46 @@
   security.pam.enableSSHAgentAuth = true;
 
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [
+      (self: super: {
+        slock = (super.slock.overrideAttrs (old: {
+          src = self.fetchurl {
+            url = "https://github.com/khuedoan/slock/archive/37f091cb167f719103ef70baa6b46b95645e5b95.tar.gz";
+            sha256 = "bofSIuM/dEZNyiIuzgxAGqfN1F7DMvhuZlE2h9mbouQ=";
+          };
+        })).override {
+          conf = ''
+            /* user and group to drop privileges to */
+            static const char *user  = "nobody";
+            static const char *group = "nobody";
+           
+            static const char *colorname[NUMCOLS] = {
+                [INIT] =   "#000000",   /* after initialization */
+                [INPUT] =  "#282c34",   /* during input */
+                [FAILED] = "#be5046",   /* wrong password */
+            };
+
+            /* lock screen opacity */
+            static const float alpha = 1.;
+
+            /* treat a cleared input like a wrong password (color) */
+            static const int failonclear = 1;
+
+            /* default message */
+            static const char * message = "Enter password to unlock";
+
+            /* text color */
+            static const char * text_color = "#abb2bf";
+
+            /* text size (must be a valid size) */
+            static const char * text_size = "fixed";
+            '';
+          };
+        })
+    ];
+  };
 
   nix = {
     package = pkgs.nixFlakes;
@@ -106,15 +145,28 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  virtualisation.virtualbox.host = {
+    enable = true;
+    enableExtensionPack = true;
+  };
+
   users.users.jhhuh = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "vboxusers" "disk" ];
     packages = with pkgs; [
   #     firefox
   #     thunderbird
     ];
   };
+
+  fonts.fonts = with pkgs; [
+    noto-fonts
+    noto-fonts-emoji
+    noto-fonts-extra
+    noto-fonts-cjk
+    ubuntu_font_family
+    hack-font
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
