@@ -84,6 +84,7 @@
         font-dpi=192
         xkb-options=ctrl:swapcaps
       '';   
+      extraOptions = "--xkb-repeat-rate 20";
     };
 
     redis.servers = {

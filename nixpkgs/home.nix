@@ -69,7 +69,7 @@ else
       #st
       xmobar
       cabal-install
-      ws
+      # ws
       wget
       acpi
       powertop
