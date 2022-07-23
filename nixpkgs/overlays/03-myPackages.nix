@@ -1,5 +1,13 @@
 self: super: rec {
 
+  slock = super.slock.overrideAttrs (old: {
+    src = self.fetchurl {
+      url = "https://github.com/khuedoan/slock/archive/37f091cb167f719103ef70baa6b46b95645e5b95.tar.gz";
+      sha256 = "bofSIuM/dEZNyiIuzgxAGqfN1F7DMvhuZlE2h9mbouQ=";
+    };
+  });
+
+
   mouser = let
     _mouser = { clangStdenv, fetchFromGitHub, boost, xorg }: clangStdenv.mkDerivation rec {
       name = "mouser-${version}";
