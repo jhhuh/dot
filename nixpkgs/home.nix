@@ -223,6 +223,8 @@ else
         nix-position = "function __nix-position() { nix-instantiate '<nixpkgs>' --eval -A $1.meta.position; }; __nix-position";
 
         nix-build--no-out-link = "nix-build --no-out-link";
+
+        watch-direnv = "while true; do _direnv_hook; sleep 1; done";
       };
 
       bashrcExtra = ''
