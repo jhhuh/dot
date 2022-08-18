@@ -176,7 +176,7 @@
     enableAllFirmware = true;
     pulseaudio = {
       enable = true;
-      extraModules = [pkgs.pulseaudio-modules-bt];
+      extraModules = [];
       package = pkgs.pulseaudioFull;
     };
     video.hidpi.enable = true;
