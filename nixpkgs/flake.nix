@@ -22,6 +22,8 @@
 
   outputs = inputs:
     let
+      system = "x86_64-linux";
+      config = { allowUnfree = true; };
       declarative-cachix-module = inputs.declarative-cachix.homeManagerModules.declarative-cachix-experimental;
       emacs-overlay-module = {pkgs, ...}: {
         nixpkgs.overlays = [inputs.emacs-overlay.overlay];
@@ -40,7 +42,7 @@
         inherit inputs;
         homeConfigurations = {
           jhhuh = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+            pkgs = import inputs.nixpkgs { inherit system config; };
             modules = [
               {
                 home = {
