@@ -127,11 +127,6 @@ else
 
   };
 
-  nixpkgs = {
-    config.allowUnfree = true;
-    overlays = [];
-  };
-
   nix.registry = {
     nixpkgs.flake = inputs.nixpkgs;
   };
