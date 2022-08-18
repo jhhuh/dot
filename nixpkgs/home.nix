@@ -4,6 +4,7 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      pixiecore
       xpra
       sshuttle
       kmscube
