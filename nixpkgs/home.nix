@@ -27,7 +27,7 @@ else
       cntr
       qemu
       xclip
-      steam-run
+      #steam-run
       patchelf
       overmind
       mplayer
@@ -54,7 +54,7 @@ else
       termtosvg
       pandoc
       nix-template
-      chia
+      #chia
       cabal2nix
       loc
       vimpc
