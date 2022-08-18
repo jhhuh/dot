@@ -32,8 +32,8 @@
 
       allowedTCPPortRanges = [{ from = 1714; to = 1764; }]; # KDE connect
       allowedUDPPortRanges = [{ from = 1714; to = 1764; }]; # KDE connect
-      allowedTCPPorts = [ 4001 ]; # ipfs
-      allowedUDPPorts = [ 4001 ]; # ipfs
+      allowedTCPPorts = [ 4001 4011 80 135 137 138 139 5040 ]; # ipfs
+      allowedUDPPorts = [ 4001 4011 67 68 69 ]; # ipfs
     };
 
     nat = {
