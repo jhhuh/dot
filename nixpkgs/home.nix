@@ -296,7 +296,7 @@ else
     gpg-agent.enable = true;
     mpd.enable = false;
     emacs = {
-      enable = true;
+      enable = false;
       client.enable = true;
     };
   };
