@@ -104,7 +104,7 @@
 
       dpi = 192;
 
-      videoDrivers = ["nvidia"];
+      videoDrivers = ["intel"];
 
       libinput = {
         enable = true;
