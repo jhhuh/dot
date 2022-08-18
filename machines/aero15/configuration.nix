@@ -197,7 +197,14 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."jhhuh" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "libvirtd" "ipfs" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "libvirtd"
+      "ipfs"
+      "vboxusers"
+      "disk"
+    ];
   };
 
   users.users."guest".isNormalUser = true;
@@ -214,7 +221,7 @@
     };
     #libvirtd.enable = true;
     virtualbox.host = {
-      enable = false;
+      enable = true;
       enableExtensionPack = true;
     };
   };
@@ -226,7 +233,7 @@
     slock.enable = true;
   };
 
-  system.stateVersion = "22.05"; # Did you read the comment?
+  system.stateVersion = "22.05";
 
 }
 
