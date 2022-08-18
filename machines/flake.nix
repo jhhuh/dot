@@ -91,7 +91,7 @@
         echo "***************************************************"
         echo "$ sudo nixos-rebuild switch --flake \".#$HOSTNAME\""
         echo "***************************************************"
-        sudo nixos-rebuild switch --flake ".#$HOSTNAME"
+        sudo nixos-rebuild switch --flake ".#$HOSTNAME" --print-build-logs
       '';
     };
 
