@@ -4,6 +4,7 @@ let
 in rec {
   home = {
     packages = (with pkgs; [
+      zathura
       pixiecore
       xpra
       sshuttle
