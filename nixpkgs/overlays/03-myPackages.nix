@@ -35,25 +35,25 @@ self: super: rec {
   #  vimb-unwrapped = self.callPackages ../vimb {};
 
   st = let
-    st-ime = self.fetchurl {
-      url = "https://st.suckless.org/patches/fix_ime/st-ime-20190202-3be4cf1.diff";
-      sha256 = "0n4sq5xjx5shkdwv9hfwzjpiknra3076m8k1aimsjfqyw6gklnng";
-    };
-    st-dracula = self.fetchurl {
-      url = "https://st.suckless.org/patches/dracula/st-dracula-0.8.2.diff";
-      sha256 = "0zpvhjg8bzagwn19ggcdwirhwc17j23y5avcn71p74ysbwvy1f2y";
-    };
-    st-alpha = self.fetchurl {
-      url = "https://st.suckless.org/patches/alpha/st-alpha-0.8.2.diff";
-      sha256 = "11dj1z4llqbbki5cz1k1crr7ypnfqsfp7hsyr9wdx06y4d7lnnww";
-    };
-    st-solarized_both = self.fetchurl {
-      url = "https://st.suckless.org/patches/solarized/st-solarized-both-20190128-3be4cf1.diff";
-      sha256 = "1brz76qvmi0hg7zdq8jhgcmfc634hbm8h6wdh5cwi587xxdkhiqg";
-    };
+   # st-ime = self.fetchurl {
+   #   url = "https://st.suckless.org/patches/fix_ime/st-ime-20190202-3be4cf1.diff";
+   #   sha256 = "0n4sq5xjx5shkdwv9hfwzjpiknra3076m8k1aimsjfqyw6gklnng";
+   # };
+   # st-dracula = self.fetchurl {
+   #   url = "https://st.suckless.org/patches/dracula/st-dracula-0.8.2.diff";
+   #   sha256 = "0zpvhjg8bzagwn19ggcdwirhwc17j23y5avcn71p74ysbwvy1f2y";
+   # };
+   # st-alpha = self.fetchurl {
+   #   url = "https://st.suckless.org/patches/alpha/st-alpha-0.8.2.diff";
+   #   sha256 = "11dj1z4llqbbki5cz1k1crr7ypnfqsfp7hsyr9wdx06y4d7lnnww";
+   # };
+   # st-solarized_both = self.fetchurl {
+   #   url = "https://st.suckless.org/patches/solarized/st-solarized-both-20190128-3be4cf1.diff";
+   #   sha256 = "1brz76qvmi0hg7zdq8jhgcmfc634hbm8h6wdh5cwi587xxdkhiqg";
+   # };
     st-nord = self.fetchurl {
-      url = "https://st.suckless.org/patches/nordtheme/st-nordtheme-0.8.2.diff";
-      sha256 = "0ssj7gsb3snk1pqfkffwc0dshrbmvf7ffqvrdi4k2p451mnqmph1";
+      url = "https://st.suckless.org/patches/nordtheme/st-nordtheme-0.8.5.diff";
+      sha256 = "Tlpp1HD4vl/c88UxI1t4rS7nDEzMkDeyW7/opIv4Rf8=";
     };
   in super.st.override {
     patches = [

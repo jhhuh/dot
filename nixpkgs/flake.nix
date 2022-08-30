@@ -5,7 +5,7 @@
 
     nixpkgs.url = github:nixos/nixpkgs/nixos-22.05;
 
-    home-manager.url = github:nix-community/home-manager;
+    home-manager.url = github:nix-community/home-manager/release-22.05;
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     declarative-cachix.url = github:jonascarpay/declarative-cachix;
@@ -42,23 +42,20 @@
         inherit inputs;
         homeConfigurations = {
           jhhuh = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = import inputs.nixpkgs { inherit system config; };
-            modules = [
-              {
-                home = {
-                  username = "jhhuh";
-                  homeDirectory = "/home/jhhuh";
-                  stateVersion = "22.05";
-                };
-              }
+            configuration = ./home.nix;
+            inherit system;
+            homeDirectory = "/home/jhhuh";
+            username = "jhhuh";
+            extraModules = [
               declarative-cachix-module
               emacs-overlay-module
               home-packages-module
-              ./home.nix
             ];
             extraSpecialArgs = {
               inherit inputs;
             };
+            pkgs = import inputs.nixpkgs { inherit system config; };
+            stateVersion = "22.05";
           };
         };
       };

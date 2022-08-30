@@ -1,19 +1,10 @@
-{ pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
+
 let
+
   emacsCommand = emacs: "TERM=xterm-direct ${emacs}/bin/emacsclient -nw";
-in rec {
-  home = {
-    packages = (with pkgs; [
-      zathura
-      pixiecore
-      xpra
-      sshuttle
-      kmscube
-#      kmsxx
-      libdrm
-      kmscon
-      mpv
-      (writeScriptBin "toggle_touchpad.sh"
+
+  toggle-touchpad = pkgs.writeScriptBin "toggle_touchpad.sh"
        ''
          #!{bash}/bin/bash
          
@@ -24,11 +15,49 @@ else
            echo "Switching on"
          gsettings set org.gnome.desktop.peripherals.touchpad send-events enabled
          fi
-       '')
+       '';
+
+  clvm-tools = with pkgs.python3Packages;
+    toPythonApplication (
+      clvm-tools.overridePythonAttrs (old: {
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [setuptools];}));
+
+in {
+
+  nixpkgs.overlays = [
+    #(import ./overlays/01-stackage-overlay.nix)
+    #(import ./overlays/02-myHaskellPackages.nix)
+    (import ./overlays/03-myPackages.nix)
+    (import ./overlays/04-myEnvs.nix)
+    (import ./overlays/05-prefer-remote-fetch.nix)
+  ];
+
+  home = {
+    packages = (with pkgs; [
+      # For xmonad setup
+      st
+      xst
+      ranger
+      kotatogram-desktop
+      scrcpy
+      zathura
+      xmobar
+      pavucontrol
+      compton
+
+      #
+      pixiecore
+      xpra
+      sshuttle
+      kmscube
+      libdrm
+      kmscon
+      mpv
+      toggle-touchpad
       cntr
-      qemu
+      #qemu
       xclip
-      #steam-run
+      steam-run
       patchelf
       overmind
       mplayer
@@ -39,9 +68,6 @@ else
       pass
       jq
       koreader
-      (with python3Packages; toPythonApplication (
-        clvm-tools.overridePythonAttrs (old: {
-          propagatedBuildInputs = old.propagatedBuildInputs ++ [setuptools];})))
       linux-manual
       scheme-manpages
       nixos-shell
@@ -67,9 +93,7 @@ else
       ghcid
       (ghc.withPackages (hp: with hp; [ haskell-language-server ]))
       git-lfs
-      vimHugeX
-      #st
-      xmobar
+      #myVim
       cabal-install
       # ws
       wget
@@ -151,6 +175,18 @@ else
   };
 
   programs = {
+
+    vim = {
+      enable = true;
+      plugins = with pkgs.vimPlugins; [
+        base16-vim
+        vim-airline
+      ];
+      extraConfig = ''
+        set nobackup noswapfile
+      '';
+    };
+
     vscode = {
       enable = false;
       package = pkgs.vscode-fhs;
@@ -161,7 +197,9 @@ else
       extraFlags = [ "-Q" ];
       keys = [ "id_ed25519" ];
     };
+
     gpg.enable = true;
+
     tmux = {
       enable = true;
       prefix = "C-j";
@@ -196,16 +234,13 @@ else
       package = pkgs.gitFull;
     };
 
-    alacritty.enable = true;
-    home-manager = {
-      enable = true;
-    };
+    home-manager.enable = true;
 
     bash = {
       enable = true;
 
       shellAliases = {
-        vi = emacsCommand programs.emacs.package;
+        vi = emacsCommand config.programs.emacs.package;
         nix-repl = "nix repl '<nixpkgs>'";
         nix-which = "function __nix-which() { readlink $(which $1); }; __nix-which";
         nix-unpack-from = "function __nix-unpack-from() { nix-shell $1 -A $2 --run unpackPhase; }; __nix-unpack-from";
@@ -287,9 +322,14 @@ else
       package = pkgs.emacsNativeComp;
       extraPackages = epkgs: with epkgs; [vterm pdf-tools];
     };
+
   };
 
   services = {
+    syncthing = {
+      enable = true;
+      tray = false;
+    };
     keynav.enable = true;
     gpg-agent.enable = true;
     mpd.enable = false;

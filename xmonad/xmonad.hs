@@ -43,15 +43,16 @@ import qualified Data.Map as M
 
 import XMonad.Hooks.EwmhDesktops (
   ewmh,
-  fullscreenEventHook)
+  ewmhFullscreen)
 
-desktop = ewmh def {
-  handleEventHook = handleEventHook def <+> fullscreenEventHook }
+desktop = ewmhFullscreen . ewmh $ def {
+  handleEventHook = handleEventHook def
+ }
 
 conf = desktop {
   borderWidth = 2,
   focusedBorderColor = "#ff8267",
-  terminal = "xterm",
+  terminal = "st",
   modMask = mod4Mask,
   keys = keys desktop <+> myKeys,
   manageHook = scratchpadHook
