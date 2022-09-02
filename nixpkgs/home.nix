@@ -2,7 +2,7 @@
 
 let
 
-  emacsCommand = emacs: "TERM=xterm-direct ${emacs}/bin/emacsclient -nw";
+  emacsCommand = emacs: "${emacs}/bin/emacsclient -nw";
 
   toggle-touchpad = pkgs.writeScriptBin "toggle_touchpad.sh"
        ''
