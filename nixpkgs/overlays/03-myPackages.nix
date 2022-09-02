@@ -73,35 +73,74 @@ self: super: rec {
   nbstripout = self.callPackages ../nbstripout {};
 
   #  vimb-unwrapped = self.callPackages ../vimb {};
+  #
+  st-flexipatch = super.st.overrideAttrs (old:
+    let
+      inherit (self) fetchFromGitHub;
+
+      wallpaper-ff =
+        let
+          inherit (self) runCommand farbfeld farbfeld-utils;
+          wallpaper-jpg = ../../wallpaper.jpg;
+        in runCommand "wallpaper.ff" {
+          inherit wallpaper-jpg;
+          buildInputs = [ farbfeld farbfeld-utils ]; }
+          "jpg2ff < ${wallpaper-jpg} | ff-border e 50 | ff-bright rgba 0 0.9 1 | ff-blur 50 15 > $out";
+
+      pixelsize = 14;
+
+    in
+      {
+
+        src = fetchFromGitHub {
+          owner = "bakkeby";
+          repo = "st-flexipatch";
+          rev = "34cd955f148709e5adc5fce380f6528944f144e2";
+          hash = "sha256-R5NZ/9c2uea1WxZ5sFvlCf+zzFvo7E3CM4iiXLYZasA=";
+        };
+
+        postPatch = ''
+          substituteInPlace patches.def.h \
+            --replace "BACKGROUND_IMAGE_PATCH 0" "BACKGROUND_IMAGE_PATCH 1" \
+            --replace "SIXEL_PATCH 0" "SIXEL_PATCH 1" \
+            --replace "ALPHA_PATCH 0" "ALPHA_PATCH 1" \
+            --replace "ALPHA_FOCUS_HIGHLIGHT_PATCH 0" "ALPHA_FOCUS_HIGHLIGHT_PATCH 0"
+
+          substituteInPlace config.mk \
+            --replace "#SIXEL_C" "SIXEL_C"
+
+          substituteInPlace config.def.h \
+            --replace "/path/to/image.ff" "${wallpaper-ff}" \
+            --replace "pseudotransparency = 0" "pseudotransparency = 1" \
+            --replace "float alpha = 0.8;" "float alpha = 0.8;" \
+            --replace ":pixelsize=12:" ":pixelsize=${toString pixelsize}:"
+      '';});
 
   st = let
-   # st-ime = self.fetchurl {
-   #   url = "https://st.suckless.org/patches/fix_ime/st-ime-20190202-3be4cf1.diff";
-   #   sha256 = "0n4sq5xjx5shkdwv9hfwzjpiknra3076m8k1aimsjfqyw6gklnng";
-   # };
-   # st-dracula = self.fetchurl {
-   #   url = "https://st.suckless.org/patches/dracula/st-dracula-0.8.2.diff";
-   #   sha256 = "0zpvhjg8bzagwn19ggcdwirhwc17j23y5avcn71p74ysbwvy1f2y";
-   # };
-   # st-alpha = self.fetchurl {
-   #   url = "https://st.suckless.org/patches/alpha/st-alpha-0.8.2.diff";
-   #   sha256 = "11dj1z4llqbbki5cz1k1crr7ypnfqsfp7hsyr9wdx06y4d7lnnww";
-   # };
-   # st-solarized_both = self.fetchurl {
-   #   url = "https://st.suckless.org/patches/solarized/st-solarized-both-20190128-3be4cf1.diff";
-   #   sha256 = "1brz76qvmi0hg7zdq8jhgcmfc634hbm8h6wdh5cwi587xxdkhiqg";
-   # };
+    patches = let inherit (self) fetchurl; in {
 
-    st-nord = self.fetchurl {
-      url = "https://st.suckless.org/patches/nordtheme/st-nordtheme-0.8.5.diff";
-      sha256 = "Tlpp1HD4vl/c88UxI1t4rS7nDEzMkDeyW7/opIv4Rf8=";
+      dracula = fetchurl {
+        url = "https://st.suckless.org/patches/dracula/st-dracula-0.8.5.diff";
+        sha256 = "0ldy43y2xa8q54ci6ahxa3iimfb4hmjsbclkmisx0xjr88nazzhz";
+      };
+
+      nord = fetchurl {
+        url = "https://st.suckless.org/patches/nordtheme/st-nordtheme-0.8.5.diff";
+        sha256 = "Tlpp1HD4vl/c88UxI1t4rS7nDEzMkDeyW7/opIv4Rf8=";
+      };
+
+      background-image = fetchurl {
+        url = "https://st.suckless.org/patches/background_image/st-background-image-0.8.5.diff";
+        sha256 ="19a5dq1vyhviyvi7qr7w679r53vgvfypdv2bkx1h2p6zkgbzys0j";
+      };
+
+      fullscreen = fetchurl {
+        url = "https://st.suckless.org/patches/fullscreen/st-fullscreen-0.8.5.diff";
+        sha256 = "1njsd4nv5lxxyc7a3fawf7jz585bwwqlqnvggwmc4zb25bcz92gq";
+      };
+
     };
-
-    st-background-image = self.fetchurl {
-      url = "https://st.suckless.org/patches/background_image/st-background-image-0.8.5.diff";
-      sha256 ="19a5dq1vyhviyvi7qr7w679r53vgvfypdv2bkx1h2p6zkgbzys0j";
-    };
-
+    
     wallpaper-ff =
       let
         inherit (self) runCommand farbfeld farbfeld-utils;
@@ -111,18 +150,19 @@ self: super: rec {
         buildInputs = [ farbfeld farbfeld-utils ]; }
         "jpg2ff < ${wallpaper-jpg} | ff-border e 50 | ff-bright rgba 0 0.5 1 | ff-blur 50 15 > $out";
 
+    pixelsize = 14;
+
   in (super.st.override {
     patches = [
-      st-nord
-      st-background-image
-      # st-alpha
-      # st-dracula
-      # st-solarized_both
-    ]; }).overrideAttrs (_: {
+      patches.dracula
+      patches.background-image
+      patches.fullscreen
+    ];}).overrideAttrs (_: {
         postPatch = ''
           substituteInPlace config.def.h \
             --replace "/path/to/image.ff" "${wallpaper-ff}" \
-            --replace "pseudotransparency = 0" "pseudotransparency = 1"
+            --replace "pseudotransparency = 0" "pseudotransparency = 1" \
+            --replace ":pixelsize=12:" ":pixelsize=${toString pixelsize}:"
       '';});
 
   myEmacs = self.emacsWithPackages (epkg: with epkg; [ emacs-libvterm ]);

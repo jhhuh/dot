@@ -45,12 +45,14 @@ in {
 
   home = {
     packages = (with pkgs; [
+      libsixel
+      w3m
       farbfeld
       farbfeld-utils
       arandr
       (callPackage nix-L {})
       # For xmonad setup
-      st
+      st-flexipatch
       xst
       ranger
       kotatogram-desktop
@@ -190,6 +192,8 @@ in {
   };
 
   programs = {
+
+    nix-index.enable = true;
 
     doom-emacs = {
       enable = false;
