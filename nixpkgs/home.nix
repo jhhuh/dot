@@ -22,6 +22,16 @@ else
       clvm-tools.overridePythonAttrs (old: {
         propagatedBuildInputs = old.propagatedBuildInputs ++ [setuptools];}));
 
+  nix-L = {runCommand, nix, makeWrapper}:
+    runCommand "nix" { buildInputs = [pkgs.makeWrapper]; } ''
+      mkdir $out
+      ln -s ${pkgs.nix}/* $out/
+      rm -rf $out/bin
+      mkdir $out/bin
+      ln -s ${pkgs.nix}/bin/* $out/bin/
+      wrapProgram $out/bin/nix --add-flags "-L"
+    '';
+
 in {
 
   nixpkgs.overlays = [
@@ -34,6 +44,7 @@ in {
 
   home = {
     packages = (with pkgs; [
+      (pkgs.callPackage nix-L {})
       # For xmonad setup
       st
       xst
@@ -175,6 +186,17 @@ in {
   };
 
   programs = {
+
+    doom-emacs = {
+      enable = false;
+      emacsPackage = pkgs.emacsNativeComp;
+      doomPrivateDir = ../doom.d;
+      emacsPackagesOverlay = self: super: {
+        # fixes https://github.com/vlaci/nix-doom-emacs/issues/394
+        gitignore-mode = self.git-modes;
+        gitconfig-mode = self.git-modes;
+      };
+    };
 
     vim = {
       enable = true;
