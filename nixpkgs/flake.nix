@@ -13,6 +13,10 @@
 
     emacs-overlay.url = github:nix-community/emacs-overlay;
 
+    nix-doom-emacs.url = github:nix-community/nix-doom-emacs;
+    nix-doom-emacs.inputs.nixpkgs.follows = "nixpkgs";
+    nix-doom-emacs.inputs.emacs-overlay.follows = "emacs-overlay";
+
     comma.url = github:nix-community/comma;
     comma.flake = false;
 
@@ -24,19 +28,8 @@
     let
       system = "x86_64-linux";
       config = { allowUnfree = true; };
-      declarative-cachix-module = inputs.declarative-cachix.homeManagerModules.declarative-cachix-experimental;
-      emacs-overlay-module = {pkgs, ...}: {
-        nixpkgs.overlays = [inputs.emacs-overlay.overlay];
-      };
-      home-packages-module = {};
-      #home-packages-module = {pkgs, ...}: {
-      #  home.packages = [
-      #    (pkgs.callPackage inputs.comma { nix = pkgs.nix_2_3; })
-      #    (pkgs.callPackage inputs.x86-manpages-nix {
-      #      pkgs = pkgs // { stdenv = pkgs.stdenv // { lib = pkgs.lib; }; };
-      #      sources = null;
-      #      nixpkgs = null; })
-      #  ];};
+      module-declarative-cachix = inputs.declarative-cachix.homeManagerModules.declarative-cachix-experimental;
+      module-nix-doom-emacs = inputs.nix-doom-emacs.hmModule;
     in
       {
         inherit inputs;
@@ -47,9 +40,8 @@
             homeDirectory = "/home/jhhuh";
             username = "jhhuh";
             extraModules = [
-              declarative-cachix-module
-              emacs-overlay-module
-              home-packages-module
+              module-declarative-cachix
+              module-nix-doom-emacs
             ];
             extraSpecialArgs = {
               inherit inputs;
