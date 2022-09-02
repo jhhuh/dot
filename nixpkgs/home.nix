@@ -32,7 +32,7 @@ else
       wrapProgram $out/bin/nix --add-flags "-L"
     '';
 
-  farbfeld = {stdenv, fetchzip, xorg, SDL, ghostscript, sqlite}:
+  farbfeld-utils = {stdenv, fetchzip, xorg, SDL, ghostscript, sqlite}:
     stdenv.mkDerivation {
       name = "farbfeld";
 
@@ -82,7 +82,8 @@ in {
 
   home = {
     packages = (with pkgs; [
-      (callPackage farbfeld {})
+      farbfeld
+      (callPackage farbfeld-utils {})
       arandr
       (callPackage nix-L {})
       # For xmonad setup
