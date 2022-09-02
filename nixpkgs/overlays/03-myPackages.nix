@@ -1,5 +1,45 @@
 self: super: rec {
 
+  farbfeld-utils = let
+    farbfeld-utils-nix = {stdenv, fetchzip, xorg, SDL, ghostscript, sqlite}:
+      stdenv.mkDerivation {
+        name = "farbfeld";
+
+        src = fetchzip {
+          url = "http://zzo38computer.org/prog/farbfeld.zip";
+          sha256 = "sha256-guxTyZmi6w4jrGp+sdLddAur+PJUV3sUoyXC0lmC1LA=";
+          stripRoot = false;
+        };
+
+        buildInputs = [ xorg.libX11 SDL ghostscript sqlite ];
+
+        buildPhase = ''
+        mkdir ./bin
+
+        ls *.c \
+          | xargs grep --no-filename "^gcc " \
+          | sed -e "s#~/bin#./bin#" \
+          | xargs -I {} sh -c "echo -e \"echo -e {}\n{}\"" \
+          > ./build.sh
+
+        substituteInPlace ./build.sh \
+          --replace sqlite3.o ${sqlite.out}/lib/libsqlite3.so.0 \
+          --replace /usr/lib/libgs.so.9 ${ghostscript}/lib/libgs.so.9
+
+        gcc -c ./lodepng.c
+
+        source ./build.sh
+
+      '';
+
+        installPhase = ''
+        mkdir -p $out/bin
+        cp ./bin/* $out/bin
+      '';
+      };
+  in self.callPackage farbfeld-utils-nix {};
+
+
   pixiecore = self.callPackage ../pixiecore {};
 
   slock = super.slock.overrideAttrs (old: {
@@ -51,26 +91,39 @@ self: super: rec {
    #   url = "https://st.suckless.org/patches/solarized/st-solarized-both-20190128-3be4cf1.diff";
    #   sha256 = "1brz76qvmi0hg7zdq8jhgcmfc634hbm8h6wdh5cwi587xxdkhiqg";
    # };
+
     st-nord = self.fetchurl {
       url = "https://st.suckless.org/patches/nordtheme/st-nordtheme-0.8.5.diff";
       sha256 = "Tlpp1HD4vl/c88UxI1t4rS7nDEzMkDeyW7/opIv4Rf8=";
     };
-  in super.st.override {
+
+    st-background-image = self.fetchurl {
+      url = "https://st.suckless.org/patches/background_image/st-background-image-0.8.5.diff";
+      sha256 ="19a5dq1vyhviyvi7qr7w679r53vgvfypdv2bkx1h2p6zkgbzys0j";
+    };
+
+    wallpaper-ff =
+      let
+        inherit (self) runCommand farbfeld farbfeld-utils;
+        wallpaper-jpg = ../../wallpaper.jpg;
+      in runCommand "wallpaper.ff" {
+        inherit wallpaper-jpg;
+        buildInputs = [ farbfeld farbfeld-utils ]; }
+        "jpg2ff < ${wallpaper-jpg} | ff-border e 50 | ff-bright rgba 0 0.5 1 | ff-blur 50 15 > $out";
+
+  in (super.st.override {
     patches = [
       st-nord
+      st-background-image
       # st-alpha
       # st-dracula
       # st-solarized_both
-    ]; };
-
-  #  st = let
-  #     version = "0.8.2-3";
-  #     name = "st-${version}";
-  #     src = self.fetchurl {
-  #       url = "https://github.com/odknt/st/archive/${version}.tar.gz";
-  #       sha256 = "0s0q6qa53llpazzrvvnnfqcc0kv6akhvc8v9ppk38rkzmyjd9avy";
-  #     };
-  #   in super.st.overrideDerivation (attr: { inherit version name src; });
+    ]; }).overrideAttrs (_: {
+        postPatch = ''
+          substituteInPlace config.def.h \
+            --replace "/path/to/image.ff" "${wallpaper-ff}" \
+            --replace "pseudotransparency = 0" "pseudotransparency = 1"
+      '';});
 
   myEmacs = self.emacsWithPackages (epkg: with epkg; [ emacs-libvterm ]);
 
