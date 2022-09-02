@@ -32,6 +32,44 @@ else
       wrapProgram $out/bin/nix --add-flags "-L"
     '';
 
+  farbfeld = {stdenv, fetchzip, xorg, SDL, ghostscript, sqlite}:
+    stdenv.mkDerivation {
+      name = "farbfeld";
+
+      src = fetchzip {
+        url = "http://zzo38computer.org/prog/farbfeld.zip";
+        sha256 = "sha256-guxTyZmi6w4jrGp+sdLddAur+PJUV3sUoyXC0lmC1LA=";
+        stripRoot = false;
+      };
+
+      buildInputs = [ xorg.libX11 SDL ghostscript sqlite ];
+
+      buildPhase = ''
+        mkdir ./bin
+
+        ls *.c \
+          | xargs grep --no-filename "^gcc " \
+          | sed -e "s#~/bin#./bin#" \
+          | xargs -I {} sh -c "echo -e \"echo -e {}\n{}\"" \
+          > ./build.sh
+
+        substituteInPlace ./build.sh \
+          --replace sqlite3.o ${sqlite.out}/lib/libsqlite3.so.0 \
+          --replace /usr/lib/libgs.so.9 ${ghostscript}/lib/libgs.so.9
+
+        gcc -c ./lodepng.c
+
+        source ./build.sh
+
+      '';
+
+      installPhase = ''
+        mkdir -p $out/bin
+        cp ./bin/* $out/bin
+      '';
+    };
+
+
 in {
 
   nixpkgs.overlays = [
@@ -44,7 +82,9 @@ in {
 
   home = {
     packages = (with pkgs; [
-      (pkgs.callPackage nix-L {})
+      (callPackage farbfeld {})
+      arandr
+      (callPackage nix-L {})
       # For xmonad setup
       st
       xst
