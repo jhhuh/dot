@@ -113,9 +113,12 @@
 
       xkbOptions = "ctrl:swapcaps";
 
+      windowManager.xmonad.enable = true;
+
       desktopManager = {
         plasma5.enable = false;
         gnome.enable = true;
+        cde.enable = false;
       };
 
       displayManager = {

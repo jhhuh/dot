@@ -115,6 +115,12 @@
   #services.xserver.displayManager.sddm.enable = true;
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.cde.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
+  #services.xserver.desktopManager.pantheon.enable = true;
+  #services.xserver.desktopManager.lumina.enable = true;
+  #services.xserver.desktopManager.lumina.enable = true;
+  #services.xserver.desktopManager.cinnamon.enable = true;
   
   services.xserver.xkbOptions = "ctrl:swapcaps";
 
@@ -192,7 +198,7 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    listenAddresses = [ { addr = "100.94.44.110"; port = 22; } ];
+    #listenAddresses = [ { addr = "100.94.44.110"; port = 22; } ];
   };
 
   services.tailscale.enable = true;
