@@ -121,7 +121,7 @@ myKeys XConfig { modMask = modm }
       ( (modm .|. controlMask, xK_v),
         namedScratchpadAction scratchpads "pavucontrol"),
       ( (modm .|. controlMask, xK_g),
-        namedScratchpadAction scratchpads "kotatogram-desktop"),
+        namedScratchpadAction scratchpads "telegram-desktop"),
       ( (modm .|. controlMask, xK_j),
         namedScratchpadAction scratchpads "emacseditor"),
       ( (modm .|. controlMask, xK_f),

@@ -2,7 +2,7 @@
 
 let
 
-  emacsCommand = emacs: "${emacs}/bin/emacsclient -nw";
+  emacsCommand = emacs: "TERM=st-direct ${emacs}/bin/emacsclient -nw";
 
   toggle-touchpad = pkgs.writeScriptBin "toggle_touchpad.sh"
        ''
@@ -29,9 +29,8 @@ else
       rm -rf $out/bin
       mkdir $out/bin
       ln -s ${pkgs.nix}/bin/* $out/bin/
-      wrapProgram $out/bin/nix --add-flags "-L"
+      wrapProgram $out/bin/nix --inherit-argv0 --add-flags "-L"
     '';
-
 
 in {
 
@@ -45,14 +44,19 @@ in {
 
   home = {
     packages = (with pkgs; [
+      feh
+      nix-prefetch
+      ffmpeg
+      yt-dlp
       libsixel
       w3m
       farbfeld
       farbfeld-utils
       arandr
-      (callPackage nix-L {})
+      # This wrapped `nix` makes the bash autocompletion confused.. Let us fix it later
+      # (callPackage nix-L {})
       # For xmonad setup
-      st-flexipatch
+      st #st-flexipatch
       xst
       ranger
       kotatogram-desktop
@@ -163,8 +167,26 @@ in {
     };
 
     file = {
+
       home-manager.source = inputs.home-manager;
+
       nixpkgs.source = inputs.nixpkgs;
+
+      all-cabal-hashes.source = with pkgs; srcOnly {
+        name = "all-cabal-hashes";
+        src = all-cabal-hashes;
+      };
+
+     # haskell-library-srcs.source = let
+     #   inherit (pkgs) haskellPackages linkFarm srcOnly;
+     #   inherit (pkgs.lib) filterAttrs mapAttrsToList;
+     #   all-libs = filterAttrs (_: v: v ? src) haskellPackages;
+     # in linkFarm "haskell-library-srcs"
+     # (mapAttrsToList (name: drv: {
+     #   inherit name;
+     #   path = srcOnly { inherit (drv) name src; };
+     # })
+     # all-libs);
     };
 
   };
@@ -193,7 +215,11 @@ in {
 
   programs = {
 
-    nix-index.enable = true;
+    ncmpcpp.enable = true;
+
+    nix-index.enable = false;
+
+    command-not-found.enable = true;
 
     doom-emacs = {
       enable = false;
@@ -232,6 +258,7 @@ in {
 
     tmux = {
       enable = true;
+      package = pkgs.tmux;
       prefix = "C-j";
       keyMode = "vi";
       sensibleOnTop = true;
@@ -271,6 +298,7 @@ in {
 
       shellAliases = {
         vi = emacsCommand config.programs.emacs.package;
+        nix-run = ''function __nix-run() { nix run "nixpkgs#$1" "''${@:2}"; }; __nix-run'';
         nix-repl = "nix repl '<nixpkgs>'";
         nix-which = "function __nix-which() { readlink $(which $1); }; __nix-which";
         nix-unpack-from = "function __nix-unpack-from() { nix-shell $1 -A $2 --run unpackPhase; }; __nix-unpack-from";
@@ -327,6 +355,12 @@ in {
                 echo "$PATH" | sed -e "s#.*/nix/store/[^-]*-\([^/:]*\).*#$1\1$2#"
             fi
         }
+
+        export MYBASE16THEME=flat
+         if [ "''${-#*i}" != "$-" ] && [ -n "$PS1" ] && [ -f ~/.dot/base16-shell/scripts/base16-$MYBASE16THEME.sh ]; then
+           source ~/.dot/base16-shell/scripts/base16-$MYBASE16THEME.sh
+         fi
+
       '';
     };
 
@@ -362,9 +396,18 @@ in {
     };
     keynav.enable = true;
     gpg-agent.enable = true;
-    mpd.enable = false;
+    mpd = {
+      enable = true;
+      extraConfig = ''
+        audio_output {
+          type        "pulse"
+          name        "MPD"
+          # server      "localhost"
+        }
+      '';
+    };
     emacs = {
-      enable = false;
+      enable = true;
       client.enable = true;
     };
   };

@@ -1,5 +1,35 @@
 self: super: rec {
 
+  all-hackage-sources =
+    let
+      hpkgs = self.haskellPackages;
+      names = builtins.attrNames hpkgs;
+      src = map
+        (n: hpkgs.${n}.src or null)
+        names;
+      src' = builtins.filter (x: ! isNull x) src;
+    in map (x: { name = x.name; path = x; }) src';
+
+  # not working
+  sixel-tmux = super.tmux.overrideAttrs (old: rec {
+
+    name = "sixel-tmux-${version}";
+    version = "HEAD";
+
+    src = self.fetchFromGitHub {
+      owner = "csdvrx";
+      repo = "sixel-tmux";
+      rev = "bc340a30ecabcf4f05a8201b798422aa89716991";
+      sha256 = "sha256-H40Cyw2mYyxLfO6VHwP/iaHKS/m264gFz/DLBgbVXjY=";
+    };
+
+    patchPhase = ''
+      substituteInPlace ./Makefile.am --replace " -O2" " -O2 -lm"
+      substituteInPlace ./tmux.c --replace " PERMS" " ACCESSPERMS"
+    '';
+
+  });
+
   farbfeld-utils = let
     farbfeld-utils-nix = {stdenv, fetchzip, xorg, SDL, ghostscript, sqlite}:
       stdenv.mkDerivation {
@@ -85,7 +115,7 @@ self: super: rec {
         in runCommand "wallpaper.ff" {
           inherit wallpaper-jpg;
           buildInputs = [ farbfeld farbfeld-utils ]; }
-          "jpg2ff < ${wallpaper-jpg} | ff-border e 50 | ff-bright rgba 0 0.9 1 | ff-blur 50 15 > $out";
+          "jpg2ff < ${wallpaper-jpg} | ff-border e 50 | ff-bright rgba 0 0.9 1.0 | ff-blur 50 15 > $out";
 
       pixelsize = 14;
 
@@ -103,7 +133,7 @@ self: super: rec {
           substituteInPlace patches.def.h \
             --replace "BACKGROUND_IMAGE_PATCH 0" "BACKGROUND_IMAGE_PATCH 1" \
             --replace "SIXEL_PATCH 0" "SIXEL_PATCH 1" \
-            --replace "ALPHA_PATCH 0" "ALPHA_PATCH 1" \
+            --replace "ALPHA_PATCH 0" "ALPHA_PATCH 0" \
             --replace "ALPHA_FOCUS_HIGHLIGHT_PATCH 0" "ALPHA_FOCUS_HIGHLIGHT_PATCH 0"
 
           substituteInPlace config.mk \
@@ -112,7 +142,7 @@ self: super: rec {
           substituteInPlace config.def.h \
             --replace "/path/to/image.ff" "${wallpaper-ff}" \
             --replace "pseudotransparency = 0" "pseudotransparency = 1" \
-            --replace "float alpha = 0.8;" "float alpha = 0.8;" \
+            --replace "float alpha = 0.8;" "float alpha = 0.9;" \
             --replace ":pixelsize=12:" ":pixelsize=${toString pixelsize}:"
       '';});
 
@@ -139,6 +169,11 @@ self: super: rec {
         sha256 = "1njsd4nv5lxxyc7a3fawf7jz585bwwqlqnvggwmc4zb25bcz92gq";
       };
 
+      xrandrfontsize = fetchurl {
+        url = "https://st.suckless.org/patches/xrandrfontsize/xrandrfontsize-0.8.4-20211224-2f6e597.diff";
+        sha256 = "olDdxC6RSw5KxWsEQFVvfOtFa4sWvPqdwLcNU03NZq4=";
+      };
+
     };
     
     wallpaper-ff =
@@ -154,9 +189,9 @@ self: super: rec {
 
   in (super.st.override {
     patches = [
-      patches.dracula
-      patches.background-image
-      patches.fullscreen
+      #patches.dracula
+      #patches.background-image
+      #patches.fullscreen
     ];}).overrideAttrs (_: {
         postPatch = ''
           substituteInPlace config.def.h \

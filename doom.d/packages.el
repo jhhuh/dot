@@ -49,11 +49,6 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-(package! cython-mode)
-(package! pdf-tools :built-in 'prefer)
-
-(package! impatient-mode)
-(package! skewer-mode)
-(package! markdown-preview-mode)
-(package! flymd)
-(package! sicp)
+(package! envrc :recipe (:host github :repo "purcell/envrc"))
+(package! lsp-haskell)
+(package! lsp-ui)
