@@ -121,11 +121,11 @@ myKeys XConfig { modMask = modm }
       ( (modm .|. controlMask, xK_v),
         namedScratchpadAction scratchpads "pavucontrol"),
       ( (modm .|. controlMask, xK_g),
-        namedScratchpadAction scratchpads "telegram-desktop"),
+        namedScratchpadAction scratchpads "kotatogram-desktop"),
       ( (modm .|. controlMask, xK_j),
-        namedScratchpadAction scratchpads "emacseditor"),
+        namedScratchpadAction scratchpads "emacs"),
       ( (modm .|. controlMask, xK_f),
-        namedScratchpadAction scratchpads "emacseditor"),
+        namedScratchpadAction scratchpads "PiP"),
       ( (modm .|. controlMask, xK_k),
         namedScratchpadAction scratchpads "scrcpy"),
       ( (modm .|. controlMask, xK_u),
@@ -149,15 +149,18 @@ scratchpads =
        (className =? ".scrcpy-wrapped")
        (customFloating $
          W.RationalRect (22/32) (1/16) (8/32) (12/16)),
-    NS "emacseditor"
+    NS "emacs"
        (unwords $ [
-         "emacsclient --eval ",
-         "'(select-frame (make-frame ",
-                         "`((name . \"emacs-scratch\")",
-                           "(window-system . x))))'"])
-       (title =? "emacs-scratch")
+         "emacs"])
+       (className =? "Emacs")
        (customFloating $
-         W.RationalRect (1/32) (1/32) (30/32) (29/32)),
+         W.RationalRect (4/32) (1/32) (24/32) (30/32)),
+    NS "PiP"
+       (unwords $ [
+         ""])
+       (className =? "Emacs")
+       (customFloating $
+         W.RationalRect (4/32) (1/32) (24/32) (30/32)),
     NS "zathura" "zathura"
        (className =? "Zathura")
        (customFloating $
@@ -182,7 +185,7 @@ myManageHook = composeAll . concat $
         | r <- myFloatsByRole]]
   where myFloatsByResource = ["Devtools",
                               "plasmashell"]
-        myFloatsByClass = ["Emacs"]
+        myFloatsByClass = [] -- "Emacs"]
         myFloatsByTitle = ["Open Document",
                            "Open Files",
                            "Developer Tools"]
