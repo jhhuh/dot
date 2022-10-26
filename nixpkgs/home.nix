@@ -358,7 +358,21 @@ in {
             fi
         }
 
-        export MYBASE16THEME=flat
+        MYBASE16THEME_x230="flat"
+        MYBASE16THEME_aero15="atelier-dune-light"
+        MYBASE16THEME_cafe="rebecca"
+        MYBASE16THEME_dasan="irblack"
+        MYBASE16THEME_farmer1="irblack"
+        MYBASE16THEME_farmer2="irblack"
+        #MYBASE16THEME_laptop-aa6mgb61="irblack"
+        MYBASE16THEME_mimir="irblack"
+        MYBASE16THEME_p1gen3="nord"
+        MYBASE16THEME_roekstonen="irblack"
+        MYBASE16THEME_zhao="irblack"
+
+        _MYBASE16THEME="MYBASE16THEME_$HOSTNAME"
+
+        export MYBASE16THEME="''${!_MYBASE16THEME}"
          if [ "''${-#*i}" != "$-" ] && [ -n "$PS1" ] && [ -f ~/.dot/base16-shell/scripts/base16-$MYBASE16THEME.sh ]; then
            source ~/.dot/base16-shell/scripts/base16-$MYBASE16THEME.sh
          fi
