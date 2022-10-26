@@ -116,6 +116,7 @@ fuzzcheck
 generic-arbitrary
 ghc-paths
 goa
+graphmod
 graphviz
 groups
 hakyll
