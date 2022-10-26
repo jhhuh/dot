@@ -15,6 +15,11 @@
 
     nixosConfigurations = {
 
+      x230 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [ ./x230/configuration.nix ];
+      };
+
       aero15 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [ ./aero15/configuration.nix ];
