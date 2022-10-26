@@ -15,20 +15,6 @@
     config.allowUnfree = true;
   };
 
-
-  nix = {
-    package = pkgs.nixFlakes;
-
-    # Enable experimental version of nix with flakes support
-    extraOptions = ''
-      keep-outputs = true
-      keep-derivations = true
-      experimental-features = nix-command flakes
-    '';
-
-    trustedUsers = [ "@wheel" ];
-  };
-
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [ "vm.laptop_mode=5" ];
@@ -102,7 +88,7 @@
   };
 
   services = {
-    xfs.enable = true;
+    xfs.enable = false;
     dbus.packages = [ pkgs.miraclecast ];
 #    logind.lidSwitch = "ignore";
 #    acpid = {
@@ -133,11 +119,6 @@
   };
 
   i18n.inputMethod.enabled = "kime";
-
-  users.users."jhhuh" = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "vboxusers" ];
-  };
 
   environment.systemPackages = with pkgs; [
     xorg.xfs wget vim tmux git

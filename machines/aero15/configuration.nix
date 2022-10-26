@@ -162,15 +162,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      bash-prompt-suffix = \[\033[1;33m\]\n(nix develop)\$ \[\033[0m\]
-      experimental-features = nix-command flakes
-    '';
-    trustedUsers = [ "root" "@wheel" ];
-  };
-
   # Enable sound.
   sound.enable = true;
 
@@ -198,17 +189,6 @@
   #powerManagement.cpuFreqGovernor = "performance";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users."jhhuh" = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "libvirtd"
-      "ipfs"
-      "vboxusers"
-      "disk"
-    ];
-  };
 
   users.users."guest".isNormalUser = true;
 

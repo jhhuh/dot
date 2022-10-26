@@ -18,15 +18,6 @@
   networking.networkmanager.enable = true;
   networking.firewall.trustedInterfaces = ["tailscale0"];
 
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      bash-prompt-suffix = \[\033[1;33m\]\n(nix devlop)\$ \[\033[0m\]
-      experimental-features = nix-command flakes
-    '';
-    trustedUsers = [ "root" "@wheel" ];
-  };
-
   console.font = "latarcyrheb-sun32";
   console.useXkbConfig = true;
 
@@ -232,14 +223,6 @@
             } //
             cfg.extraConfig)))
       );
-
-  security.pam.enableSSHAgentAuth = true;
-
-  users.users."jhhuh" = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "audio" "ipfs" ];
-    uid = 1000;
-  };
 
   system.stateVersion = "22.05";
   time.timeZone = "Asia/Seoul";

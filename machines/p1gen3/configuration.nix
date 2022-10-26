@@ -89,15 +89,6 @@
     ];
   };
 
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      bash-prompt-suffix = \[\033[1;33m\]\n(nix develop)\$ \[\033[0m\]
-      experimental-features = nix-command flakes
-    '';
-    trustedUsers = [ "root" "@wheel" ];
-  };
-
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -155,15 +146,6 @@
   virtualisation.virtualbox.host = {
     enable = true;
     enableExtensionPack = true;
-  };
-
-  users.users.jhhuh = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "vboxusers" "disk" ];
-    packages = with pkgs; [
-  #     firefox
-  #     thunderbird
-    ];
   };
 
   fonts.fonts = with pkgs; [
