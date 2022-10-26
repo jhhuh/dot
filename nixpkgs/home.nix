@@ -44,6 +44,8 @@ in {
 
   home = {
     packages = (with pkgs; [
+      unzip
+      graphviz
       feh
       nix-prefetch
       ffmpeg
@@ -112,7 +114,7 @@ in {
       magic-wormhole
       appimage-run
       ghcid
-      (ghc.withPackages (hp: with hp; [ haskell-language-server ]))
+      (ghc.withPackages (hp: with hp; [ haskell-language-server graphmod ]))
       git-lfs
       #myVim
       cabal-install
