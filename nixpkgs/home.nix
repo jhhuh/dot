@@ -149,8 +149,6 @@ else
 in {
 
   nixpkgs.overlays = [
-    #(import ./overlays/01-stackage-overlay.nix)
-    #(import ./overlays/02-myHaskellPackages.nix)
     (import ./overlays/03-myPackages.nix)
     (import ./overlays/04-myEnvs.nix)
     (import ./overlays/05-prefer-remote-fetch.nix)
