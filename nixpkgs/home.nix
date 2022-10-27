@@ -167,9 +167,23 @@ in {
 
       EDITOR = "${config.programs.vim.package}/bin/vim";
 
-      NIX_PATH = lib.concatStringsSep ":" [
+      NIX_PATH = let
+        # HACK: This is to make it work with `nix repl`
+        nixpkgs-overlays = pkgs.writeText "overlays-compat.nix" ''
+          let
+            user = __getEnv "USER";
+            this = (import ${inputs.flake-compat} { src = ${./.}; }).defaultNix;
+            inputs = this.inputs;
+          in [ inputs.haskell-nix.overlay
+               (import ${./.}/overlays/03-myPackages.nix)
+               (import ${./.}/overlays/04-myEnvs.nix)
+               (import ${./.}/overlays/05-prefer-remote-fetch.nix) ]
+        '';
+
+       in lib.concatStringsSep ":" [
         "$HOME/.nix-defexpr/channels"
         "nixpkgs=${inputs.nixpkgs.outPath}"
+        "nixpkgs-overlays=${nixpkgs-overlays}" # HACK: This is to make it work with `nix repl`
         "nixos-config=/etc/nixos/configuration.nix"
         "/nix/var/nix/profiles/per-user/root/channels"
       ];

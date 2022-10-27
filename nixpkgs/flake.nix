@@ -28,6 +28,9 @@
 
     haskell-nix.url = github:input-output-hk/haskell.nix;
 
+    flake-compat.url = github:edolstra/flake-compat;
+    flake-compat.flake = false;
+
   };
 
   outputs = inputs:
