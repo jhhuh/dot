@@ -22,6 +22,10 @@
 
     x86-manpages-nix.url = github:blitz/x86-manpages-nix;
     x86-manpages-nix.flake = false;
+
+    base16-shell.url = github:chriskempson/base16-shell;
+    base16-shell.flake = false;
+
   };
 
   outputs = inputs:

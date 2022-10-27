@@ -1,1 +1,1 @@
-../nixpkgs-stackage/default.nix
+self: super: {}

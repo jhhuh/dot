@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "base16-shell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1663053609,
+        "narHash": "sha256-X89FsG9QICDw3jZvOCB/KsPBVOLUeE7xN3VCtf0DD3E=",
+        "owner": "chriskempson",
+        "repo": "base16-shell",
+        "rev": "588691ba71b47e75793ed9edfcfaa058326a6f41",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chriskempson",
+        "repo": "base16-shell",
+        "type": "github"
+      }
+    },
     "comma": {
       "flake": false,
       "locked": {
@@ -468,6 +484,7 @@
     },
     "root": {
       "inputs": {
+        "base16-shell": "base16-shell",
         "comma": "comma",
         "declarative-cachix": "declarative-cachix",
         "emacs-overlay": "emacs-overlay",

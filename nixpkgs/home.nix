@@ -2,10 +2,124 @@
 
 let
 
+  packages =  (with pkgs; [
+    #(haskell.lib.justStaticExecutables haskellPackages.summoner-tui)
+    unzip
+    graphviz
+    feh
+    nix-prefetch
+    ffmpeg
+    yt-dlp
+    libsixel
+    w3m
+    farbfeld
+    farbfeld-utils
+    arandr
+    st xst
+
+    ranger
+    kotatogram-desktop
+    scrcpy
+    zathura
+    xmobar
+    pavucontrol
+    compton
+
+    #
+    pixiecore
+    xpra
+    sshuttle
+    kmscube
+    libdrm
+    kmscon
+    mpv
+    toggle-touchpad
+    cntr
+    #qemu
+    xclip
+    steam-run
+    patchelf
+    overmind
+    mplayer
+    google-drive-ocamlfuse
+    niv
+    nodePackages.node2nix
+    mosh
+    pass
+    jq
+    koreader
+    linux-manual
+    scheme-manpages
+    nixos-shell
+    dasht
+    man-pages
+    man-pages-posix
+    binutils
+    gh
+    darcs
+    asciinema
+    termtosvg
+    pandoc
+    nix-template
+    #chia
+    cabal2nix
+    loc
+    vimpc
+    webtorrent_desktop
+    niv
+    browsh
+    magic-wormhole
+    appimage-run
+    ghcid
+    (ghc.withPackages (hp: with hp; [ haskell-language-server graphmod ]))
+    git-lfs
+    #myVim
+    cabal-install
+    # ws
+    wget
+    acpi
+    powertop
+    ripgrep
+    sqlite
+    wordnet
+    sbcl
+    htop tree
+    nextcloud-client
+    kotatogram-desktop gnome.gnome-tweaks mattermost-desktop
+    google-chrome
+    gnome.dconf-editor
+    xdotool
+    gjs
+    gnome.zenity
+    gnome-network-displays
+    gnomecast
+  ]) ++
+  (with pkgs.gnomeExtensions; [
+    appindicator
+    soft-brightness
+    e-ink-mode
+    bitcoin-markets
+    (ddterm.overrideAttrs (attrs: {
+      nativeBuildInputs = attrs.nativeBuildInputs or [] ++ [
+        pkgs.wrapGAppsHook
+      ];
+      buildInputs = attrs.buildInputs or [] ++ (with pkgs; [
+        glib
+        gtk3
+        pango
+        vte
+      ]);
+    }))
+    gsconnect
+    unite
+  ]) ++
+  [
+  ];
+
   emacsCommand = emacs: "TERM=st-direct ${emacs}/bin/emacsclient -nw";
 
   toggle-touchpad = pkgs.writeScriptBin "toggle_touchpad.sh"
-       ''
+    ''
          #!{bash}/bin/bash
          
          if [ $(gsettings get org.gnome.desktop.peripherals.touchpad send-events) == "'enabled'" ]; then
@@ -43,121 +157,7 @@ in {
   ];
 
   home = {
-    packages = (with pkgs; [
-      unzip
-      graphviz
-      feh
-      nix-prefetch
-      ffmpeg
-      yt-dlp
-      libsixel
-      w3m
-      farbfeld
-      farbfeld-utils
-      arandr
-      # This wrapped `nix` makes the bash autocompletion confused.. Let us fix it later
-      # (callPackage nix-L {})
-      # For xmonad setup
-      st #st-flexipatch
-      xst
-      ranger
-      kotatogram-desktop
-      scrcpy
-      zathura
-      xmobar
-      pavucontrol
-      compton
-
-      #
-      pixiecore
-      xpra
-      sshuttle
-      kmscube
-      libdrm
-      kmscon
-      mpv
-      toggle-touchpad
-      cntr
-      #qemu
-      xclip
-      steam-run
-      patchelf
-      overmind
-      mplayer
-      google-drive-ocamlfuse
-      niv
-      nodePackages.node2nix
-      mosh
-      pass
-      jq
-      koreader
-      linux-manual
-      scheme-manpages
-      nixos-shell
-      dasht
-      man-pages
-      man-pages-posix
-      binutils
-      gh
-      darcs
-      asciinema
-      termtosvg
-      pandoc
-      nix-template
-      #chia
-      cabal2nix
-      loc
-      vimpc
-      webtorrent_desktop
-      niv
-      browsh
-      magic-wormhole
-      appimage-run
-      ghcid
-      (ghc.withPackages (hp: with hp; [ haskell-language-server graphmod ]))
-      git-lfs
-      #myVim
-      cabal-install
-      # ws
-      wget
-      acpi
-      powertop
-      ripgrep
-      sqlite
-      wordnet
-      sbcl
-      htop tree
-      nextcloud-client
-      kotatogram-desktop gnome.gnome-tweaks mattermost-desktop
-      google-chrome
-      gnome.dconf-editor
-      xdotool
-      gjs
-      gnome.zenity
-      gnome-network-displays
-      gnomecast
-    ]) ++
-    (with pkgs.gnomeExtensions; [
-      appindicator
-      soft-brightness
-      e-ink-mode
-      bitcoin-markets
-      (ddterm.overrideAttrs (attrs: {
-        nativeBuildInputs = attrs.nativeBuildInputs or [] ++ [
-          pkgs.wrapGAppsHook
-        ];
-        buildInputs = attrs.buildInputs or [] ++ (with pkgs; [
-          glib
-          gtk3
-          pango
-          vte
-        ]);
-      }))
-      gsconnect
-      unite
-    ]) ++
-    [
-    ];
+    inherit packages;
 
     sessionPath = [
       "$HOME/.emacs.d/bin"
@@ -179,16 +179,16 @@ in {
         src = all-cabal-hashes;
       };
 
-     # haskell-library-srcs.source = let
-     #   inherit (pkgs) haskellPackages linkFarm srcOnly;
-     #   inherit (pkgs.lib) filterAttrs mapAttrsToList;
-     #   all-libs = filterAttrs (_: v: v ? src) haskellPackages;
-     # in linkFarm "haskell-library-srcs"
-     # (mapAttrsToList (name: drv: {
-     #   inherit name;
-     #   path = srcOnly { inherit (drv) name src; };
-     # })
-     # all-libs);
+      # haskell-library-srcs.source = let
+      #   inherit (pkgs) haskellPackages linkFarm srcOnly;
+      #   inherit (pkgs.lib) filterAttrs mapAttrsToList;
+      #   all-libs = filterAttrs (_: v: v ? src) haskellPackages;
+      # in linkFarm "haskell-library-srcs"
+      # (mapAttrsToList (name: drv: {
+      #   inherit name;
+      #   path = srcOnly { inherit (drv) name src; };
+      # })
+      # all-libs);
     };
 
   };
@@ -288,7 +288,7 @@ in {
       userEmail = "jhhuh.note@gmail.com";
       userName = "Ji-Haeng Huh";
       extraConfig = {
-        init.defaultBranch = "master";
+        init.defaultBranch = "main";
       };
       package = pkgs.gitFull;
     };
@@ -373,8 +373,8 @@ in {
         _MYBASE16THEME="MYBASE16THEME_$HOSTNAME"
 
         export MYBASE16THEME="''${!_MYBASE16THEME}"
-         if [ "''${-#*i}" != "$-" ] && [ -n "$PS1" ] && [ -f ~/.dot/base16-shell/scripts/base16-$MYBASE16THEME.sh ]; then
-           source ~/.dot/base16-shell/scripts/base16-$MYBASE16THEME.sh
+         if [ "''${-#*i}" != "$-" ] && [ -n "$PS1" ] && [ -f ${inputs.base16-shell}/scripts/base16-$MYBASE16THEME.sh ]; then
+           source ${inputs.base16-shell}/scripts/base16-$MYBASE16THEME.sh
          fi
 
       '';
@@ -406,12 +406,16 @@ in {
   };
 
   services = {
+
     syncthing = {
       enable = true;
       tray = false;
     };
+
     keynav.enable = true;
+
     gpg-agent.enable = true;
+
     mpd = {
       enable = true;
       extraConfig = ''
@@ -422,6 +426,7 @@ in {
         }
       '';
     };
+
     emacs = {
       enable = true;
       client.enable = true;
@@ -430,34 +435,5 @@ in {
 
   manual.html.enable = true;
 
-  #dconf.settings =
-  #  let
-  #    mkTuple = lib.hm.gvariant.mkTuple;
-  #  in
-  #  {
-  #    "org/gnome/desktop/input-sources" = {
-  #      per-window = false;
-  #      sources = [(mkTuple ["xkb" "kr"])];
-  #      xkb-options = ["ctrl:swapcaps" "lv3:ralt_switch"];
-  #    };
-
-  #    "org/gnome/desktop/peripherals/keyboard" = {
-  #      repeat = true;
-  #      delay = 250;
-  #      repeat-interval = 20;
-  #    };
-
-  #    "org/gnome/desktop/peripherals/touchpad" = {
-  #      two-finger-scrolling-enabled = true;
-  #    };
-
-  #    "org/gnome/desktop/privacy" = {
-  #      disable-microphone = false;
-  #    };
-
-  #    "org/gnome/settings-daemon/plugins/power" = {
-  #      sleep-inactive-ac-type = "nothing";
-  #    };
-  #  };
 }
 
