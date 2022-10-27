@@ -26,6 +26,8 @@
     base16-shell.url = github:chriskempson/base16-shell;
     base16-shell.flake = false;
 
+    haskell-nix.url = github:input-output-hk/haskell.nix;
+
   };
 
   outputs = inputs:
