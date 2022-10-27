@@ -165,7 +165,16 @@ in {
     ];
 
     sessionVariables = {
-      EDITOR = "vim";
+
+      EDITOR = "${config.programs.vim.package}/bin/vim";
+
+      NIX_PATH = lib.concatStringsSep ":" [
+        "$HOME/.nix-defexpr/channels"
+        "nixpkgs=${inputs.nixpkgs.outPath}"
+        "nixos-config=/etc/nixos/configuration.nix"
+        "/nix/var/nix/profiles/per-user/root/channels"
+      ];
+
     };
 
     file = {
