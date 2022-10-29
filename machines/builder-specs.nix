@@ -1,9 +1,11 @@
 let
 
+  key-owner = "jhhuh";
+
   common-spec =  {
     system = "x86_64-linux";
     sshUser = "builder";
-    sshKey = "/root/.ssh/id_ed25519";
+    sshKey = "/home/${key-owner}/.ssh/id_ed25519";
     maxJobs = 30;
     speedFactor = 10;
   };

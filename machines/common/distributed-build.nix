@@ -30,4 +30,11 @@ in
       openssh.authorizedKeys.keys = builder-pubkeys;
     };
 
+    services.nix-serve = {
+      enable = true;
+      port = 5555;
+      openFirewall = true;
+      secretKeyFile = "/root/.secrets/nix-serve.secret";
+    };
+
   }
