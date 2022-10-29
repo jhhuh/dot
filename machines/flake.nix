@@ -17,22 +17,22 @@
 
       x230 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        modules = [ ./x230/configuration.nix ./common.nix ];
+        modules = [ ./x230/configuration.nix ./common ];
       };
 
       aero15 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        modules = [ ./aero15/configuration.nix ./common.nix  ];
+        modules = [ ./aero15/configuration.nix ./common  ];
       };
 
       p1gen3 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        modules = [ ./p1gen3/configuration.nix ./common.nix  ];
+        modules = [ ./p1gen3/configuration.nix ./common  ];
       };
 
       tres-cantos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        modules = [ ./tres-cantos/configuration.nix ./common.nix  ];
+        modules = [ ./tres-cantos/configuration.nix ./common  ];
       };
 
     };
