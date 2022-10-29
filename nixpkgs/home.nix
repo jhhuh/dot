@@ -343,6 +343,12 @@ in {
         nix-build--no-out-link = "nix-build --no-out-link";
 
         watch-direnv = "while true; do _direnv_hook; sleep 1; done";
+
+        ipython-for-crawl = lib.concatStringsSep " " [
+          "nix-shell"
+          ''-p "python3.withPackages (p: with p; [ ipython requests beautifulsoup4 ])"''
+          "--run ipython"
+        ];
       };
 
       bashrcExtra = ''
