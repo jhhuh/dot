@@ -3,6 +3,7 @@
 let
 
   packages =  (with pkgs; [
+    cloudflare-warp
     #(haskell.lib.justStaticExecutables haskellPackages.summoner-tui)
     unzip
     graphviz
