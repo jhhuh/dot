@@ -3,6 +3,10 @@
 let
 
   packages =  (with pkgs; [
+    #(haskell.lib.justStaticExecutables haskellPackages.hocker)
+    x2x
+    pciutils
+    parallel
     cloudflare-warp
     #(haskell.lib.justStaticExecutables haskellPackages.summoner-tui)
     unzip
@@ -115,6 +119,7 @@ let
     unite
   ]) ++
   [
+    inputs.devenv.packages.x86_64-linux.devenv
   ];
 
   emacsCommand = emacs: "TERM=st-direct ${emacs}/bin/emacsclient -nw";
@@ -231,10 +236,10 @@ in {
     ];
 
     extraCaches = [
-      {
-        url = "https://hydra.iohk.io";
-        key = "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ";
-      }
+      #{
+      #  url = "https://hydra.iohk.io";
+      #  key = "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ";
+      #}
     ];
   };
 

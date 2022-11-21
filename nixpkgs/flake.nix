@@ -31,6 +31,8 @@
     flake-compat.url = github:edolstra/flake-compat;
     flake-compat.flake = false;
 
+    devenv.url = github:cachix/devenv;
+
   };
 
   outputs = inputs:
