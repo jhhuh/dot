@@ -43,10 +43,10 @@ import qualified Data.Map as M
 
 import XMonad.Hooks.EwmhDesktops (
   ewmh,
-  ewmhFullscreen)
+  fullscreenEventHook)
 
-desktop = ewmhFullscreen . ewmh $ def {
-  handleEventHook = handleEventHook def
+desktop = ewmh $ def {
+  handleEventHook = fullscreenEventHook <+> handleEventHook def
  }
 
 conf = desktop {
