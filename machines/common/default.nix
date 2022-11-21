@@ -7,4 +7,6 @@
     (import ./distributed-build.nix)
   ];
 
+  programs.slock.enable = true;
+
 }
