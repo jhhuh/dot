@@ -8,7 +8,7 @@ XTerm*metaSendsEscape: true
 !!! XTerm*ximFont: xft:Noto Sans Mono CJK KR:pixelsize=18
 
 !!! Xft !!!
-Xft.dpi: 80
+Xft.dpi: 128
 !Xft.antialias:  1
 !Xft.autohint:   0
 !Xft.hinting:    1
