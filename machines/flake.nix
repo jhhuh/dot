@@ -30,6 +30,11 @@
         modules = [ ./p1gen3/configuration.nix ./common  ];
       };
 
+      cafe = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [ ./cafe/configuration.nix ./common  ];
+      };
+
       tres-cantos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [ ./tres-cantos/configuration.nix ./common  ];
@@ -41,42 +46,22 @@
   //
 
   (let
+    inherit (builtins) mapAttrs;
     inherit (inputs) deploy-rs;
     inherit (deploy-rs.lib.x86_64-linux) activate deployChecks;
   in
   {
 
     deploy.nodes =
-      {
-
-        p1gen3 = {
-          hostname = "p1gen3.jhhuh-korea.gmail.com.beta.tailscale.net";
+      mapAttrs (n: v: 
+        {
+          hostname = "${n}.coati-bebop.ts.net";
           sshOpts = [ "-A" ];
           profiles."system" = {
             user = "root";
-            path = activate.nixos self.nixosConfigurations.p1gen3;
+            path = activate.nixos v;
           };
-        };
-
-        aero15 = {
-          hostname = "aero15.jhhuh-korea.gmail.com.beta.tailscale.net";
-          sshOpts = [ "-A" ];
-          profiles."system" = {
-            user = "root";
-            path = activate.nixos self.nixosConfigurations.aero15;
-          };
-        };
-
-        tres-cantos = {
-          hostname = "tres-cantos.jhhuh-korea.gmail.com.beta.tailscale.net";
-          sshOpts = [ "-A" ];
-          profiles."system" = {
-            user = "root";
-            path = activate.nixos self.nixosConfigurations.tres-cantos;
-          };
-        };
-
-      };
+        }) self.nixosConfigurations;
 
     checks = deployChecks self.deploy;
 
@@ -100,16 +85,15 @@
       '';
     };
 
-    apps = {
+    apps = rec {
+      default = local-deploy;
       local-deploy = {
         type = "app";
         program = "${self.packages.${system}.local-deploy}/bin/local-deploy";
       };
     };
 
-    defaultApp = self.apps.${system}.local-deploy;
-
-    devShell = pkgs.mkShell {
+    devShells.default = pkgs.mkShell {
       buildInputs = [
         deploy-rs
       ];
