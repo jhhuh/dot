@@ -127,8 +127,18 @@
   # services.printing.enable = true;
 
   # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
+  #
+  sound.enable = true;
+
+  hardware = {
+    bluetooth.enable = true;
+    enableAllFirmware = true;
+    pulseaudio = {
+      enable = true;
+      extraModules = [];
+      package = pkgs.pulseaudioFull;
+    };
+  };
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport32Bit = true;
