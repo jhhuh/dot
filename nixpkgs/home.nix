@@ -1,8 +1,11 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, hostname, ... }:
 
 let
 
   packages =  (with pkgs; [
+    tabbed
+    texlive.combined.scheme-full
+    swagger-codegen
     #(haskell.lib.justStaticExecutables haskellPackages.hocker)
     x2x
     pciutils
