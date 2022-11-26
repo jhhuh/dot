@@ -1,0 +1,47 @@
+Emacs.FontBackend: xft
+!Emacs.font: Ubuntu Mono-24
+
+!!! Xterm !!!
+XTerm*metaSendsEscape: true
+!!! XTerm*font: xft:DejaVu Sans Mono :pixelsize=14
+!!! XTerm*font: xft:Liberation Mono :pixelsize=18
+!!! XTerm*ximFont: xft:Noto Sans Mono CJK KR:pixelsize=18
+
+!!! Xft !!!
+Xft.dpi: 160 
+!Xft.antialias:  1
+!Xft.autohint:   0
+!Xft.hinting:    1
+!Xft.hintstyle:  hintslight
+!Xft.lcdfilter:  lcddefault
+!Xft.rgba:       rgb
+!Xft.embolden: true 
+!!Xft.embolden: false
+
+!!! URxvt !!!
+!URxvt.font: xft:Liberation Mono :pixelsize=18
+URxvt.font: xft:DejaVu Sans Mono:pixelsize=18
+URxvt.letterSpace: -1
+URxvt.scrollBar: false
+URxvt.perl-ext-common: font-size,color-themes 
+!urxvt*transparent: true
+!urxvt*shading: 20
+
+!! font-size plugin
+URxvt.keysym.C-M-equal:     font-size:increase
+URxvt.keysym.C-M-minus:   font-size:decrease
+URxvt.keysym.C-M-Up:   font-size:incglobal
+URxvt.keysym.C-M-Down: font-size:decglobal URxvt.keysym.C-M-0:  font-size:reset
+URxvt.keysym.C-M-9:  font-size:show
+
+!! color-themes plugin
+URxvt.color-themes.themedir:  ~/.themes/urxvt
+!! URxvt.color-themes.preprocessor: $(/run/current-system/sw/bin/nix-build "<nixpkgs>" -A clang --no-out-link)/bin/cpp
+URxvt.color-themes.preprocessor: $HOME/.nix-profile/bin/cpp
+URxvt.keysym.C-M-j:  perl:color-themes:next
+URxvt.keysym.C-M-k:  perl:color-themes:prev
+
+URxvt.color-themes.state-file: ~/.urxvt-theme
+URxvt.color-themes.autosave: 1
+URxvt.keysym.M-C-l:  perl:color-themes:load-state
+URxvt.keysym.M-C-s:  perl:color-themes:save-state
