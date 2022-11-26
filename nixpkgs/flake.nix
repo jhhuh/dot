@@ -41,25 +41,35 @@
       config = { allowUnfree = true; };
       module-declarative-cachix = inputs.declarative-cachix.homeManagerModules.declarative-cachix-experimental;
       module-nix-doom-emacs = inputs.nix-doom-emacs.hmModule;
-    in
-      {
-        inherit inputs;
-        homeConfigurations = {
-          jhhuh = inputs.home-manager.lib.homeManagerConfiguration {
-            configuration = ./home.nix;
-            inherit system;
-            homeDirectory = "/home/jhhuh";
-            username = "jhhuh";
-            extraModules = [
-              module-declarative-cachix
-              module-nix-doom-emacs
-            ];
-            extraSpecialArgs = {
-              inherit inputs;
-            };
-            pkgs = import inputs.nixpkgs { inherit system config; };
-            stateVersion = "22.05";
+      mkHomeConfiguration = hostname:
+        inputs.home-manager.lib.homeManagerConfiguration {
+          configuration = ./home.nix;
+          inherit system;
+          homeDirectory = "/home/jhhuh";
+          username = "jhhuh";
+          extraModules = [
+            module-declarative-cachix
+            module-nix-doom-emacs
+          ];
+          extraSpecialArgs = {
+            inherit inputs hostname;
           };
+          pkgs = import inputs.nixpkgs { inherit system config; };
+          stateVersion = "22.05";
         };
+
+    in
+
+      {
+
+        inherit inputs;
+
+        homeConfigurations = __listToAttrs
+          (map (hostname: {
+            name = "jhhuh@${hostname}";
+            value = mkHomeConfiguration hostname; })
+          [ "aero15" "x230" "p1gen3" "cafe" ]);
+
       };
+
 }
