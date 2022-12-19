@@ -3,9 +3,9 @@
 
   inputs = {
 
-    nixpkgs.url = github:nixos/nixpkgs/nixos-22.05;
+    nixpkgs.url = github:nixos/nixpkgs/nixos-22.11;
 
-    home-manager.url = github:nix-community/home-manager/release-22.05;
+    home-manager.url = github:nix-community/home-manager/release-22.11;
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     declarative-cachix.url = github:jonascarpay/declarative-cachix;
@@ -32,30 +32,43 @@
     flake-compat.flake = false;
 
     devenv.url = github:cachix/devenv;
+    devenv.inputs.nixpkgs.follows = "nixpkgs";
 
   };
 
   outputs = inputs:
     let
       system = "x86_64-linux";
+
       config = { allowUnfree = true; };
+
+      pkgs = import inputs.nixpkgs { inherit system config; };
+
       module-declarative-cachix = inputs.declarative-cachix.homeManagerModules.declarative-cachix-experimental;
+
       module-nix-doom-emacs = inputs.nix-doom-emacs.hmModule;
+
       mkHomeConfiguration = hostname:
         inputs.home-manager.lib.homeManagerConfiguration {
-          configuration = ./home.nix;
-          inherit system;
-          homeDirectory = "/home/jhhuh";
-          username = "jhhuh";
-          extraModules = [
+
+          inherit pkgs;
+
+          modules = [
+            ./home.nix
             module-declarative-cachix
             module-nix-doom-emacs
           ];
+
+          # homeDirectory = "/home/jhhuh";
+          # username = "jhhuh";
+          # extraModules = [
+          # ];
           extraSpecialArgs = {
             inherit inputs hostname;
+            stateVersion = "22.11";
+            username = "jhhuh";
+            homeDirectory = "/home/jhhuh";
           };
-          pkgs = import inputs.nixpkgs { inherit system config; };
-          stateVersion = "22.05";
         };
 
     in

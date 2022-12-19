@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, hostname, ... }:
+{ config, pkgs, lib, inputs, hostname, stateVersion, username, homeDirectory, ... }:
 
 let
 
@@ -43,7 +43,7 @@ let
     mpv
     toggle-touchpad
     cntr
-    #qemu
+    qemu
     xclip
     steam-run
     patchelf
@@ -105,7 +105,7 @@ let
   (with pkgs.gnomeExtensions; [
     appindicator
     soft-brightness
-    e-ink-mode
+    #e-ink-mode
     bitcoin-markets
     (ddterm.overrideAttrs (attrs: {
       nativeBuildInputs = attrs.nativeBuildInputs or [] ++ [
@@ -165,6 +165,7 @@ in {
   ];
 
   home = {
+    inherit stateVersion username homeDirectory;
     inherit packages;
 
     sessionPath = [
@@ -453,16 +454,16 @@ in {
 
     gpg-agent.enable = true;
 
-    mpd = {
-      enable = true;
-      extraConfig = ''
-        audio_output {
-          type        "pulse"
-          name        "MPD"
-          # server      "localhost"
-        }
-      '';
-    };
+    # mpd = {
+    #   enable = true;
+    #   extraConfig = ''
+    #     audio_output {
+    #       type        "pulse"
+    #       name        "MPD"
+    #       # server      "localhost"
+    #     }
+    #   '';
+    # };
 
     emacs = {
       enable = true;

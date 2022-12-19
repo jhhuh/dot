@@ -115,9 +115,6 @@ self: super: rec {
       };
   in self.callPackage farbfeld-utils-nix {};
 
-
-  pixiecore = self.callPackage ../pixiecore {};
-
   slock = super.slock.overrideAttrs (old: {
     src = self.fetchurl {
       url = "https://github.com/khuedoan/slock/archive/37f091cb167f719103ef70baa6b46b95645e5b95.tar.gz";
@@ -146,10 +143,6 @@ self: super: rec {
 
   texmacs = super.texmacs.override { koreanFonts = true; };
 
-  nbstripout = self.callPackages ../nbstripout {};
-
-  #  vimb-unwrapped = self.callPackages ../vimb {};
-  #
   st-flexipatch = super.st.overrideAttrs (old:
     let
       inherit (self) fetchFromGitHub;
@@ -248,18 +241,7 @@ self: super: rec {
 
   myEmacs = self.emacsWithPackages (epkg: with epkg; [ emacs-libvterm ]);
 
-  #  webkitgtk = self.callPackage ../webkitgtk (with self; {
-  #    harfbuzz = harfbuzzFull;
-  #    inherit (gst_all_1) gst-plugins-base gst-plugins-bad;
-  #    stdenv = overrideCC stdenv gcc6;
-  #    gobject-introspection = gobjectIntrospection;
-  #  });
-  #
-  #  vimb-unwrapped = self.callPackage ../vimb {};
-
   uzbl = super.uzbl.override { webkit = self.webkitgtk; };
-
-  tinyemu = self.callPackage ../tinyemu {};
 
   snack-exe = let
     src = self.fetchFromGitHub {
@@ -280,15 +262,6 @@ self: super: rec {
       repo = "icc";
       rev = "77775bfdeb08a73ba74db6457610be2859b7ce6f";};};
   
-  xhk = self.callPackage ../xhk {};
-  
-  firefox-devedition-bin-unwrapped = (super.firefox-devedition-bin-unwrapped.overrideAttrs (attr:{
-    libPath = self.lib.makeLibraryPath (with self.xorg; [ libXcursor libXi ]) + ":" + attr.libPath;
-  })).override {
-    generated = import ../firefox-devedition-update/devedition_sources.nix;
-  };
-  
-  vban = self.callPackage ../vban {};
   # rxvt_unicode = super.rxvt_unicode.overrideAttrs (old: {
   #   version = "2020-02-12";
   #   src = super.fetchcvs {
