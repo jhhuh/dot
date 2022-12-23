@@ -1,4 +1,4 @@
-{ config, pkgs, modulesPath, ... }:
+{ config, pkgs, modulesPath, stateVersion, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -141,7 +141,7 @@
     scsiLinkPolicy = "med_power_with_dipm";
   };
 
-  system.stateVersion = "22.05";
+  system.stateVersion = stateVersion;
 
 }
 

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, stateVersion, ... }:
 
 {
 
@@ -84,6 +84,8 @@
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
   networking.firewall.checkReversePath = "loose";
+
+  system.stateVersion = stateVersion;
 
 }
 

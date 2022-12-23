@@ -3,45 +3,54 @@
   description = "flake for machines";
 
   inputs = {
-    nixpkgs.url = github:nixos/nixpkgs/nixos-22.05;
+    nixpkgs_22_05.url = github:nixos/nixpkgs/nixos-22.05;
+    nixpkgs_22_11.url = github:nixos/nixpkgs/nixos-22.11;
     flake-utils.url = github:numtide/flake-utils;
     deploy-rs.url = github:serokell/deploy-rs;
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, ... }:
+  outputs = inputs@{ self, flake-utils, ... }:
 
   {
     inherit inputs self;
 
-    nixosConfigurations = {
+    nixosConfigurations =
+      let
 
-      x230 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [ ./x230/configuration.nix ./common ];
-      };
+      mkNixosSystem =  host-name: { nixpkgs, stateVersion ? "22.05", system ? "x86_64-linux" }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [ (./. + "/${host-name}/configuration.nix") ./common ];
+          extraArgs = {
+            inherit stateVersion;
+          };
+        };
 
-      aero15 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [ ./aero15/configuration.nix ./common  ];
-      };
+      in
+        __mapAttrs mkNixosSystem {
 
-      p1gen3 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [ ./p1gen3/configuration.nix ./common  ];
-      };
+          x230 = {
+            nixpkgs = inputs.nixpkgs_22_11;
+            stateVersion = "22.11";
+          };
 
-      cafe = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [ ./cafe/configuration.nix ./common  ];
-      };
+          cafe = {
+            nixpkgs = inputs.nixpkgs_22_11;
+            stateVersion = "22.11";
+          };
 
-      tres-cantos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [ ./tres-cantos/configuration.nix ./common  ];
-      };
+          p1gen3 = {
+            nixpkgs = inputs.nixpkgs_22_11;
+            stateVersion = "22.11";
+          };
 
-    };
-  }
+          aero15.nixpkgs = inputs.nixpkgs_22_05;
+
+          tres-cantos.nixpkgs = inputs.nixpkgs_22_05;
+
+        };
+
+    }
 
   //
 
@@ -71,7 +80,7 @@
 
   flake-utils.lib.eachSystem ["x86_64-linux"] (system:
   let
-    pkgs = import nixpkgs { inherit system; };
+    pkgs = import inputs.nixpkgs_22_11 { inherit system; };
     inherit (inputs.deploy-rs.packages.${system}) deploy-rs;
   in
   {

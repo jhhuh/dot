@@ -67,13 +67,13 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs_22_05": {
       "locked": {
-        "lastModified": 1660496378,
-        "narHash": "sha256-sgAhmrC1iSnl5T2VPPiMpciH1aRw5c7PYEdXX6jd6Gk=",
+        "lastModified": 1670538458,
+        "narHash": "sha256-mvKmBkdlhzsMBtnzYXjYn08EGw9rFBEE9hp4Uqgol1Q=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "879121648fe522b38cc1cf75aef160a14a1f2e7b",
+        "rev": "99ec06122f481588abafd91f2710d80a5320efe6",
         "type": "github"
       },
       "original": {
@@ -83,11 +83,28 @@
         "type": "github"
       }
     },
+    "nixpkgs_22_11": {
+      "locked": {
+        "lastModified": 1670461440,
+        "narHash": "sha256-jy1LB8HOMKGJEGXgzFRLDU1CBGL0/LlkolgnqIsF0D8=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "04a75b2eecc0acf6239acf9dd04485ff8d14f425",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-22.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "deploy-rs": "deploy-rs",
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs_22_05": "nixpkgs_22_05",
+        "nixpkgs_22_11": "nixpkgs_22_11"
       }
     },
     "utils": {
