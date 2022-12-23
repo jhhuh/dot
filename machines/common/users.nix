@@ -18,8 +18,9 @@ in
       isNormalUser = true;
       extraGroups = [
         "wheel"
+        "video"
         "vboxusers"
-        "wheel"
+        "lxd"
         "networkmanager"
         "libvirtd"
         "ipfs"
