@@ -106,6 +106,11 @@
       extraModules = [];
       package = pkgs.pulseaudioFull;
     };
+    trackpoint = {
+      enable = true;
+      emulateWheel = true;
+      device = "TPPS/2 Elan TrackPoint";
+    };
   };
 
   hardware.opengl.enable = true;
