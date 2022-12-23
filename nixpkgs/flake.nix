@@ -40,7 +40,7 @@
     let
       system = "x86_64-linux";
 
-      config = { allowUnfree = true; };
+      config = import ./config.nix;
 
       pkgs = import inputs.nixpkgs { inherit system config; };
 
