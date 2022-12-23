@@ -45,6 +45,10 @@ import XMonad.Hooks.EwmhDesktops (
   ewmh,
   fullscreenEventHook)
 
+import Graphics.X11.ExtraTypes.XF86 (
+  xF86XK_MonBrightnessUp,
+  xF86XK_MonBrightnessDown)
+
 desktop = ewmh $ def {
   handleEventHook = fullscreenEventHook <+> handleEventHook def
  }
@@ -70,8 +74,9 @@ conf = desktop {
 
 myStartupHook =
   spawn "xset r rate 250 50"
-  <+> spawn "feh --bg-scale /home/jhhuh/wallpapers/theWallpaper"
+ <+> spawn "feh --bg-scale /home/jhhuh/wallpapers/theWallpaper"
  <+> spawn "compton -CGcf -i 0.7 -I 1.0 -O 1.0 -D 0 --detect-client-leader"
+ <+> spawn "source ~/.screenlayout/default.sh"
 
 myKeys XConfig { modMask = modm }
   = M.fromList
@@ -85,6 +90,8 @@ myKeys XConfig { modMask = modm }
                             bgColor = "#3f3c6d",
                             fgHLight = "#3f3c6d",
                             bgHLight = "#ffffff" } ),
+      ( (0, xF86XK_MonBrightnessUp), spawn "xbacklight -inc 5" ),
+      ( (0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5" ),
       ( (modm .|. controlMask, xK_b),
         namedScratchpadAction scratchpads "zathura" ),
       ( (modm .|. controlMask, xK_q),
@@ -191,6 +198,7 @@ myManageHook = composeAll . concat $
                            "Developer Tools"]
         myFloatsByRole = ["pop-up",
                           "bubble"]
+
 
 -- Command to launch the bar.
 myBar = unwords [
