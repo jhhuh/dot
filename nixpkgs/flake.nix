@@ -59,10 +59,6 @@
             module-nix-doom-emacs
           ];
 
-          # homeDirectory = "/home/jhhuh";
-          # username = "jhhuh";
-          # extraModules = [
-          # ];
           extraSpecialArgs = {
             inherit inputs hostname;
             stateVersion = "22.11";
