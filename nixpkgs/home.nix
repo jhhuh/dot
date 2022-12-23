@@ -3,6 +3,7 @@
 let
 
   packages =  (with pkgs; [
+    arandr
     tabbed
     texlive.combined.scheme-full
     swagger-codegen
