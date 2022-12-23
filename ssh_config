@@ -1,3 +1,5 @@
+Include ~/.ssh/config_private
+
 Host zhao
     HostName zhao.asgard-labs.com.beta.tailscale.net
     Port 22
