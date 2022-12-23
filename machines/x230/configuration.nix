@@ -125,8 +125,9 @@
   ];
 
   virtualisation = {
+    lxd.enable = true;
     virtualbox.host = {
-      #enable = true;
+      enable = true;
       enableExtensionPack = true;
     };
     podman = {
