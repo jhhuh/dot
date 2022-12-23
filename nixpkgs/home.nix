@@ -165,6 +165,8 @@ in {
     (import ./overlays/05-prefer-remote-fetch.nix)
   ];
 
+  nix.package = pkgs.nix;
+
   home = {
     inherit stateVersion username homeDirectory;
     inherit packages;
@@ -257,14 +259,8 @@ in {
     command-not-found.enable = true;
 
     doom-emacs = {
-      enable = false;
-      emacsPackage = pkgs.emacsNativeComp;
+      enable = true;
       doomPrivateDir = ../doom.d;
-      emacsPackagesOverlay = self: super: {
-        # fixes https://github.com/vlaci/nix-doom-emacs/issues/394
-        gitignore-mode = self.git-modes;
-        gitconfig-mode = self.git-modes;
-      };
     };
 
     vim = {
@@ -438,8 +434,7 @@ in {
 
     emacs = {
       enable = true;
-      package = pkgs.emacsNativeComp;
-      extraPackages = epkgs: with epkgs; [vterm pdf-tools];
+      #extraPackages = epkgs: with epkgs; [vterm pdf-tools];
     };
 
   };
