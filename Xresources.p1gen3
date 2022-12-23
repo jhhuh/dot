@@ -1,5 +1,5 @@
-!Emacs.FontBackend: xft
-!Emacs.font: Ubuntu Mono-12
+Emacs.FontBackend: xft
+!Emacs.font: Ubuntu Mono-24
 
 !!! Xterm !!!
 XTerm*metaSendsEscape: true
@@ -8,7 +8,7 @@ XTerm*metaSendsEscape: true
 !!! XTerm*ximFont: xft:Noto Sans Mono CJK KR:pixelsize=18
 
 !!! Xft !!!
-Xft.dpi: 128
+Xft.dpi: 200
 !Xft.antialias:  1
 !Xft.autohint:   0
 !Xft.hinting:    1
