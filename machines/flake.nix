@@ -20,7 +20,11 @@
       mkNixosSystem =  host-name: { nixpkgs, stateVersion ? "22.05", system ? "x86_64-linux" }:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = [ (./. + "/${host-name}/configuration.nix") ./common ];
+          modules = [
+            { environment.etc."nix/channels/nixpkgs".source = nixpkgs.outPath; }
+            ./common
+            (./. + "/${host-name}/configuration.nix")
+          ];
           extraArgs = {
             inherit stateVersion;
           };
