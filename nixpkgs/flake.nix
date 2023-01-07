@@ -13,9 +13,12 @@
 
     emacs-overlay.url = github:nix-community/emacs-overlay;
 
+    doom-emacs.url = github:doomemacs/doomemacs;
+    doom-emacs.flake = false;
+
     nix-doom-emacs.url = github:nix-community/nix-doom-emacs;
     nix-doom-emacs.inputs.nixpkgs.follows = "nixpkgs";
-    nix-doom-emacs.inputs.emacs-overlay.follows = "emacs-overlay";
+    #nix-doom-emacs.inputs.emacs-overlay.follows = "emacs-overlay";
 
     comma.url = github:nix-community/comma;
     comma.flake = false;
