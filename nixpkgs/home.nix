@@ -81,7 +81,8 @@ let
     magic-wormhole
     appimage-run
     ghcid
-    (ghc.withPackages (hp: with hp; [ haskell-language-server graphmod ]))
+    haskell-language-server
+    #(ghc.withPackages (hp: with hp; [ haskell-language-server graphmod ]))
     git-lfs
     #myVim
     cabal-install
