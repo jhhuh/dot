@@ -16,8 +16,8 @@
 
     settings = {
       substituters = [
-        #"http://mimir.coati-bebop.ts.net:5555"
-        "http://p1gen3.coati-bebop.ts.net:5555"
+        "http://mimir.coati-bebop.ts.net:5555"
+        #"http://p1gen3.coati-bebop.ts.net:5555"
       ];
       trusted-public-keys = [
         "cache.mimir.asgard-labs.com-1:lw8GZNUYWsCV6letxzfdeF+qmXpgBIEnjoAUWOCBA5w="
