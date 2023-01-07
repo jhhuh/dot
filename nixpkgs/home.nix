@@ -3,6 +3,7 @@
 let
 
   packages =  (with pkgs; [
+    ripgrep
     arandr
     tabbed
     texlive.combined.scheme-full
@@ -226,6 +227,15 @@ in {
       # all-libs);
     };
 
+    activation = {
+      installDoomEmacs = lib.hm.dag.entryAfter ["writeBoundary"]
+      ''
+        if [ ! -d "$HOME/.emacs.d" ]; then
+          ${pkgs.git}/bin/git clone --depth=1 --single-branch "https://github.com/doomemacs/doomemacs" "$HOME/.emacs.d"
+        fi
+      '';
+    };
+
   };
 
   nix.registry = {
@@ -258,10 +268,10 @@ in {
 
     command-not-found.enable = true;
 
-    doom-emacs = {
-      enable = true;
-      doomPrivateDir = ../doom.d;
-    };
+    #doom-emacs = {
+    #  enable = true;
+    #  doomPrivateDir = ../doom.d;
+    #};
 
     vim = {
       enable = true;
@@ -434,7 +444,10 @@ in {
 
     emacs = {
       enable = true;
-      #extraPackages = epkgs: with epkgs; [vterm pdf-tools];
+      extraPackages = epkgs: with epkgs; [
+        vterm
+        pdf-tools
+      ];
     };
 
   };
