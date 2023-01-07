@@ -328,7 +328,7 @@ in {
       userEmail = "jhhuh.note@gmail.com";
       userName = "Ji-Haeng Huh";
       extraConfig = {
-        init.defaultBranch = "main";
+        init.defaultBranch = "master";
       };
       package = pkgs.gitFull;
     };
