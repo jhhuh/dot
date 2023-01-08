@@ -3,6 +3,7 @@
 let
 
   packages =  (with pkgs; [
+    comma
     ripgrep
     arandr
     tabbed
@@ -367,6 +368,8 @@ in {
           ''-p "python3.withPackages (p: with p; [ ipython requests beautifulsoup4 ])"''
           "--run ipython"
         ];
+
+        get-ip = "curl -s https://wtfismyip.com/json | ${pkgs.jq}/bin/jq";
       };
 
       bashrcExtra = ''
