@@ -43,14 +43,14 @@ import qualified Data.Map as M
 
 import XMonad.Hooks.EwmhDesktops (
   ewmh,
-  fullscreenEventHook)
+  ewmhFullscreen)
 
 import Graphics.X11.ExtraTypes.XF86 (
   xF86XK_MonBrightnessUp,
   xF86XK_MonBrightnessDown)
 
-desktop = ewmh $ def {
-  handleEventHook = fullscreenEventHook <+> handleEventHook def
+desktop = ewmhFullscreen . ewmh $ def {
+  handleEventHook = handleEventHook def
  }
 
 conf = desktop {

@@ -134,6 +134,7 @@
       displayManager.lightdm.enable = true;
       desktopManager.xterm.enable = true;
       windowManager.xmonad.enable = true;
+      windowManager.xmonad.enableContribAndExtras = true;
       xkbOptions = "ctrl:swapcaps";
       libinput.enable = false;
     };

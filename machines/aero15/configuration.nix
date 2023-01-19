@@ -110,6 +110,7 @@
       xkbOptions = "ctrl:swapcaps";
 
       windowManager.xmonad.enable = true;
+      windowManager.xmonad.enableContribAndExtras = true;
 
       desktopManager = {
         plasma5.enable = false;
