@@ -78,6 +78,7 @@
 
 (use-package! lsp-ui
   :config
+  (setq lsp-ui-doc-show-with-cursor t)
   (setq lsp-ui-doc-position 'top))
 
 (setq company-idle-delay nil)
