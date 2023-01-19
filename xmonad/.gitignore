@@ -5,3 +5,4 @@ xmonad.o
 xmonad.state
 xmonad.errors
 
+build-x86_64-linux/
