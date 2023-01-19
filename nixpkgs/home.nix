@@ -266,9 +266,9 @@ in {
 
     ncmpcpp.enable = true;
 
-    nix-index.enable = false;
+    nix-index.enable = true;
 
-    command-not-found.enable = true;
+    command-not-found.enable = false;
 
     #doom-emacs = {
     #  enable = true;

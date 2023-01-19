@@ -20,9 +20,6 @@
     nix-doom-emacs.inputs.nixpkgs.follows = "nixpkgs";
     #nix-doom-emacs.inputs.emacs-overlay.follows = "emacs-overlay";
 
-    comma.url = github:nix-community/comma;
-    comma.flake = false;
-
     x86-manpages-nix.url = github:blitz/x86-manpages-nix;
     x86-manpages-nix.flake = false;
 
