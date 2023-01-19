@@ -19,8 +19,18 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "Ubuntu Mono" :size 16.0 :weight 'regular)
-      doom-variable-pitch-font (font-spec :family "sans" :size 12.0))
+(cond ((string= (system-name) "cafe")
+       (setq doom-font (font-spec :family "Ubuntu Mono" :size 18.0 :weight 'regular)
+             doom-variable-pitch-font (font-spec :family "sans" :size 14.0)))
+      ((string= (system-name) "x230")
+       (setq doom-font (font-spec :family "Ubuntu Mono" :size 16.0 :weight 'regular)
+             doom-variable-pitch-font (font-spec :family "sans" :size 12.0)))
+      ((string= (system-name) "p1gen3")
+       (setq doom-font (font-spec :family "Ubuntu Mono" :size 16.0 :weight 'regular)
+             doom-variable-pitch-font (font-spec :family "sans" :size 12.0)))
+      (t
+       (setq doom-font (font-spec :family "Ubuntu Mono" :size 16.0 :weight 'regular)
+             doom-variable-pitch-font (font-spec :family "sans" :size 12.0))))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
