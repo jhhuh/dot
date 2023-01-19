@@ -12,9 +12,9 @@
       bash-prompt-suffix = \[\033[1;33m\]\n(nix develop)\$ \[\033[0m\]
     '';
 
-    trustedUsers = [ "@wheel" ];
 
     settings = {
+      trusted-users = [ "@wheel" ];
       substituters = [
         "http://mimir.coati-bebop.ts.net:5555"
         #"http://p1gen3.coati-bebop.ts.net:5555"
