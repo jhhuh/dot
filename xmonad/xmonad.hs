@@ -92,8 +92,9 @@ myKeys XConfig { modMask = modm }
                             bgHLight = "#ffffff" } ),
       ( (0, xF86XK_MonBrightnessUp), spawn "xbacklight -inc 5" ),
       ( (0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5" ),
-      ( (modm .|. controlMask, xK_b),
-        namedScratchpadAction scratchpads "zathura" ),
+      -- ( (modm .|. controlMask, xK_b),
+      --   namedScratchpadAction scratchpads "zathura" ),
+      ( (modm .|. controlMask, xK_b), spawn "tabbed -c zathura -e" ),
       ( (modm .|. controlMask, xK_q),
         spawn $ unlines [
           "if type xmonad",
@@ -168,10 +169,10 @@ scratchpads =
        (className =? "Emacs")
        (customFloating $
          W.RationalRect (4/32) (1/32) (24/32) (30/32)),
-    NS "zathura" "zathura"
-       (className =? "Zathura")
-       (customFloating $
-         W.RationalRect (1/8) (1/16) (6/8) (14/16)),
+    -- NS "zathura" "zathura"
+    --    (className =? "Zathura")
+    --    (customFloating $
+    --      W.RationalRect (1/8) (1/16) (6/8) (14/16)),
     NS "pavucontrol" "pavucontrol"
        (className =? "Pavucontrol")
        (customFloating $
