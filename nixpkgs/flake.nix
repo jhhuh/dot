@@ -42,7 +42,12 @@
 
       config = import ./config.nix;
 
-      pkgs = import inputs.nixpkgs { inherit system config; };
+      pkgs = import inputs.nixpkgs {
+        inherit system config;
+        overlays = [ (self: super: {
+          #chromium = self.callPackage ./updated-pkgs/chromium {};
+        }) ];
+      };
 
       module-declarative-cachix = inputs.declarative-cachix.homeManagerModules.declarative-cachix-experimental;
 
