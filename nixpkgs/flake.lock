@@ -114,22 +114,6 @@
         "type": "github"
       }
     },
-    "comma": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1670543350,
-        "narHash": "sha256-JMYwGa2nJPInuVuYbR3XSGUJewTDyeoTDQaALydduko=",
-        "owner": "nix-community",
-        "repo": "comma",
-        "rev": "1b07c19774129ebce3af846fb571e1c0b97f24a3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "comma",
-        "type": "github"
-      }
-    },
     "declarative-cachix": {
       "locked": {
         "lastModified": 1670437766,
@@ -1287,11 +1271,11 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1671313200,
-        "narHash": "sha256-itZTrtHeDJjV696+ur0/TzkTqb5y3Eb57WRLRPK3rwA=",
+        "lastModified": 1673345971,
+        "narHash": "sha256-4DfFcKLRfVUTyuGrGNNmw37IeIZSoku9tgTVmu/iD98=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0938d73bb143f4ae037143572f11f4338c7b2d1c",
+        "rev": "54644f409ab471e87014bb305eac8c50190bcf48",
         "type": "github"
       },
       "original": {
@@ -1461,7 +1445,6 @@
     "root": {
       "inputs": {
         "base16-shell": "base16-shell",
-        "comma": "comma",
         "declarative-cachix": "declarative-cachix",
         "devenv": "devenv",
         "doom-emacs": "doom-emacs",
