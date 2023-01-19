@@ -143,6 +143,10 @@
 
   services.xserver.libinput.enable = false;
 
+  services.logind.extraConfig = ''
+    RuntimeDirectorySize=4G
+  '';
+
   virtualisation.virtualbox.host = {
     enable = true;
     enableExtensionPack = true;
