@@ -3,6 +3,8 @@
 let
 
   packages =  (with pkgs; [
+    chia
+    bashSnippets
     comma
     ripgrep
     arandr
