@@ -54,21 +54,21 @@ desktop = ewmhFullscreen . ewmh $ def {
  }
 
 conf = desktop {
-  borderWidth = 2,
+  borderWidth = 0,
   focusedBorderColor = "#ff8267",
-  terminal = "st",
+  terminal = "xst",
   modMask = mod4Mask,
   keys = keys desktop <+> myKeys,
   manageHook = scratchpadHook
     <+> myManageHook
     <+> manageHook desktop,
   layoutHook = avoidStruts
-    $ gaps [(D,5)]
     $ spacingRaw False
-                 (Border 1 1 2 2)
+                 (Border 10 10 20 20)
                  True
-                 (Border 2 2 2 2)
+                 (Border 10 10 10 10)
                  True
+    $ gaps [(D,5)]
     $ layoutHook desktop,
   startupHook = myStartupHook <+> startupHook desktop }
 
@@ -125,14 +125,12 @@ myKeys XConfig { modMask = modm }
         namedScratchpadAction scratchpads "kotatogram-desktop"),
       ( (modm .|. controlMask, xK_j),
         namedScratchpadAction scratchpads "emacs"),
-      ( (modm .|. controlMask, xK_f),
-        namedScratchpadAction scratchpads "PiP"),
       ( (modm .|. controlMask, xK_k),
         namedScratchpadAction scratchpads "scrcpy"),
       ( (modm .|. controlMask, xK_u),
-        sendMessage $ IncGap 50 D ),
+        sendMessage $ IncGap 5 D ),
       ( (modm .|. controlMask, xK_d ),
-        sendMessage $ DecGap 50 D ),
+        sendMessage $ DecGap 5 D ),
       ( (modm .|. controlMask, xK_x ),
         xmonadPrompt def ) ]
 
@@ -152,7 +150,7 @@ scratchpads =
          W.RationalRect (22/32) (1/16) (8/32) (12/16)),
     NS "emacs"
        (unwords $ [
-         "emacs"])
+         "emacsclient", "-c"])
        (className =? "Emacs")
        (customFloating $
          W.RationalRect (4/32) (1/32) (24/32) (30/32)),
@@ -161,11 +159,7 @@ scratchpads =
          ""])
        (className =? "Emacs")
        (customFloating $
-         W.RationalRect (4/32) (1/32) (24/32) (30/32)),
-    -- NS "zathura" "zathura"
-    --    (className =? "Zathura")
-    --    (customFloating $
-    --      W.RationalRect (1/8) (1/16) (6/8) (14/16)),
+         W.RationalRect (1/8) (1/32) (6/8) (30/32)),
     NS "pavucontrol" "pavucontrol"
        (className =? "Pavucontrol")
        (customFloating $
