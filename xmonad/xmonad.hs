@@ -92,9 +92,6 @@ myKeys XConfig { modMask = modm }
                             bgHLight = "#ffffff" } ),
       ( (0, xF86XK_MonBrightnessUp), spawn "xbacklight -inc 5" ),
       ( (0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5" ),
-      -- ( (modm .|. controlMask, xK_b),
-      --   namedScratchpadAction scratchpads "zathura" ),
-      ( (modm .|. controlMask, xK_b), spawn "tabbed -c zathura -e" ),
       ( (modm .|. controlMask, xK_q),
         spawn $ unlines [
           "if type xmonad",
@@ -117,6 +114,8 @@ myKeys XConfig { modMask = modm }
         namedScratchpadAction scratchpads "htop"),
       ( (modm .|. controlMask, xK_space),
         namedScratchpadAction scratchpads "ranger"),
+      ( (modm .|. controlMask, xK_b),
+        namedScratchpadAction scratchpads "zathura" ),
       ( (modm .|. controlMask, xK_n),
         namedScratchpadAction scratchpads "xst"),
       ( (modm .|. controlMask, xK_v),
@@ -153,11 +152,9 @@ scratchpads =
          "emacsclient", "-c"])
        (className =? "Emacs")
        (customFloating $
-         W.RationalRect (4/32) (1/32) (24/32) (30/32)),
-    NS "PiP"
-       (unwords $ [
-         ""])
-       (className =? "Emacs")
+         W.RationalRect (2/32) (2/32) (28/32) (28/32)),
+    NS "zathura" "tabbed-zathura.sh"
+       (appName =? "tabbed-zathura")
        (customFloating $
          W.RationalRect (1/8) (1/32) (6/8) (30/32)),
     NS "pavucontrol" "pavucontrol"

@@ -135,6 +135,23 @@ let
 
   emacsCommand = emacs: "TERM=st-direct ${emacs}/bin/emacsclient -nw";
 
+  tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''
+      #! /bin/sh
+
+      XID_FILE="$XDG_RUNTIME_DIR/zathura.xid"
+      ${pkgs.xorg.xprop}/bin/xprop -id "$(< $XID_FILE)" &> /dev/null \
+        || rm $XID_FILE &> /dev/null
+
+      if [ -f $XID_FILE ];
+      then
+          ${pkgs.zathura}/bin/zathura -e $(< $XID_FILE) $@
+      else
+          XID=$(${pkgs.tabbed}/bin/tabbed -c -n tabbed-zathura -d ${pkgs.zathura}/bin/zathura $@ -e)
+          echo $XID > $XID_FILE
+          # ${pkgs.zathura}/bin/zathura -e $XID $@
+      fi
+    '';
+
   toggle-touchpad = pkgs.writeScriptBin "toggle_touchpad.sh"
     ''
          #!{bash}/bin/bash
