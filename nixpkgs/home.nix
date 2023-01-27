@@ -3,6 +3,8 @@
 let
 
   packages =  (with pkgs; [
+    tabbed-zathura
+    nerdfonts
     chia
     bashSnippets
     comma
@@ -171,6 +173,8 @@ in {
   ];
 
   nix.package = pkgs.nix;
+
+  fonts.fontconfig.enable = true;
 
   home = {
     inherit stateVersion username homeDirectory;
@@ -451,6 +455,7 @@ in {
     emacs = {
       enable = true;
       extraPackages = epkgs: with epkgs; [
+        all-the-icons
         vterm
         pdf-tools
       ];
