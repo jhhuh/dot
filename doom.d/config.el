@@ -65,6 +65,8 @@
 ;;;; they are implemented.
 
 (use-package! envrc
+  :config
+  (setq envrc-debug t)
   :hook (after-init . envrc-global-mode))
 
 (use-package! lsp-mode
