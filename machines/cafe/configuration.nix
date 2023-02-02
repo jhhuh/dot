@@ -22,6 +22,10 @@
     ./services.nix
   ];
 
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerCompat = true;
+
+
   zramSwap.enable = true;
 
   nixpkgs.config.allowUnfree = true;
