@@ -49,6 +49,7 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-(package! envrc :recipe (:host github :repo "purcell/envrc"))
-(package! lsp-haskell)
-(package! lsp-ui)
+;;(package! envrc :recipe (:host github :repo "purcell/envrc"))
+;;(package! envrc :recipe (:host github :repo "purcell/envrc"))
+;;
+(package! lsp-mode :pin "c9494f624c73b5917a3f0353c73eeaa0d7bb0992")
