@@ -18,7 +18,8 @@
       windowManager.xmonad.enable = true;
       windowManager.xmonad.enableContribAndExtras = true;
 
-      desktopManager.plasma5.enable = true;
+      desktopManager.xterm.enable = true;
+      desktopManager.gnome.enable = true;
 
       xkbOptions = "ctrl:swapcaps";
 
