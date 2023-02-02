@@ -72,6 +72,8 @@
 (use-package! lsp-mode
   :custom
   (lsp-completion-enable-additional-text-edit nil)
+  :config
+  (setq lsp-use-plists "true")
   :hook (lsp-mode . (lambda ()
                       (lsp-ui-mode)
                       (lsp-ui-doc-mode))))
