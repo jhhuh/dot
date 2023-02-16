@@ -9,4 +9,6 @@
 
   programs.slock.enable = true;
 
+  environment.systemPackages = [ pkgs.cntr ];
+
 }
