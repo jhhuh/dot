@@ -3,6 +3,7 @@
 let
 
   packages =  (with pkgs; [
+    keybase-gui
     tabbed-zathura
     nerdfonts
     chia
@@ -481,6 +482,9 @@ in {
   };
 
   services = {
+
+    keybase.enable = true;
+    kbfs.enable = true;
 
     syncthing = {
       enable = true;
