@@ -314,8 +314,14 @@ in {
     };
 
     vscode = {
-      enable = false;
-      package = pkgs.vscode-fhs;
+      enable = true;
+      package = pkgs.vscode-with-extensions.override {
+        vscodeExtensions = with pkgs.vscode-extensions; [
+          ms-toolsai.jupyter
+          ms-toolsai.jupyter-keymap
+          vscodevim.vim
+        ];
+      };
     };
 
     keychain = {
