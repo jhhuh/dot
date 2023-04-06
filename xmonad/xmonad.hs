@@ -132,6 +132,8 @@ myKeys XConfig { modMask = modm }
         namedScratchpadAction scratchpads "emacs"),
       ( (modm .|. controlMask, xK_k),
         namedScratchpadAction scratchpads "scrcpy"),
+      ( (modm .|. controlMask, xK_m),
+        namedScratchpadAction scratchpads "keybase-gui"),
       ( (modm .|. controlMask, xK_u),
         sendMessage $ IncGap 5 D ),
       ( (modm .|. controlMask, xK_d ),
@@ -232,6 +234,10 @@ scratchpads =
        (title =? "xst-alpha")
        (customFloating $
          W.RationalRect (0/32) (0/32) (32/32) (18/32)),
+    NS "keybase-gui" "keybase-gui"
+       (className =? "Keybase")
+       (customFloating $
+         W.RationalRect (22/32) (1/16) (8/32) (12/16)),
     NS "scrcpy" "scrcpy"
        (className =? ".scrcpy-wrapped")
        (customFloating $
