@@ -22,4 +22,7 @@
     enable = true;
     enabledCollectors = [ "systemd" "btrfs" ];
   };
+
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerCompat = true;
 }
