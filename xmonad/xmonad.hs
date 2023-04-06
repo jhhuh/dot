@@ -62,7 +62,7 @@ desktop = ewmhFullscreen . ewmh $ def {
 conf = desktop {
   borderWidth = 4,
   focusedBorderColor = "#00FF00",
-  terminal = "xst",
+  terminal = "st -f \"UbuntuMono Nerd Font:pixelsize=20\"",
   modMask = mod4Mask,
   keys = keys desktop <+> myKeys,
   manageHook = scratchpadHook
