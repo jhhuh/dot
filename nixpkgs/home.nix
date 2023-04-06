@@ -500,7 +500,7 @@ in {
       tray = false;
     };
 
-    keynav.enable = true;
+    #keynav.enable = true;
 
     gpg-agent.enable = true;
 
