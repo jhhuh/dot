@@ -3,6 +3,10 @@
 let
 
   packages =  (with pkgs; [
+    kotatogram-desktop-with-webkit
+    postgresql
+    scrot
+    gnome.gnome-screenshot
     keybase-gui
     tabbed-zathura
     nerdfonts
@@ -34,7 +38,6 @@ let
     st xst
 
     ranger
-    kotatogram-desktop
     scrcpy
     zathura
     xmobar
