@@ -41,10 +41,11 @@
 
                   { environment.etc."nix/channels/nixpkgs".source = nixpkgs.outPath; }
 
-                  {
+                  ({pkgs, ...}:{
                     imports = [ inputs.nixos-fhs-compat.nixosModules.combined ];
                     nixpkgs.overlays = [ (next: prev: { foomatic_filters = next.foomatic-filters; }) ];
-                  }
+                    environment.systemPackages = [ pkgs.libxcrypt ];
+                  })
 
                   ./common
 
