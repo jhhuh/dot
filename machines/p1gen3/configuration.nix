@@ -169,6 +169,12 @@
     home-manager
   ];
 
+  # See https://github.com/balsoft/nixos-fhs-compat
+  environment.fhs.enable = true;
+  environment.fhs.linkLibs = true;
+  environment.lsb.enable = true;
+  environment.lsb.support32Bit = true;
+
   programs.slock.enable = true;
 
   services.openssh = {

@@ -7,6 +7,7 @@
     nixpkgs_22_11.url = github:nixos/nixpkgs/nixos-22.11;
     flake-utils.url = github:numtide/flake-utils;
     deploy-rs.url = github:serokell/deploy-rs;
+    nixos-fhs-compat.url = github:balsoft/nixos-fhs-compat;
   };
 
   outputs = inputs@{ self, flake-utils, ... }:
@@ -35,10 +36,20 @@
               nixpkgs.lib.nixosSystem {
                 inherit system;
                 modules = [
+
                   { config._module.args = { inherit stateVersion coati-bebop-hosts; }; }
+
                   { environment.etc."nix/channels/nixpkgs".source = nixpkgs.outPath; }
+
+                  {
+                    imports = [ inputs.nixos-fhs-compat.nixosModules.combined ];
+                    nixpkgs.overlays = [ (next: prev: { foomatic_filters = next.foomatic-filters; }) ];
+                  }
+
                   ./common
+
                   (./. + "/${host-name}/configuration.nix")
+
                 ];
               };
 
