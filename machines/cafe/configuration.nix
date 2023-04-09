@@ -26,10 +26,12 @@
   virtualisation.podman.dockerCompat = true;
 
   # see https://github.com/balsoft/nixos-fhs-compat
-  environment.fhs.enable = true;
-  environment.fhs.linkLibs = true;
-  environment.lsb.enable = true;
-  environment.lsb.support32Bit = true;
+  # environment.fhs.enable = true;
+  # environment.fhs.linkLibs = true;
+  # environment.lsb.enable = true;
+  # environment.lsb.support32Bit = true;
+
+  programs.nix-ld.enable = true;
 
   zramSwap.enable = true;
 
