@@ -1,143 +1,88 @@
-{ config, pkgs, lib, inputs, hostname, stateVersion, username, homeDirectory, ... }:
+{ config, pkgs, lib, inputs, system, hostname, stateVersion, username, homeDirectory, ... }:
 
 let
 
-  packages =  (with pkgs; [
-    kotatogram-desktop-with-webkit
-    postgresql
-    scrot
-    gnome.gnome-screenshot
-    keybase-gui
-    tabbed-zathura
-    nerdfonts
-    chia
-    bashSnippets
-    comma
-    ripgrep
-    arandr
-    tabbed
-    texlive.combined.scheme-full
-    swagger-codegen
-    #(haskell.lib.justStaticExecutables haskellPackages.hocker)
-    x2x
-    pciutils
-    parallel
-    cloudflare-warp
-    #(haskell.lib.justStaticExecutables haskellPackages.summoner-tui)
-    unzip
-    graphviz
-    feh
-    nix-prefetch
-    ffmpeg
-    yt-dlp
-    libsixel
-    w3m
-    farbfeld
-    farbfeld-utils
-    arandr
-    st xst
-
-    ranger
-    scrcpy
-    zathura
-    xmobar
-    pavucontrol
-    compton
-
-    #
-    pixiecore
-    xpra
-    sshuttle
-    kmscube
-    libdrm
-    kmscon
-    mpv
-    toggle-touchpad
-    cntr
-    qemu
-    xclip
-    steam-run
-    patchelf
-    overmind
-    mplayer
-    google-drive-ocamlfuse
-    niv
-    nodePackages.node2nix
-    mosh
-    pass
-    jq
-    koreader
-    linux-manual
-    scheme-manpages
-    nixos-shell
-    dasht
-    man-pages
-    man-pages-posix
-    binutils
-    gh
-    darcs
-    asciinema
-    termtosvg
-    pandoc
-    nix-template
-    #chia
-    cabal2nix
-    loc
-    vimpc
-    webtorrent_desktop
-    niv
-    browsh
-    magic-wormhole
-    appimage-run
-    ghcid
-    haskell-language-server
-    #(ghc.withPackages (hp: with hp; [ haskell-language-server graphmod ]))
-    git-lfs
-    #myVim
-    cabal-install
-    # ws
-    wget
-    acpi
-    powertop
-    ripgrep
-    sqlite
-    wordnet
-    sbcl
-    htop tree
-    # nextcloud-client
-    # gnome.gnome-tweaks mattermost-desktop
-    google-chrome
-    # gnome.dconf-editor
-    xdotool
-    # gjs
-    # gnome.zenity
-    # gnome-network-displays
-    # gnomecast
-  ]) ++
-  (with pkgs.gnomeExtensions; [
-    appindicator
-    soft-brightness
-    #e-ink-mode
-    bitcoin-markets
-    (ddterm.overrideAttrs (attrs: {
-      nativeBuildInputs = attrs.nativeBuildInputs or [] ++ [
-        pkgs.wrapGAppsHook
-      ];
-      buildInputs = attrs.buildInputs or [] ++ (with pkgs; [
-        glib
-        gtk3
-        pango
-        vte
-      ]);
-    }))
-    gsconnect
-    unite
-  ]) ++
-  [
-    inputs.devenv.packages.x86_64-linux.devenv
-  ];
-
   emacsCommand = emacs: "TERM=st-direct ${emacs}/bin/emacsclient -nw";
+
+  # Combinator separating `enable` flags from the rest
+  # making it easy to identify the enabled programs/services.
+  enable-with-config = enable-attrs: config-attrs:
+    let
+      config-list = map
+        (name:
+          if enable-attrs.${name}
+          then {
+            inherit name;
+            value = { enable = enable-attrs.${name}; }
+                    // (config-attrs.${name} or {});
+          }
+          else { name = null; value = null; })
+        (__attrNames enable-attrs);
+    in __listToAttrs config-list;
+
+  packages = with pkgs; [
+    # Messenger
+    kotatogram-desktop-with-webkit keybase-gui
+    # DB
+    postgresql sqlite
+    # Screenshot
+    scrot gnome.gnome-screenshot
+    # Nix-{related,specific}
+    patchelf nix-prefetch
+    inputs.devenv.packages.${system}.devenv
+    nix-template
+    appimage-run steam-run
+    nixos-shell comma
+    # Emulation
+    qemu
+    # Compilers/interpreters-related
+    sbcl
+    nodePackages.node2nix
+    cabal-install ghcid cabal2nix
+    # Version controll system
+    gh git-lfs
+    darcs
+    # Document creation/reading
+    texlive.combined.scheme-full pandoc
+    koreader
+    # Manual
+    linux-manual man-pages man-pages-posix
+    dasht scheme-manpages
+    # Packages that my `xmonad.hs` depends on
+    compton                       # Transparency
+    feh farbfeld farbfeld-utils   # BG img
+    xmobar                        # just xmobar
+    st xst                        # suckless terminals
+    pavucontrol                   # Volume control
+    zathura tabbed tabbed-zathura # For {,tabbed-}zathura
+    scrcpy                        # Android mirroring
+    ranger                        # TUI File manager
+    # Network
+    cloudflare-warp sshuttle
+    xpra x2x
+    # Video
+    ffmpeg mplayer
+    # Personal scripts
+    toggle-touchpad
+    # CLI tools
+    google-drive-ocamlfuse
+    pass
+    mosh
+    asciinema termtosvg
+    magic-wormhole
+    graphviz
+    yt-dlp wget
+    libsixel w3m
+    pciutils acpi
+    unzip
+    binutils
+    jq loc tree ripgrep
+    htop
+    parallel
+    xdotool arandr xclip
+    # Misc.
+    nerdfonts
+  ];
 
   tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''
       #! /bin/sh
@@ -169,250 +114,65 @@ else
          fi
        '';
 
-  clvm-tools = with pkgs.python3Packages;
-    toPythonApplication (
-      clvm-tools.overridePythonAttrs (old: {
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [setuptools];}));
-
-  nix-L = {runCommand, nix, makeWrapper}:
-    runCommand "nix" { buildInputs = [pkgs.makeWrapper]; } ''
-      mkdir $out
-      ln -s ${pkgs.nix}/* $out/
-      rm -rf $out/bin
-      mkdir $out/bin
-      ln -s ${pkgs.nix}/bin/* $out/bin/
-      wrapProgram $out/bin/nix --inherit-argv0 --add-flags "-L"
+  nixpkgs-overlays-compat-nix = pkgs.writeText "nixpkgs-overlays-compat.nix" ''
+      let
+        this = (import ${inputs.flake-compat} { src = ${./.}; }).defaultNix;
+      in
+        this.overlays
     '';
 
-in {
-
-  nixpkgs.overlays = [
-    inputs.haskell-nix.overlay
-    (import ./overlays/03-myPackages.nix)
-    (import ./overlays/04-myEnvs.nix)
-    (import ./overlays/05-prefer-remote-fetch.nix)
+  NIX_PATH = lib.concatStringsSep ":" [
+    "$HOME/.nix-defexpr/channels"
+    "nixpkgs=${inputs.nixpkgs.outPath}"
+    "nixpkgs-overlays=${nixpkgs-overlays-compat-nix}"
+    "nixos-config=/etc/nixos/configuration.nix"
+    "/nix/var/nix/profiles/per-user/root/channels"
   ];
 
-  nix.package = pkgs.nix;
+  EDITOR = "${config.programs.vim.package}/bin/vim";
 
-  fonts.fontconfig.enable = true;
+  shellAliases = {
+    nix-run = ''function __nix-run() { nix run "nixpkgs#$1" "''${@:2}"; }; __nix-run'';
+    nix-repl = "nix repl '<nixpkgs>'";
+    nix-which = "function __nix-which() { readlink $(which $1); }; __nix-which";
+    nix-unpack-from = "function __nix-unpack-from() { nix-shell $1 -A $2 --run unpackPhase; }; __nix-unpack-from";
+    nix-unpack = "nix-unpack-from '<nixpkgs>'";
+    nix-where-from = "function __nix-where-from() { nix-build $1 -A $2 --no-out-link; }; __nix-where-from";
+    nix-where = "nix-where-from '<nixpkgs>'";
+    nix-show-tree = "function __nix-show-tree() { nix-shell -p tree --run 'tree $(nix-where $1)'; }; __nix-show-tree";
+    nix-visit = "function __nix-visit() { pushd $(nix-where $1); }; __nix-visit";
+    nix-X-help-in-Y = "function __nix-X-help-in-Y() { $(nix-where w3m)/bin/w3m $1/share/doc/$2; }; __nix-X-help-in-Y";
+    nix-help = "nix-X-help-in-Y $(nix-where nix.doc) nix/manual/index.html";
+    nix-outpath = "nix-build --no-out-link '<nixpkgs>' -A";
+    nix-position = "function __nix-position() { nix-instantiate '<nixpkgs>' --eval -A $1.meta.position; }; __nix-position";
+    nix-build--no-out-link = "nix-build --no-out-link";
 
-  home = {
-    inherit stateVersion username homeDirectory;
-    inherit packages;
+    nixpkgs-help = "nix-X-help-in-Y $(nix-build --no-out-link '<nixpkgs/doc>') nixpkgs/manual.html";
 
-    sessionPath = [
-      "$HOME/.emacs.d/bin"
-      "$HOME/mutable_node_modules/bin"
+    nixos-help = "nix-X-help-in-Y $(nix-build '<nixpkgs/nixos/release.nix>' --arg supportedSystems '[ \"x86_64-linux\" ]' -A manual --no-out-link) nixos/index.html";
+
+    watch-direnv = "while true; do _direnv_hook; sleep 1; done";
+
+    my-ip = "curl -s https://wtfismyip.com/json | ${pkgs.jq}/bin/jq";
+
+    ipython-for-crawl = lib.concatStringsSep " " [
+      "nix-shell"
+      ''-p "python3.withPackages (p: with p; [ ipython requests beautifulsoup4 ])"''
+      "--run ipython"
     ];
 
-    sessionVariables = {
-
-      EDITOR = "${config.programs.vim.package}/bin/vim";
-
-      NIX_PATH = let
-        # HACK: This is to make it work with `nix repl`
-        nixpkgs-overlays = pkgs.writeText "overlays-compat.nix" ''
-          let
-            user = __getEnv "USER";
-            this = (import ${inputs.flake-compat} { src = ${./.}; }).defaultNix;
-            inputs = this.inputs;
-          in [ inputs.haskell-nix.overlay
-               (import ${./.}/overlays/03-myPackages.nix)
-               (import ${./.}/overlays/04-myEnvs.nix)
-               (import ${./.}/overlays/05-prefer-remote-fetch.nix) ]
-        '';
-
-       in lib.concatStringsSep ":" [
-        "$HOME/.nix-defexpr/channels"
-        "nixpkgs=${inputs.nixpkgs.outPath}"
-        "nixpkgs-overlays=${nixpkgs-overlays}" # HACK: This is to make it work with `nix repl`
-        "nixos-config=/etc/nixos/configuration.nix"
-        "/nix/var/nix/profiles/per-user/root/channels"
-      ];
-
-    };
-
-    file = {
-
-      home-manager.source = inputs.home-manager;
-
-      nixpkgs.source = inputs.nixpkgs;
-
-      all-cabal-hashes.source = with pkgs; srcOnly {
-        name = "all-cabal-hashes";
-        src = all-cabal-hashes;
-      };
-
-      # haskell-library-srcs.source = let
-      #   inherit (pkgs) haskellPackages linkFarm srcOnly;
-      #   inherit (pkgs.lib) filterAttrs mapAttrsToList;
-      #   all-libs = filterAttrs (_: v: v ? src) haskellPackages;
-      # in linkFarm "haskell-library-srcs"
-      # (mapAttrsToList (name: drv: {
-      #   inherit name;
-      #   path = srcOnly { inherit (drv) name src; };
-      # })
-      # all-libs);
-    };
-
-    activation = {
-      installDoomEmacs = lib.hm.dag.entryAfter ["writeBoundary"]
-      ''
-        if [ ! -d "$HOME/.emacs.d" ]; then
-          ${pkgs.git}/bin/git clone --depth=1 --single-branch "https://github.com/doomemacs/doomemacs" "$HOME/.emacs.d"
-        fi
-      '';
-    };
-
+    vi = emacsCommand config.programs.emacs.package;
   };
 
-  nix.registry = {
-    nixpkgs.flake = inputs.nixpkgs;
-  };
 
-  imports = [ ];
-
-  caches = {
-    cachix = [
-      {
-        name = "nix-community";
-        sha256 = "sha256:0m6kb0a0m3pr6bbzqz54x37h5ri121sraj1idfmsrr6prknc7q3x";
-      }
-    ];
-
-    extraCaches = [
-      #{
-      #  url = "https://hydra.iohk.io";
-      #  key = "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ";
-      #}
-    ];
-  };
-
-  programs = {
-
-    ncmpcpp.enable = true;
-
-    nix-index.enable = true;
-
-    command-not-found.enable = false;
-
-    #doom-emacs = {
-    #  enable = true;
-    #  doomPrivateDir = ../doom.d;
-    #};
-
-    vim = {
-      enable = true;
-      plugins = with pkgs.vimPlugins; [
-        base16-vim
-        vim-airline
-      ];
-      extraConfig = ''
-        set nobackup noswapfile
-      '';
-    };
-
-    vscode = {
-      enable = true;
-      package = pkgs.vscode-with-extensions.override {
-        vscodeExtensions = with pkgs.vscode-extensions; [
-          ms-toolsai.jupyter
-          ms-toolsai.jupyter-keymap
-          vscodevim.vim
-        ];
-      };
-    };
-
-    keychain = {
-      enable = true;
-      extraFlags = [ "-Q" ];
-      keys = [ "id_ed25519" ];
-    };
-
-    gpg.enable = true;
-
-    tmux = {
-      enable = true;
-      package = pkgs.tmux;
-      prefix = "C-j";
-      keyMode = "vi";
-      sensibleOnTop = true;
-      extraConfig = ''
-        bind-key ^u copy-mode
-        bind-key j new-window
-        
-        bind-key '"' split-window -c '#{pane_current_path}' 
-        bind-key '%' split-window -h -c '#{pane_current_path}' 
-        
-        set-option -g status-right "[#(acpi --battery | grep -oE '(Discharging|Charging|Unknown), [0-9.]+%')] #{=21:pane_title} %H:%M:%S %d-%b-%y"
-        
-        set-option -g status-interval 5
-        set-option -g automatic-rename on
-        set-option -g automatic-rename-format '#{b:pane_current_path}'
-        
-        set -s escape-time 0
-      '';
-    };
-
-    man.generateCaches = false;
-
-    git = {
-      enable = true;
-      userEmail = "jhhuh.note@gmail.com";
-      userName = "Ji-Haeng Huh";
-      extraConfig = {
-        init.defaultBranch = "master";
-      };
-      package = pkgs.gitFull;
-    };
-
-    home-manager.enable = true;
-
-    bash = {
-      enable = true;
-
-      shellAliases = {
-        vi = emacsCommand config.programs.emacs.package;
-        nix-run = ''function __nix-run() { nix run "nixpkgs#$1" "''${@:2}"; }; __nix-run'';
-        nix-repl = "nix repl '<nixpkgs>'";
-        nix-which = "function __nix-which() { readlink $(which $1); }; __nix-which";
-        nix-unpack-from = "function __nix-unpack-from() { nix-shell $1 -A $2 --run unpackPhase; }; __nix-unpack-from";
-        nix-unpack = "nix-unpack-from '<nixpkgs>'";
-        nix-where-from = "function __nix-where-from() { nix-build $1 -A $2 --no-out-link; }; __nix-where-from";
-        nix-where = "nix-where-from '<nixpkgs>'";
-        nix-show-tree = "function __nix-show-tree() { nix-shell -p tree --run 'tree $(nix-where $1)'; }; __nix-show-tree";
-        nix-visit = "function __nix-visit() { pushd $(nix-where $1); }; __nix-visit";
-        nix-X-help-in-Y = "function __nix-X-help-in-Y() { $(nix-where w3m)/bin/w3m $1/share/doc/$2; }; __nix-X-help-in-Y";
-        nix-help = "nix-X-help-in-Y $(nix-where nix.doc) nix/manual/index.html";
-        nixpkgs-help = "nix-X-help-in-Y $(nix-build --no-out-link '<nixpkgs/doc>') nixpkgs/manual.html";
-
-        nixos-help = "nix-X-help-in-Y $(nix-build '<nixpkgs/nixos/release.nix>' --arg supportedSystems '[ \"x86_64-linux\" ]' -A manual --no-out-link) nixos/index.html";
-
-        nix-outpath = "nix-build --no-out-link '<nixpkgs>' -A";
-        nix-position = "function __nix-position() { nix-instantiate '<nixpkgs>' --eval -A $1.meta.position; }; __nix-position";
-
-        nix-build--no-out-link = "nix-build --no-out-link";
-
-        watch-direnv = "while true; do _direnv_hook; sleep 1; done";
-
-        ipython-for-crawl = lib.concatStringsSep " " [
-          "nix-shell"
-          ''-p "python3.withPackages (p: with p; [ ipython requests beautifulsoup4 ])"''
-          "--run ipython"
-        ];
-
-        get-ip = "curl -s https://wtfismyip.com/json | ${pkgs.jq}/bin/jq";
-      };
-
-      bashrcExtra = ''
+  bashrcExtra = ''
         # git-prompt
         source ${pkgs.git}/share/git/contrib/completion/git-prompt.sh
 
         get_sha() {
             git rev-parse --short HEAD 2>/dev/null
         }
-        
+
         GIT_PS1_SHOWDIRTYSTATE=1
         GIT_PS1_SHOWSTASHSTATE=1
         GIT_PS1_SHOWUNTRACKEDFILES=1
@@ -429,7 +189,7 @@ in {
         PROMPT_COMMAND+='\n'
         PROMPT_COMMAND+='\[\033[01;35m\]$(is_in_nixshell "(" ")")\[\033[00m\]$ '
         PROMPT_COMMAND+='" "(%s)"'
-        
+
         is_in_nixshell() {
             if [ $IN_NIX_SHELL ]
             then
@@ -460,68 +220,124 @@ in {
          fi
 
       '';
-    };
+in
 
-    direnv = {
-      enable = true;
-      enableBashIntegration = true;
-      nix-direnv = {
-        enable = true;
+{
+
+  # Programs
+  programs = enable-with-config
+    {
+      ## 1. Nix-related
+      nix-index    = true;
+      home-manager = true;
+      ## 2.Browsers
+      firefox      = true;
+      brave        = true;
+      ## 3. Editors
+      vim          = true;
+      emacs        = true;
+      vscode       = true;
+      ## 4. CLI tools
+      bat          = true;
+      direnv       = true;
+      keychain     = true;
+      git          = true;
+      tmux         = true;
+      gpg          = true;
+      ## 5. Shell
+      bash         = true;
+    }
+    {
+      ## 1. Nix-related
+      ## 2. Browsers
+      ## 3. Editors
+      vim.extraConfig = "set nobackup noswapfile";
+      vim.plugins = with pkgs.vimPlugins; [
+        base16-vim vim-airline ];
+
+      emacs.extraPackages = epkgs: with epkgs; [
+        all-the-icons vterm pdf-tools ];
+
+      vscode.extensions = with pkgs.vscode-extensions; [
+        ms-toolsai.jupyter ms-toolsai.jupyter-keymap vscodevim.vim ];
+
+      ## 4. CLI tools
+      bat.config.theme = "ansi";
+
+      direnv.enableBashIntegration = true;
+      direnv.nix-direnv.enable = true;
+
+      keychain.extraFlags = [ "-q" ];
+      keychain.keys = [ "id_ed25519" ];
+
+      git.userEmail = "jhhuh.note@gmail.com";
+      git.userName = "Ji-Haeng Huh";
+      git.extraConfig.init.defaultBranch = "master";
+      git.package = pkgs.gitFull;
+
+      tmux = {
+        package = pkgs.tmux;
+        prefix = "C-j";
+        keyMode = "vi";
+        sensibleOnTop = true;
+        extraConfig = ''
+            bind-key ^u copy-mode
+            bind-key j new-window
+
+            bind-key '"' split-window -c '#{pane_current_path}'
+            bind-key '%' split-window -h -c '#{pane_current_path}'
+
+            set-option -g status-right "[#(acpi --battery | grep -oE '(Discharging|Charging|Unknown), [0-9.]+%')] #{=21:pane_title} %H:%M:%S %d-%b-%y"
+
+            set-option -g status-interval 5
+            set-option -g automatic-rename on
+            set-option -g automatic-rename-format '#{b:pane_current_path}'
+
+            set -s escape-time 0
+          '';
       };
+
+      ## 5. Shell
+      bash = { inherit shellAliases bashrcExtra; };
+
     };
 
-    bat = {
-      enable = true;
-      config = {
-        theme = "ansi";
-      };
+  # Services
+  services = enable-with-config
+    {
+      keybase   = true;
+      kbfs      = true;
+      syncthing = true;
+      gpg-agent = true;
+      emacs     = true;
+    }
+    {
+      syncthing.tray = false;
+      emacs.client.enable = true;
     };
 
-    firefox.enable = true;
-
-    emacs = {
-      enable = true;
-      extraPackages = epkgs: with epkgs; [
-        all-the-icons
-        vterm
-        pdf-tools
-      ];
+  # Home
+  home = {
+    inherit stateVersion username homeDirectory packages;
+    sessionVariables = { inherit EDITOR NIX_PATH; };
+    sessionPath = [ "$HOME/.emacs.d/bin" "$HOME/mutable_node_modules/bin" ];
+    file = __mapAttrs (_: source: { inherit source; }) {
+      inherit (inputs) home-manager nixpkgs;
+      home-pkgs = pkgs.linkFarmFromDrvs "home-pkgs" config.home.packages;
     };
-
   };
 
-  services = {
+  # Nix-related
+  nix.package = pkgs.nix;
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
-    keybase.enable = true;
-    kbfs.enable = true;
+  caches.cachix = let
+    hashes.nix-community = "sha256:0m6kb0a0m3pr6bbzqz54x37h5ri121sraj1idfmsrr6prknc7q3x";
+  in map (name: { inherit name; sha256 = hashes.${name}; }) (__attrNames hashes);
 
-    syncthing = {
-      enable = true;
-      tray = false;
-    };
-
-    #keynav.enable = true;
-
-    gpg-agent.enable = true;
-
-    # mpd = {
-    #   enable = true;
-    #   extraConfig = ''
-    #     audio_output {
-    #       type        "pulse"
-    #       name        "MPD"
-    #       # server      "localhost"
-    #     }
-    #   '';
-    # };
-
-    emacs = {
-      enable = true;
-      client.enable = true;
-    };
-  };
-
+  # Miscs.
   manual.html.enable = true;
+  fonts.fontconfig.enable = true;
 
 }
 

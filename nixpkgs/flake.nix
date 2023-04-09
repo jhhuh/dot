@@ -1,5 +1,5 @@
 {
-  description = "A Home Manager flake";
+  description = "home-manager setup for jhhuh";
 
   inputs = {
 
@@ -9,16 +9,11 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     declarative-cachix.url = github:jonascarpay/declarative-cachix;
-    declarative-cachix.inputs.nixpkgs.follows = "nixpkgs";
 
     emacs-overlay.url = github:nix-community/emacs-overlay;
 
     doom-emacs.url = github:doomemacs/doomemacs;
     doom-emacs.flake = false;
-
-    nix-doom-emacs.url = github:nix-community/nix-doom-emacs;
-    nix-doom-emacs.inputs.nixpkgs.follows = "nixpkgs";
-    #nix-doom-emacs.inputs.emacs-overlay.follows = "emacs-overlay";
 
     x86-manpages-nix.url = github:blitz/x86-manpages-nix;
     x86-manpages-nix.flake = false;
@@ -32,7 +27,6 @@
     flake-compat.flake = false;
 
     devenv.url = github:cachix/devenv;
-    devenv.inputs.nixpkgs.follows = "nixpkgs";
 
   };
 
@@ -42,16 +36,16 @@
 
       config = import ./config.nix;
 
-      pkgs = import inputs.nixpkgs {
-        inherit system config;
-        overlays = [ (self: super: {
-          #chromium = self.callPackage ./updated-pkgs/chromium {};
-        }) ];
-      };
+      overlays = [
+        inputs.haskell-nix.overlay
+        (import ./overlays/03-myPackages.nix)
+        (import ./overlays/04-myEnvs.nix)
+        (import ./overlays/05-prefer-remote-fetch.nix)
+      ];
+
+      pkgs = import inputs.nixpkgs { inherit system config overlays; };
 
       module-declarative-cachix = inputs.declarative-cachix.homeManagerModules.declarative-cachix-experimental;
-
-      module-nix-doom-emacs = inputs.nix-doom-emacs.hmModule;
 
       mkHomeConfiguration = hostname:
         inputs.home-manager.lib.homeManagerConfiguration {
@@ -61,11 +55,10 @@
           modules = [
             ./home.nix
             module-declarative-cachix
-            module-nix-doom-emacs
           ];
 
           extraSpecialArgs = {
-            inherit inputs hostname;
+            inherit inputs hostname system;
             stateVersion = "22.11";
             username = "jhhuh";
             homeDirectory = "/home/jhhuh";
@@ -76,7 +69,7 @@
 
       {
 
-        inherit inputs;
+        inherit inputs overlays;
 
         homeConfigurations = __listToAttrs
           (map (hostname: {
