@@ -33,9 +33,6 @@
     slock.enable = true;
   };
 
-  virtualisation.podman.enable = true;
-  virtualisation.podman.dockerCompat = true;
-
   environment.systemPackages = with pkgs; [
     nixos-option
     pciutils hdparm powertop htop

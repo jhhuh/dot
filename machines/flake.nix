@@ -7,7 +7,6 @@
     nixpkgs_22_11.url = github:nixos/nixpkgs/nixos-22.11;
     flake-utils.url = github:numtide/flake-utils;
     deploy-rs.url = github:serokell/deploy-rs;
-    nixos-fhs-compat.url = github:balsoft/nixos-fhs-compat;
   };
 
   outputs = inputs@{ self, flake-utils, ... }:
@@ -42,7 +41,7 @@
                   { environment.etc."nix/channels/nixpkgs".source = nixpkgs.outPath; }
 
                   ({pkgs, ...}:{
-                    imports = [ inputs.nixos-fhs-compat.nixosModules.combined ];
+                    imports = [ ];
                     nixpkgs.overlays = [ (next: prev: { foomatic_filters = next.foomatic-filters; }) ];
                     environment.systemPackages = [ pkgs.libxcrypt ];
                   })

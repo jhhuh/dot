@@ -146,18 +146,6 @@
     xorg.xfs wget vim tmux git
   ];
 
-  virtualisation = {
-    lxd.enable = true;
-    virtualbox.host = {
-      enable = true;
-      enableExtensionPack = true;
-    };
-    podman = {
-      enable = true;
-      dockerCompat = true;
-    };
-  };
-
   powerManagement = {
     cpuFreqGovernor = "ondemand";
     powertop.enable = true;

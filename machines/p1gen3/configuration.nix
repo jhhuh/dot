@@ -147,11 +147,6 @@
     RuntimeDirectorySize=4G
   '';
 
-  virtualisation.virtualbox.host = {
-    enable = true;
-    enableExtensionPack = true;
-  };
-
   fonts.fonts = with pkgs; [
     noto-fonts
     noto-fonts-emoji

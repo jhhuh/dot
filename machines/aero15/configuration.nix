@@ -194,17 +194,6 @@
     vimHugeX git tmux
   ];
 
-  virtualisation = {
-    podman = {
-      enable = true;
-      dockerCompat = true;
-    };
-    #libvirtd.enable = true;
-    virtualbox.host = {
-      enable = true;
-      enableExtensionPack = true;
-    };
-  };
 
   programs = {
     xwayland.enable = true;
