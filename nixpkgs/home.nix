@@ -65,6 +65,7 @@ let
     # Personal scripts
     toggle-touchpad
     # CLI tools
+    fzf
     google-drive-ocamlfuse
     pass
     mosh
@@ -228,24 +229,25 @@ in
   programs = enable-with-config
     {
       ## 1. Nix-related
-      nix-index    = true;
-      home-manager = true;
+      nix-index     = true;
+      home-manager  = true;
       ## 2.Browsers
-      firefox      = true;
-      brave        = true;
+      firefox       = true;
+      brave         = true;
+      google-chrome = true;
       ## 3. Editors
-      vim          = true;
-      emacs        = true;
-      vscode       = true;
+      vim           = true;
+      emacs         = true;
+      vscode        = true;
       ## 4. CLI tools
-      bat          = true;
-      direnv       = true;
-      keychain     = true;
-      git          = true;
-      tmux         = true;
-      gpg          = true;
+      bat           = true;
+      direnv        = true;
+      keychain      = true;
+      git           = true;
+      tmux          = true;
+      gpg           = true;
       ## 5. Shell
-      bash         = true;
+      bash          = true;
     }
     {
       ## 1. Nix-related
