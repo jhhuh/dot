@@ -134,6 +134,8 @@ myKeys XConfig { modMask = modm }
         namedScratchpadAction scratchpads "scrcpy"),
       ( (modm .|. controlMask, xK_m),
         namedScratchpadAction scratchpads "keybase-gui"),
+      ( (modm .|. controlMask, xK_g),
+        namedScratchpadAction scratchpads "nixpkgs-search"),
       ( (modm .|. controlMask, xK_u),
         sendMessage $ IncGap 5 D ),
       ( (modm .|. controlMask, xK_d ),
@@ -229,7 +231,8 @@ scratchpads =
     ("alsamixer", "alsamixer", 3/8,   3/8,  1/4,   1/4),
     ("htop",      "htop",      21/32, 1/16, 10/32, 14/16),
     ("vimpc",     "vimpc",     1/2,   1/6,  5/12,  2/3),
-    ("ranger",    "ranger",    1/6,   1/6,  2/3,   2/3) ] ++
+    ("ranger",    "ranger",    1/6,   1/6,  2/3,   2/3)
+  ] ++
   [ NS "xst" "xst -A 192 -T xst-alpha -f \"Liberation Mono:pixelsize=14\""
        (title =? "xst-alpha")
        (customFloating $
@@ -255,7 +258,12 @@ scratchpads =
     NS "pavucontrol" "pavucontrol"
        (className =? "Pavucontrol")
        (customFloating $
-         W.RationalRect (2/8) (2/8) (4/8) (4/8)) ]
+         W.RationalRect (2/8) (2/8) (4/8) (4/8)),
+    NS "nixpkgs-search" "st -c nixpkgs-search -f \"UbuntuMono Nerd Font:pixelsize=20\" -e bash -i -c \"cd $HOME/nixpkgs && fzf --preview 'bat --color=always --decorations=always {}' | xargs bat --paging=always\""
+       (className =? "nixpkgs-search")
+       (customFloating $
+         W.RationalRect (1/6) (1/6) (2/3) (2/3))
+      ]
   where makeNS (name,cmd,px,py,w,h)
           = NS name (terminalCmd++cmd)
                (title =? name )
