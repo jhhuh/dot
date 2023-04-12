@@ -241,8 +241,6 @@ self: super: rec {
 
   myEmacs = self.emacsWithPackages (epkg: with epkg; [ emacs-libvterm ]);
 
-  uzbl = super.uzbl.override { webkit = self.webkitgtk; };
-
   snack-exe = let
     src = self.fetchFromGitHub {
       owner = "nmattia";
