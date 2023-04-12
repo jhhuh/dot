@@ -65,7 +65,7 @@ let
     # Personal scripts
     toggle-touchpad
     # CLI tools
-    fzf
+    fx
     google-drive-ocamlfuse
     pass
     mosh
@@ -246,6 +246,7 @@ in
       git           = true;
       tmux          = true;
       gpg           = true;
+      fzf           = true;
       ## 5. Shell
       bash          = true;
     }
