@@ -136,6 +136,8 @@ myKeys XConfig { modMask = modm }
         namedScratchpadAction scratchpads "keybase-gui"),
       ( (modm .|. controlMask, xK_g),
         namedScratchpadAction scratchpads "nixpkgs-search"),
+      ( (modm .|. controlMask, xK_semicolon),
+        namedScratchpadAction scratchpads "st-float"),
       ( (modm .|. controlMask, xK_u),
         sendMessage $ IncGap 5 D ),
       ( (modm .|. controlMask, xK_d ),
@@ -161,7 +163,7 @@ myKeys XConfig { modMask = modm }
       , ( (modm, xK_x), withFocused $ floatToRationalRect myCenter)
       , ( (modm, xK_c), withFocused $ floatToRationalRect myRightCenter)
       , ( (modm, xK_v), withFocused $ floatToRationalRect myRight)
-      , ( (modm, xK_b), withFocused $ floatToRationalRect myFull)
+      , ( (modm, xK_f), withFocused $ floatToRationalRect myFull)
     ]
 
 
@@ -259,8 +261,12 @@ scratchpads =
        (className =? "Pavucontrol")
        (customFloating $
          W.RationalRect (2/8) (2/8) (4/8) (4/8)),
-    NS "nixpkgs-search" "st -c nixpkgs-search -f \"UbuntuMono Nerd Font:pixelsize=20\" -e bash -i -c \"cd $HOME/nixpkgs && fzf --preview 'bat --color=always --decorations=always {}' | xargs bat --paging=always\""
+    NS "nixpkgs-search" "st -c nixpkgs-search -f \"UbuntuMono Nerd Font:pixelsize=20\" -e bash -i -c \"cd $HOME/nixpkgs && fzf --reverse --preview 'bat --color=always --decorations=always {}' | xargs bat --paging=always\""
        (className =? "nixpkgs-search")
+       (customFloating $
+         W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+    NS "st-float" "st -c st-float -f \"UbuntuMono Nerd Font:pixelsize=20\""
+       (className =? "st-float")
        (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3))
       ]
