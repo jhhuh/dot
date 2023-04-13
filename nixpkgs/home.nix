@@ -41,6 +41,7 @@ let
     pciutils acpi
     patchelf nix-prefetch
     nixos-shell comma
+    git-annex
   ];
 
   packages-for-desktop = with pkgs; [
@@ -243,6 +244,7 @@ else
            source ${inputs.base16-shell}/scripts/base16-$MYBASE16THEME.sh
          fi
 
+        ${pkgs.neofetch}/bin/neofetch
       '';
 in
 
@@ -306,6 +308,8 @@ in
         prefix = "C-j";
         keyMode = "vi";
         sensibleOnTop = true;
+
+        terminal = "tmux-256color";
         extraConfig = ''
             bind-key ^u copy-mode
             bind-key j new-window
@@ -320,6 +324,8 @@ in
             set-option -g automatic-rename-format '#{b:pane_current_path}'
 
             set -s escape-time 0
+
+            set -ag terminal-overrides ",xterm-256color:RGB"
           '';
       };
 
