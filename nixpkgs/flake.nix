@@ -75,7 +75,7 @@
           (map (hostname: {
             name = "jhhuh@${hostname}";
             value = mkHomeConfiguration hostname; })
-          [ "aero15" "x230" "p1gen3" "cafe" ]);
+          [ "aero15" "x230" "p1gen3" "cafe" "dasan" ]);
 
         apps.x86_64-linux.default = {
           type = "app";

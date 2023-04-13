@@ -16,11 +16,34 @@ let
             value = { enable = enable-attrs.${name}; }
                     // (config-attrs.${name} or {});
           }
-          else { name = null; value = null; })
+          else { inherit name; value = {}; })
         (__attrNames enable-attrs);
     in __listToAttrs config-list;
 
-  packages = with pkgs; [
+
+  isServer = __elem hostname [ "dasan" ];
+
+  isDesktop = __elem hostname [ "aero15" "x230" "p1gen" "cafe" ];
+
+  packages = if isDesktop then packages-for-desktop else packages-for-server;
+
+  packages-for-server = with pkgs; [
+    inputs.devenv.packages.${system}.devenv
+    unzip
+    binutils
+    jq loc tree ripgrep
+    htop
+    parallel
+    mosh
+    magic-wormhole
+    wget
+    w3m
+    pciutils acpi
+    patchelf nix-prefetch
+    nixos-shell comma
+  ];
+
+  packages-for-desktop = with pkgs; [
     # Messenger
     kotatogram-desktop-with-webkit keybase-gui
     # DB
@@ -232,13 +255,13 @@ in
       nix-index     = true;
       home-manager  = true;
       ## 2.Browsers
-      firefox       = true;
-      brave         = true;
-      google-chrome = true;
+      firefox       = isDesktop;
+      brave         = isDesktop;
+      google-chrome = isDesktop;
       ## 3. Editors
       vim           = true;
-      emacs         = true;
-      vscode        = true;
+      emacs         = isDesktop;
+      vscode        = isDesktop;
       ## 4. CLI tools
       bat           = true;
       direnv        = true;
@@ -308,11 +331,11 @@ in
   # Services
   services = enable-with-config
     {
-      keybase   = true;
-      kbfs      = true;
-      syncthing = true;
+      keybase   = isDesktop;
+      kbfs      = isDesktop;
+      syncthing = isDesktop;
       gpg-agent = true;
-      emacs     = true;
+      emacs     = isDesktop;
     }
     {
       syncthing.tray = false;

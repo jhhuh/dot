@@ -83,7 +83,7 @@ self: super: rec {
 
         src = fetchzip {
           url = "http://zzo38computer.org/prog/farbfeld.zip";
-          sha256 = "sha256-guxTyZmi6w4jrGp+sdLddAur+PJUV3sUoyXC0lmC1LA=";
+          sha256 = "sha256-I1o94L2up9eByH38aCW756sSzPrPhnGFDeOOQmPu/cU=";
           stripRoot = false;
         };
 
