@@ -4,6 +4,8 @@ let
 
 #  nix-tools = ;
 
+  nix-init = inputs.nix-init.packages.${system}.default;
+
   emacsCommand = emacs: "TERM=st-direct ${emacs}/bin/emacsclient -nw";
 
   # Combinator separating `enable` flags from the rest
@@ -45,6 +47,7 @@ let
     nixos-shell comma
     git-annex
     poetry
+    nix-init
   ];
 
   packages-for-desktop = with pkgs; [
@@ -117,7 +120,8 @@ let
     powertop
     signal-desktop
     (pkgs.callPackage ./pkgs/ytui-music {})
-    cachix
+    #cachix
+    nix-init
   ];
 
   tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''
@@ -168,6 +172,8 @@ else
   EDITOR = "${config.programs.vim.package}/bin/vim";
 
   shellAliases = {
+    nix-callPackage = "nix-callPackage-from ./.";
+    nix-callPackage-from = ''function __nix-callPackage-from() { nix build -L --impure --expr "(import <nixpkgs> {}).callPackage $1 {}"; }; __nix-callPackage-from'';
     nix-run = ''function __nix-run() { nix run "nixpkgs#$1" "''${@:2}"; }; __nix-run'';
     nix-repl = "nix repl '<nixpkgs>'";
     nix-which = "function __nix-which() { readlink $(which $1); }; __nix-which";
