@@ -11,6 +11,8 @@
 
   programs.slock.enable = true;
 
+  services.udev.packages = with pkgs; [ vial ];
+
   environment.systemPackages = [ pkgs.cntr ];
 
 }
