@@ -92,8 +92,36 @@
 
 (setq which-key-idle-delay 0.01)
 
+(setq doom-modeline-persp-name t)
+
 (defun on-after-init ()
   (unless (display-graphic-p (selected-frame))
     (set-face-background 'default "unspecified-bg" (selected-frame))))
 
 (add-hook 'server-after-make-frame-hook 'on-after-init)
+
+(use-package! auth-source
+  :config
+  (setq auth-sources '(password-store)))
+
+;(use-package! org-ai
+;  :commands (org-ai-mode org-ai-global-mode)
+;  :init
+;  (add-hook 'org-mode-hook #'org-ai-mode)
+;  (org-ai-global-mode)
+;  :config
+;  ;(setq org-ai-default-chat-model "gpt-4")
+;  (setq org-ai-use-auth-source t)
+;  (org-ai-install-yasnippets))
+
+(use-package! gptel
+  :config
+  (setq gptel-default-mode #'org-mode))
+
+(use-package! greader)
+
+(use-package! lsp-grammarly
+  :ensure t
+  :hook (text-mode . (lambda ()
+                       (require 'lsp-grammarly)
+                       (lsp))))  ; or lsp-deferred
