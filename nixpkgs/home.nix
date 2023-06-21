@@ -2,6 +2,8 @@
 
 let
 
+#  nix-tools = ;
+
   emacsCommand = emacs: "TERM=st-direct ${emacs}/bin/emacsclient -nw";
 
   # Combinator separating `enable` flags from the rest
@@ -23,7 +25,7 @@ let
 
   isServer = __elem hostname [ "dasan" ];
 
-  isDesktop = __elem hostname [ "aero15" "x230" "p1gen" "cafe" ];
+  isDesktop = __elem hostname [ "aero15" "x230" "p1gen3" "cafe" ];
 
   packages = if isDesktop then packages-for-desktop else packages-for-server;
 
@@ -42,9 +44,11 @@ let
     patchelf nix-prefetch
     nixos-shell comma
     git-annex
+    poetry
   ];
 
   packages-for-desktop = with pkgs; [
+    espeak-ng
     # Messenger
     kotatogram-desktop-with-webkit keybase-gui
     # DB
@@ -107,6 +111,13 @@ let
     xdotool arandr xclip
     # Misc.
     nerdfonts
+
+    poetry
+    passphrase2pgp
+    powertop
+    signal-desktop
+    (pkgs.callPackage ./pkgs/ytui-music {})
+    cachix
   ];
 
   tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''
@@ -244,7 +255,7 @@ else
            source ${inputs.base16-shell}/scripts/base16-$MYBASE16THEME.sh
          fi
 
-        ${pkgs.neofetch}/bin/neofetch
+        ${pkgs.macchina}/bin/macchina
       '';
 in
 
@@ -284,7 +295,12 @@ in
         base16-vim vim-airline ];
 
       emacs.extraPackages = epkgs: with epkgs; [
-        all-the-icons vterm pdf-tools ];
+        all-the-icons
+        vterm
+        pdf-tools
+        emacspeak
+        greader
+      ];
 
       vscode.extensions = with pkgs.vscode-extensions; [
         ms-toolsai.jupyter ms-toolsai.jupyter-keymap vscodevim.vim ];

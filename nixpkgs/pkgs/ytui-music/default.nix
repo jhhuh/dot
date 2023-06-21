@@ -1,4 +1,4 @@
-{rustPlatform, fetchFromGitHub, pkg-config, openssl, mpv-unwrapped }:
+{ rustPlatform, fetchFromGitHub, pkg-config, openssl, mpv-unwrapped }:
 
 let
 
@@ -23,5 +23,7 @@ rustPlatform.buildRustPackage rec {
   nativeBuildInputs = [ pkg-config ];
 
   buildInputs = [ openssl mpv-0341 ];
+
+  doCheck = false;
 
 }
