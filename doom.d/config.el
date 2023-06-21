@@ -21,14 +21,16 @@
 ;; font string. You generally only need these two:
 
 (cond ((string= (system-name) "cafe")
-       (setq doom-font (font-spec :family "Ubuntu Mono" :size 18.0 :weight 'regular)
+       (setq doom-font (font-spec :family "Iosevka Term" :size 14.0 :weight 'regular)
+             doom-big-font (font-spec :family "Iosevka Term" :size 16.0)
              doom-variable-pitch-font (font-spec :family "sans" :size 14.0)))
       ((string= (system-name) "x230")
        (setq doom-font (font-spec :family "Ubuntu Mono" :size 16.0 :weight 'regular)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0)))
       ((string= (system-name) "p1gen3")
-       (setq doom-font (font-spec :family "JetBrains Mono Nerd Font" :size 13.0 :weight 'regular)
-             doom-variable-pitch-font (font-spec :family "sans" :size 10.0)))
+       (setq doom-font (font-spec :family "Iosevka Term" :size 12.0)
+             doom-big-font (font-spec :family "Iosevka Term" :size 14.0)
+             doom-variable-pitch-font (font-spec :family "sans" :size 12.0)))
       (t
        (setq doom-font (font-spec :family "Ubuntu Mono" :size 16.0 :weight 'regular)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0))))
