@@ -126,7 +126,7 @@ myKeys XConfig { modMask = modm }
         namedScratchpadAction scratchpads "xst"),
       ( (modm .|. controlMask, xK_v),
         namedScratchpadAction scratchpads "pavucontrol"),
-      ( (modm .|. controlMask, xK_g),
+      ( (modm .|. controlMask, xK_r),
         namedScratchpadAction scratchpads "kotatogram-desktop"),
       ( (modm .|. controlMask, xK_j),
         namedScratchpadAction scratchpads "emacs"),
@@ -239,11 +239,15 @@ scratchpads =
        (title =? "xst-alpha")
        (customFloating $
          W.RationalRect (0/32) (0/32) (32/32) (18/32)),
+    NS "kotatogram-desktop" "kotatogram-desktop"
+       (className =? "KotatogramDesktop")
+       (customFloating $
+         W.RationalRect (22/32) (1/16) (8/32) (12/16)),
     NS "keybase-gui" "keybase-gui"
        (className =? "Keybase")
        (customFloating $
          W.RationalRect (22/32) (1/16) (8/32) (12/16)),
-    NS "scrcpy" "scrcpy"
+    NS "scrcpy" "scrcpy -d"
        (className =? ".scrcpy-wrapped")
        (customFloating $
          W.RationalRect (22/32) (1/16) (8/32) (12/16)),
@@ -286,7 +290,7 @@ myManageHook = composeAll . concat $
         | r <- myFloatsByRole]]
   where myFloatsByResource = ["Devtools",
                               "plasmashell"]
-        myFloatsByClass = [] -- "Emacs"]
+        myFloatsByClass = [ "VirtualBox Machine"]
         myFloatsByTitle = ["Open Document",
                            "Open Files",
                            "Developer Tools"]
