@@ -16,12 +16,13 @@
     settings = {
       trusted-users = [ "@wheel" ];
       substituters = [
-        "http://mimir.coati-bebop.ts.net:5555"
+        "http://cafe.coati-bebop.ts.net:5555"
+        #"http://mimir.coati-bebop.ts.net:5555"
         #"http://p1gen3.coati-bebop.ts.net:5555"
       ];
       trusted-public-keys = [
         "cache.mimir.asgard-labs.com-1:lw8GZNUYWsCV6letxzfdeF+qmXpgBIEnjoAUWOCBA5w="
-
+        "cache.cafe.asgard-labs.com-1:EzqMdsAkeTj819HbOzImDffgRWCfFJUVkZhzcZLxE1c="
         "cache.p1gen3.asgard-labs.com-1:cFBR49pfNUjZ8jY5he5+sKc0RIVuaNmVymgSU8uVAYU="
       ];
     };

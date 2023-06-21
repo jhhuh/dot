@@ -30,4 +30,6 @@ in
       openssh.authorizedKeys.keys = builder-pubkeys;
     };
 
+    nix.settings.trusted-users = [ "builder" ];
+
   }
