@@ -22,6 +22,9 @@
     ./services.nix
   ];
 
+  programs.steam.enable = true;
+  hardware.steam-hardware.enable = true;
+
   virtualisation.podman.enable = true;
   virtualisation.podman.dockerCompat = true;
 
