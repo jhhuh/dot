@@ -10,6 +10,8 @@
 
     declarative-cachix.url = github:jonascarpay/declarative-cachix;
 
+    nix-init.url = github:nix-community/nix-init;
+
     emacs-overlay.url = github:nix-community/emacs-overlay;
 
     doom-emacs.url = github:doomemacs/doomemacs;
@@ -90,11 +92,11 @@
 
   nixConfig = {
 
-    trusted-public-keys = [
+    extra-trusted-public-keys = [
       "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
     ];
 
-    substituters = [
+    extra-substituters = [
       "https://cache.iog.io"
     ];
 
