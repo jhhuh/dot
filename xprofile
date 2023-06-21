@@ -1,2 +1,0 @@
-xrandr --output eDP1 --scale "1.2x1.2"
-xrandr --output eDP1 --panning "3072x1920"

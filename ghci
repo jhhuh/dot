@@ -1,8 +1,0 @@
--- import qualified funnyprint
--- 
--- :def color (\_ -> return (":set -interactive-print=FunnyPrint.funnyPrintC\n:set prompt \"" ++ FunnyPrint.prompt "λ " "%s" " ¬\\nλ > " ++ "\"" ++ "\n:set prompt2 \"" ++ FunnyPrint.prompt2 "λ" "" " | " ++ "\""))
--- :def nocolor (\_ -> return ":set -interactive-print=print\n:set prompt \"%s> \"\n:set prompt2 \"%s| \"")
--- 
--- :color
--- :set prompt "\ESC[34m\STXλ> \ESC[m\STX"
-
