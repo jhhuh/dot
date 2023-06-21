@@ -53,3 +53,9 @@
 ;;(package! envrc :recipe (:host github :repo "purcell/envrc"))
 ;;
 (package! lsp-mode :pin "c9494f624c73b5917a3f0353c73eeaa0d7bb0992")
+
+(package! org-ai)
+
+(package! gptel)
+
+(package! lsp-grammarly)
