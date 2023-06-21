@@ -21,7 +21,7 @@
       desktopManager.xterm.enable = true;
       desktopManager.gnome.enable = true;
 
-      xkbOptions = "ctrl:swapcaps";
+      xkbOptions = "ctrl:nocaps";
 
     };
 
