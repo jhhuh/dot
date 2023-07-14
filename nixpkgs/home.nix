@@ -122,6 +122,8 @@ let
     (pkgs.callPackage ./pkgs/ytui-music {})
     #cachix
     nix-init
+
+    mermaid-cli
   ];
 
   tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''
