@@ -116,7 +116,9 @@
 
 (use-package! gptel
   :config
-  (setq gptel-default-mode #'org-mode))
+  (setq! gptel-default-mode #'org-mode)
+  (setq! gptel-model "gpt-4")
+  )
 
 (use-package! greader)
 
