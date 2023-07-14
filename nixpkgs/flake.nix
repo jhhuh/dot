@@ -43,6 +43,17 @@
         (import ./overlays/03-myPackages.nix)
         (import ./overlays/04-myEnvs.nix)
         (import ./overlays/05-prefer-remote-fetch.nix)
+        (self: super: {
+          mermaid-cli = (self.callPackage ./node-pkgs {})."@mermaid-js/mermaid-cli".override {
+            nativeBuildInputs = [ self.makeWrapper ];
+            prePatch = ''
+              export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
+            '';
+            postInstall = ''
+              wrapProgram $out/bin/mmdc \
+              --set PUPPETEER_EXECUTABLE_PATH ${self.chromium.outPath}/bin/chromium
+            '';
+          };})
       ];
 
       pkgs = import inputs.nixpkgs { inherit system config overlays; };
