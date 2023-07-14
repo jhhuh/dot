@@ -176,6 +176,7 @@ else
   shellAliases = {
     nix-callPackage = "nix-callPackage-from ./.";
     nix-callPackage-from = ''function __nix-callPackage-from() { nix build -L --impure --expr "(import <nixpkgs> {}).callPackage $1 {}"; }; __nix-callPackage-from'';
+    nix-visit-src = ''function __nix-visit-src() { nix build -L --impure --expr "with (import <nixpkgs> {}); srcOnly $1"; }; __nix-visit-src'';
     nix-run = ''function __nix-run() { nix run "nixpkgs#$1" "''${@:2}"; }; __nix-run'';
     nix-repl = "nix repl '<nixpkgs>'";
     nix-which = "function __nix-which() { readlink $(which $1); }; __nix-which";
