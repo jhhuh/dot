@@ -59,3 +59,7 @@
 (package! gptel)
 
 (package! lsp-grammarly)
+
+(package! lsp-grammarly)
+
+(package! mermaid-mode)
