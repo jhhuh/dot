@@ -124,6 +124,7 @@ let
     nix-init
 
     mermaid-cli
+    zeal
   ];
 
   tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''

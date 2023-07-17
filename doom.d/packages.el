@@ -63,3 +63,5 @@
 (package! lsp-grammarly)
 
 (package! mermaid-mode)
+
+(package! helm-dash)
