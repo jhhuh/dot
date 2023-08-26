@@ -394,6 +394,10 @@ in
     hashes.nix-community = "sha256:0m6kb0a0m3pr6bbzqz54x37h5ri121sraj1idfmsrr6prknc7q3x";
   in map (name: { inherit name; sha256 = hashes.${name}; }) (__attrNames hashes);
 
+  caches.extraCaches = [
+    { url = "https://nixcache.reflex-frp.org"; key = "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI="; }
+  ];
+
   # Miscs.
   manual.html.enable = true;
   fonts.fontconfig.enable = true;
