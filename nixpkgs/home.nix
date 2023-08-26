@@ -53,7 +53,8 @@ let
   packages-for-desktop = with pkgs; [
     espeak-ng
     # Messenger
-    kotatogram-desktop-with-webkit keybase-gui
+    #kotatogram-desktop-with-webkit
+    keybase-gui
     # DB
     postgresql sqlite
     # Screenshot
@@ -119,7 +120,7 @@ let
     passphrase2pgp
     powertop
     signal-desktop
-    (pkgs.callPackage ./pkgs/ytui-music {})
+    #(pkgs.callPackage ./pkgs/ytui-music {})
     #cachix
     nix-init
 
