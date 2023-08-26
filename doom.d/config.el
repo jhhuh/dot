@@ -21,18 +21,18 @@
 ;; font string. You generally only need these two:
 
 (cond ((string= (system-name) "cafe")
-       (setq doom-font (font-spec :family "Iosevka Term" :size 14.0 :weight 'regular)
-             doom-big-font (font-spec :family "Iosevka Term" :size 16.0)
+       (setq doom-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 14.0 :weight 'regular)
+             doom-big-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 16.0)
              doom-variable-pitch-font (font-spec :family "sans" :size 14.0)))
       ((string= (system-name) "x230")
-       (setq doom-font (font-spec :family "Ubuntu Mono" :size 16.0 :weight 'regular)
+       (setq doom-font (font-spec :family "Ubuntu Nerd Font Mono" :size 16.0 :weight 'regular)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0)))
       ((string= (system-name) "p1gen3")
-       (setq doom-font (font-spec :family "Iosevka Term" :size 12.0)
-             doom-big-font (font-spec :family "Iosevka Term" :size 14.0)
+       (setq doom-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 12.0)
+             doom-big-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 14.0)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0)))
       (t
-       (setq doom-font (font-spec :family "Ubuntu Mono" :size 16.0 :weight 'regular)
+       (setq doom-font (font-spec :family "Ubuntu Nerd Font Mono" :size 16.0 :weight 'regular)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0))))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -120,10 +120,26 @@
   (setq! gptel-model "gpt-4")
   )
 
-(use-package! greader)
+;(use-package! greader)
 
 (use-package! lsp-grammarly
   :ensure t
   :hook (text-mode . (lambda ()
                        (require 'lsp-grammarly)
                        (lsp))))  ; or lsp-deferred
+
+(use-package! codegpt
+  :ensure t
+  :config
+  (setq openai-key #'openai-key-auth-source))
+
+(use-package! codegpt
+  :ensure t
+  :config
+  (setq codegpt-tunnel 'chat            ; The default is 'completion
+        codegpt-model "gpt-")) ; You can pick any model you want!
+
+(use-package! chatgpt
+  :ensure t
+  :config
+  (setq chatgpt-model "gpt-4"))

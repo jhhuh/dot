@@ -52,7 +52,6 @@
 ;;(package! envrc :recipe (:host github :repo "purcell/envrc"))
 ;;(package! envrc :recipe (:host github :repo "purcell/envrc"))
 ;;
-(package! lsp-mode :pin "c9494f624c73b5917a3f0353c73eeaa0d7bb0992")
 
 (package! org-ai)
 
@@ -60,8 +59,15 @@
 
 (package! lsp-grammarly)
 
-(package! lsp-grammarly)
-
 (package! mermaid-mode)
 
 (package! helm-dash)
+
+(package! openai
+  :recipe (:type git :host github :repo "emacs-openai/openai"))
+
+(package! chatgpt
+  :recipe (:type git :host github :repo "emacs-openai/chatgpt"))
+
+(package! codegpt
+  :recipe (:type git :host github :repo "emacs-openai/codegpt"))
