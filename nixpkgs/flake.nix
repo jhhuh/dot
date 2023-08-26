@@ -90,13 +90,12 @@
             value = mkHomeConfiguration hostname; })
           [ "aero15" "x230" "p1gen3" "cafe" "dasan" ]);
 
-        apps.x86_64-linux.default = {
-          type = "app";
-          program = "${pkgs.writeScriptBin "print-env.sh" ''
+        apps.x86_64-linux = pkgs.callPackage ./apps {
+          scripts.print-env = ''
             env
             echo "*** PWD ***: $PWD"
             echo "*** 0 ***: $0"
-          ''}/bin/print-env.sh";
+          '';
         };
 
       };
