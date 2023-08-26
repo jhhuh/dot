@@ -24,6 +24,8 @@ in
         "networkmanager"
         "libvirtd"
         "ipfs"
+        "podman"
+        "docker"
         "disk" ];
       openssh.authorizedKeys.keys = jhhuh-pubkeys;
       uid = 1000;
