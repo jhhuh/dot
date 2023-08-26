@@ -99,8 +99,8 @@ self: super: rec {
           > ./build.sh
 
         substituteInPlace ./build.sh \
-          --replace sqlite3.o ${sqlite.out}/lib/libsqlite3.so.0 \
-          --replace /usr/lib/libgs.so.9 ${ghostscript}/lib/libgs.so.9
+          --replace sqlite3.o ${sqlite.out}/lib/libsqlite3.so \
+          --replace /usr/lib/libgs.so.9 ${ghostscript}/lib/libgs.so
 
         gcc -c ./lodepng.c
 
