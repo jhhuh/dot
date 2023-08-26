@@ -209,6 +209,11 @@ else
     ];
 
     vi = emacsCommand config.programs.emacs.package;
+
+    emacs-daemon-start  = "systemctl start  --user emacs.service";
+    emacs-daemon-status = "systemctl status --user emacs.service";
+    emacs-daemon-stop   = "systemctl stop   --user emacs.service";
+
   };
 
 
@@ -255,7 +260,7 @@ else
         MYBASE16THEME_farmer2="irblack"
         #MYBASE16THEME_laptop-aa6mgb61="irblack"
         MYBASE16THEME_mimir="irblack"
-        MYBASE16THEME_p1gen3="nord"
+        MYBASE16THEME_p1gen3="one-light" # "nord"
         MYBASE16THEME_roekstonen="irblack"
         MYBASE16THEME_zhao="irblack"
 
