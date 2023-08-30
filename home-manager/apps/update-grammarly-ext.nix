@@ -1,4 +1,4 @@
-{ nix, writeScriptBin, vscode-utils, version ? "0.22.1" }:
+{ nix, writeScriptBin, vscode-utils, version ? "0.23.15" }:
 
 let
 
