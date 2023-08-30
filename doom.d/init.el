@@ -196,3 +196,6 @@
 
 (setenv "LSP_USE_PLISTS" "1")
 
+(setq native-comp-deferred-compilation nil)
+(after! (doom-packages straight)
+  (setq straight--native-comp-available t))
