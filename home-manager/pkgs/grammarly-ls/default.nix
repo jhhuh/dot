@@ -1,4 +1,4 @@
-{ fetchzip, stdenvNoCC, nodejs-16_x }:
+{ fetchzip, stdenvNoCC, nodejs }:
 
 let
 
@@ -14,7 +14,7 @@ stdenvNoCC.mkDerivation {
 
       cp -r ${grammarly-ext}/extension/dist/server $out/server
       cat <<EOF > $out/bin/grammarly-ls
-      #! ${nodejs-16_x}/bin/node
+      #! ${nodejs}/bin/node
 
       require('../server/index.node.js')
       EOF

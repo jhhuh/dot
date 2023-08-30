@@ -1,7 +1,7 @@
 { fetchzip }:
 fetchzip {
-  url = "https://znck.gallery.vsassets.io/_apis/public/gallery/publisher/znck/extension/grammarly/0.22.1/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage";
-  sha256 = "0rc60i792x0pdzmfx9ahvnbma44h3gxaxvrgffg8d7yv9625nycc";
+  url = "https://znck.gallery.vsassets.io/_apis/public/gallery/publisher/znck/extension/grammarly/0.23.15/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage";
+  sha256 = "0ip7h4yz7gcrrxwdlkb9k0xcnsrcwfxa9ry4s2nikx5xvypf77dl";
   extension = "zip";
   stripRoot = false;
 }
