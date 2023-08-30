@@ -13,21 +13,21 @@ self: super: rec {
   ghcWithAllPackages =
     let
 
-      getDeps = h:
-        let deps =
-              if h ? passthru && h.passthru ? getCabalDeps
-              then h.passthru.getCabalDeps.libraryHaskellDepends
-              else [];
-            deps' = __filter (x: x != null) deps;
-        in map (x: x.pname) deps';
+      # getDeps = h:
+      #   let deps =
+      #         if h ? passthru && h.passthru ? getCabalDeps
+      #         then h.passthru.getCabalDeps.libraryHaskellDepends
+      #         else [];
+      #       deps' = __filter (x: x != null) deps;
+      #   in map (x: x.pname) deps';
 
-      getSysDeps = h:
-        let deps =
-              if h ? passthru && h.passthru ? getCabalDeps
-              then h.passthru.getCabalDeps.librarySystemDepends
-              else [];
-            deps' = __filter (x: x != null) deps;
-        in map (x: if x ? pname then x.pname else x.name) deps';
+      # getSysDeps = h:
+      #   let deps =
+      #         if h ? passthru && h.passthru ? getCabalDeps
+      #         then h.passthru.getCabalDeps.librarySystemDepends
+      #         else [];
+      #       deps' = __filter (x: x != null) deps;
+      #   in map (x: if x ? pname then x.pname else x.name) deps';
 
       isAvailable = v: v ? meta
                    && v.meta ? available
@@ -37,24 +37,28 @@ self: super: rec {
                    && v.meta ? broken
                    && ! v.meta.broken;
 
-      blacklist = [ "Southpaw" "inline-c-win32" "cplex-hs" "hs-mesos" ];
+      # blacklist = [ "Southpaw" "inline-c-win32" "cplex-hs" "hs-mesos" ];
 
       pred0 = v: isAvailable v && isNotBroken v;
 
-      pred = v: pred0 v && ! __elem v.pname blacklist;
+      # pred = v: pred0 v && ! __elem v.pname blacklist;
+      pred = v: pred0 v && (__tryEval (toString v)).success;
 
       all-package-names =
         __attrNames (
           self.lib.filterAttrs
             (_: pred)
             self.haskellPackages);
+
       result = self.haskellPackages.ghcWithPackages (hp: map (n: hp.${n}) all-package-names);
+
       drvs = map (n: self.haskellPackages.${n}) all-package-names;
+
       farm = self.linkFarmFromDrvs "all-ghc-packages-farm" drvs;
+
     in
-      {
-        inherit all-package-names getDeps getSysDeps result farm;
-      };
+
+      result // { inherit all-package-names; };
 
   # not working
   sixel-tmux = super.tmux.overrideAttrs (old: rec {
