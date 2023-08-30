@@ -126,10 +126,14 @@ let
 
     mermaid-cli
     zeal
+    (pkgs.callPackage ./pkgs/grammarly-ls {})
+
     #ghcWithAllPackages-top-200
     (lib.lowPrio (pkgs.callPackage ./ghc-200.nix {}))
     #(lib.lowPrio (pkgs.callPackage ./ghc-2000.nix {}))
 
+    haskell-language-server
+    #(haskell-language-server.override { supportedGhcVersions = [ "90" "92" ]; })
   ];
 
   tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''
