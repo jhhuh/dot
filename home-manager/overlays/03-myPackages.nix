@@ -60,6 +60,25 @@ self: super: rec {
 
       result // { inherit all-package-names; };
 
+  ghcWithAllPackages-cached =
+    let
+      all-package-names = __fromJSON (__readFile ../hackage-mega-list.json);
+    in
+      self.haskellPackages.ghcWithPackages (hp: map (n: hp.${n}) all-package-names);
+
+  hackage-mega-list = __fromJSON (__readFile ../hackage-mega-list.json);
+
+  hackage-top-packages =  (__fromJSON (__readFile ../hackage-top-packages.json)).result;
+
+  hackage-top-2000 = __genList (__elemAt self.hackage-top-packages) 2000;
+  hackage-top-200  = __genList (__elemAt self.hackage-top-packages)  200;
+
+  hackage-mini-mega-2000 = __filter (n: __elem self.haskellPackages.${n}.pname self.hackage-top-2000) hackage-mega-list;
+  hackage-mini-mega-200  = __filter (n: __elem self.haskellPackages.${n}.pname  self.hackage-top-200) hackage-mega-list;
+
+  ghcWithAllPackages-top-2000 = self.haskellPackages.ghcWithPackages (hp: map (n: hp.${n}) hackage-mini-mega-2000);
+  ghcWithAllPackages-top-200  = self.haskellPackages.ghcWithPackages (hp: map (n: hp.${n})  hackage-mini-mega-200);
+
   # not working
   sixel-tmux = super.tmux.overrideAttrs (old: rec {
 
