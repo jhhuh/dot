@@ -30,6 +30,8 @@
 
     devenv.url = github:cachix/devenv;
 
+    haskell-language-server.url = github:haskell/haskell-language-server/2.1.0.0;
+
   };
 
   outputs = inputs:
