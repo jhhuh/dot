@@ -126,6 +126,10 @@ let
 
     mermaid-cli
     zeal
+    #ghcWithAllPackages-top-200
+    (lib.lowPrio (pkgs.callPackage ./ghc-200.nix {}))
+    #(lib.lowPrio (pkgs.callPackage ./ghc-2000.nix {}))
+
   ];
 
   tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''
