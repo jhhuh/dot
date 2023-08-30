@@ -210,9 +210,10 @@ else
 
     vi = emacsCommand config.programs.emacs.package;
 
-    emacs-daemon-start  = "systemctl start  --user emacs.service";
-    emacs-daemon-status = "systemctl status --user emacs.service";
-    emacs-daemon-stop   = "systemctl stop   --user emacs.service";
+    start-emacs    = "systemctl start  --user emacs.service && systemctl status --user emacs.service";
+    restart-emacs  = "systemctl restart  --user emacs.service";
+    status-emacs   = "systemctl status --user emacs.service";
+    stop-emacs     = "systemctl stop   --user emacs.service";
 
   };
 
