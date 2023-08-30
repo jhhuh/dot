@@ -398,6 +398,7 @@ in
 
   caches.cachix = let
     hashes.nix-community = "sha256:0m6kb0a0m3pr6bbzqz54x37h5ri121sraj1idfmsrr6prknc7q3x";
+    hashes.haskell-language-server = "sha256:1g408rqjzbl2m3bbyfjg3yxr3glsa4y4szxif8d3b0nq1kjq5bpm";
   in map (name: { inherit name; sha256 = hashes.${name}; }) (__attrNames hashes);
 
   caches.extraCaches = [
