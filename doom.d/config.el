@@ -89,7 +89,20 @@
 ;; they are implemented.
 
 (after! persp-mode
-  (setq persp-emacsclient-init-frame-behaviour-override "main"))
+  (setq persp-emacsclient-init-frame-behaviour-override "main")
+
+  (defun workspaces-formatted ()
+    (+doom-dashboard--center (frame-width) (+workspace--tabline)))
+
+  (defun hy/invisible-current-workspace ()
+    (propertize (safe-persp-name (get-current-persp)) 'invisible t))
+
+  (customize-set-variable 'tab-bar-format '(+workspace--tabline tab-bar-format-align-right hy/invisible-current-workspace))
+
+  (advice-add #'+workspace/display :override #'ignore)
+  (advice-add #'+workspace-message :override #'ignore))
+
+(run-at-time nil nil (cmd! (tab-bar-mode +1)))
 
 (use-package! envrc
   :config
