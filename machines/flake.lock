@@ -7,11 +7,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1685948350,
-        "narHash": "sha256-1FldJ059so0X/rScdbIiOlQbjjSNCCTdj2cUr5pHU4A=",
+        "lastModified": 1686747123,
+        "narHash": "sha256-XUQK9kwHpTeilHoad7L4LjMCCyY13Oq383CoFADecRE=",
         "owner": "serokell",
         "repo": "deploy-rs",
-        "rev": "65211db63ba1199f09b4c9f27e5eba5ec50d76ac",
+        "rev": "724463b5a94daa810abfc64a4f87faef4e00f984",
         "type": "github"
       },
       "original": {
@@ -41,11 +41,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1685518550,
-        "narHash": "sha256-o2d0KcvaXzTrPRIo0kOLV0/QXHhDQ5DTi+OxcjO8xqY=",
+        "lastModified": 1692799911,
+        "narHash": "sha256-3eihraek4qL744EvQXsK1Ha6C3CR7nnT8X2qWap4RNk=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "a1720a10a6cfe8234c0e93907ffe81be440f4cef",
+        "rev": "f9e7cf818399d17d347f847525c5a5a8032e4e44",
         "type": "github"
       },
       "original": {
@@ -88,11 +88,11 @@
     },
     "nixpkgs_22_11": {
       "locked": {
-        "lastModified": 1687596132,
-        "narHash": "sha256-snkoTnUJQICNvg7b+DfxPLnIen6FIucM95niW95vTJI=",
+        "lastModified": 1688392541,
+        "narHash": "sha256-lHrKvEkCPTUO+7tPfjIcb7Trk6k31rz18vkyqmkeJfY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "9dbd51e1f1ed01893caffb7fe25c422cb10b8282",
+        "rev": "ea4c80b39be4c09702b0cb3b42eab59e2ba4f24b",
         "type": "github"
       },
       "original": {
@@ -102,12 +102,29 @@
         "type": "github"
       }
     },
+    "nixpkgs_23_05": {
+      "locked": {
+        "lastModified": 1693341273,
+        "narHash": "sha256-wrsPjsIx2767909MPGhSIOmkpGELM9eufqLQOPxmZQg=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "2ab91c8d65c00fd22a441c69bbf1bc9b420d5ea1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-23.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "deploy-rs": "deploy-rs",
         "flake-utils": "flake-utils",
         "nixpkgs_22_05": "nixpkgs_22_05",
-        "nixpkgs_22_11": "nixpkgs_22_11"
+        "nixpkgs_22_11": "nixpkgs_22_11",
+        "nixpkgs_23_05": "nixpkgs_23_05"
       }
     },
     "systems": {

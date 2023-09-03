@@ -5,6 +5,7 @@
   inputs = {
     nixpkgs_22_05.url = github:nixos/nixpkgs/nixos-22.05;
     nixpkgs_22_11.url = github:nixos/nixpkgs/nixos-22.11;
+    nixpkgs_23_05.url = github:nixos/nixpkgs/nixos-23.05;
     flake-utils.url = github:numtide/flake-utils;
     deploy-rs.url = github:serokell/deploy-rs;
   };
@@ -67,7 +68,7 @@
               };
 
               p1gen3 = {
-                nixpkgs = inputs.nixpkgs_22_11;
+                nixpkgs = inputs.nixpkgs_23_05;
                 stateVersion = "22.11";
               };
 
