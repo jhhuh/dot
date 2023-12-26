@@ -437,7 +437,7 @@ in
   home = {
     inherit stateVersion username homeDirectory packages;
     sessionVariables = { inherit EDITOR NIX_PATH; };
-    sessionPath = [ "$HOME/.emacs.d/bin" "$HOME/mutable_node_modules/bin" ];
+    sessionPath = [ "$HOME/.emacs.d/bin" "$HOME/mutable_node_modules/bin" "$HOME/.cargo/bin"];
     file = __mapAttrs (_: source: { inherit source; }) {
       inherit (inputs) home-manager nixpkgs;
       home-pkgs = pkgs.linkFarmFromDrvs "home-pkgs" config.home.packages;
