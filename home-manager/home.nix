@@ -378,7 +378,10 @@ in
       };
 
       ## 5. Shell
-      bash = { inherit shellAliases bashrcExtra; };
+      bash = {
+        inherit shellAliases bashrcExtra;
+        historyControl = [ "erasedups" "ignoredups" "ignorespace" ];
+      };
 
     };
 
