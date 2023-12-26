@@ -109,7 +109,7 @@ let
     pciutils acpi
     unzip
     binutils
-    jq loc tree ripgrep
+    jq loc tree ripgrep fd
     htop
     parallel
     xdotool arandr xclip
