@@ -128,12 +128,17 @@ let
     zeal
     (pkgs.callPackage ./pkgs/grammarly-ls {})
 
+    ghc
     #ghcWithAllPackages-top-200
-    (lib.lowPrio (pkgs.callPackage ./ghc-200.nix {}))
+    #(lib.lowPrio (pkgs.callPackage ./ghc-200.nix {}))
     #(lib.lowPrio (pkgs.callPackage ./ghc-2000.nix {}))
 
-    haskell-language-server
     #(haskell-language-server.override { supportedGhcVersions = [ "90" "92" ]; })
+    inputs.haskell-language-server.packages.${system}.haskell-language-server-92
+
+    galaxy-buds-client
+
+    git-crypt
   ];
 
   tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''
