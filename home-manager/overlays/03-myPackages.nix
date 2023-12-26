@@ -173,7 +173,7 @@ self: super: rec {
       wallpaper-ff =
         let
           inherit (self) runCommand farbfeld farbfeld-utils;
-          wallpaper-jpg = ../../wallpaper.jpg;
+          wallpaper-jpg = ../wallpaper.jpg;
         in runCommand "wallpaper.ff" {
           inherit wallpaper-jpg;
           buildInputs = [ farbfeld farbfeld-utils ]; }
@@ -241,7 +241,7 @@ self: super: rec {
     wallpaper-ff =
       let
         inherit (self) runCommand farbfeld farbfeld-utils;
-        wallpaper-jpg = ../../wallpaper.jpg;
+        wallpaper-jpg = ../wallpaper.jpg;
       in runCommand "wallpaper.ff" {
         inherit wallpaper-jpg;
         buildInputs = [ farbfeld farbfeld-utils ]; }
