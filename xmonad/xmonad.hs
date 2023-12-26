@@ -119,6 +119,8 @@ myKeys XConfig { modMask = modm }
       ( (modm .|. controlMask, xK_h),
         namedScratchpadAction scratchpads "htop"),
       ( (modm .|. controlMask, xK_space),
+        namedScratchpadAction scratchpads "terminal"),
+      ( (modm .|. controlMask, xK_f),
         namedScratchpadAction scratchpads "ranger"),
       ( (modm .|. controlMask, xK_b),
         namedScratchpadAction scratchpads "zathura" ),
@@ -239,6 +241,10 @@ scratchpads =
        (title =? "xst-alpha")
        (customFloating $
          W.RationalRect (0/32) (0/32) (32/32) (18/32)),
+    NS "terminal" ("st -f \"UbuntuMono Nerd Font:pixelsize=40\" -T st-256color-scratchpad -e bash -i -c 'tmux new-session -A -s scratch'")
+       (title =? "st-256color-scratchpad")
+       (customFloating $
+         W.RationalRect (1/6) (1/6) (2/3) (2/3)),
     NS "kotatogram-desktop" "kotatogram-desktop"
        (className =? "KotatogramDesktop")
        (customFloating $
