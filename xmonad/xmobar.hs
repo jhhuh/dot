@@ -1,11 +1,11 @@
-Config { font = "xft:Ubuntu Mono:pixelsize=12"
+Config { font = "UbuntuMono Nerd Font 32"
        , additionalFonts = []
        , borderColor = "#2c2c2c"
        , border = TopB
        , bgColor = "#2c2c2c"
        , fgColor = "gray"
        , alpha = 255
-       , position = Bottom
+       , position = BottomH 48
        , textOffset = -1
        , iconOffset = -1
        , lowerOnStart = True

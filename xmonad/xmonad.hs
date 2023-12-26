@@ -62,7 +62,7 @@ desktop = ewmhFullscreen . ewmh $ def {
 conf = desktop {
   borderWidth = 4,
   focusedBorderColor = "#00FF00",
-  terminal = "st -f \"UbuntuMono Nerd Font:pixelsize=20\"",
+  terminal = "st -f \"UbuntuMono Nerd Font:pixelsize=40\"",
   modMask = mod4Mask,
   keys = keys desktop <+> myKeys,
   manageHook = scratchpadHook
@@ -88,7 +88,7 @@ myKeys XConfig { modMask = modm }
   = M.fromList
     [ ( (modm .|. controlMask, xK_p),
         shellPrompt $ def { alwaysHighlight = True,
-                            height = 24,
+                            height = 48,
                             promptBorderWidth = 0,
                             position = CenteredAt 0.02 0.5,
                             borderColor = "#000000",
@@ -235,7 +235,7 @@ scratchpads =
     ("vimpc",     "vimpc",     1/2,   1/6,  5/12,  2/3),
     ("ranger",    "ranger",    1/6,   1/6,  2/3,   2/3)
   ] ++
-  [ NS "xst" "xst -A 192 -T xst-alpha -f \"Liberation Mono:pixelsize=14\""
+  [ NS "xst" "xst -A 192 -T xst-alpha -f \"Liberation Mono:pixelsize=40\""
        (title =? "xst-alpha")
        (customFloating $
          W.RationalRect (0/32) (0/32) (32/32) (18/32)),
@@ -269,8 +269,6 @@ scratchpads =
        (className =? "nixpkgs-search")
        (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-    NS "st-float" "st -c st-float -f \"UbuntuMono Nerd Font:pixelsize=20\""
-       (className =? "st-float")
        (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3))
       ]
