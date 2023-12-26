@@ -53,6 +53,9 @@
 
 (package! gptel)
 
+(package! gptel-extensions
+  :recipe (:type git :host github :repo "kamushadenes/gptel-extensions.el"))
+
 (package! lsp-grammarly)
 
 (package! mermaid-mode)
