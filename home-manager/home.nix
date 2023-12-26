@@ -228,6 +228,8 @@ else
     status-emacs   = "systemctl status --user emacs.service";
     stop-emacs     = "systemctl stop   --user emacs.service";
 
+    cabal-unpack = ''function __cabal-unpack() { mkdir -p ~/hackage-unpack && pushd ~/hackage-unpack && cd $(cabal unpack $1 2>&1 | grep -o "$1-[.0-9]*" || echo $PWD); }; __cabal-unpack'';
+
   };
 
 
