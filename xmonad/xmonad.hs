@@ -139,7 +139,7 @@ myKeys XConfig { modMask = modm }
       ( (modm .|. controlMask, xK_g),
         namedScratchpadAction scratchpads "nixpkgs-search"),
       ( (modm .|. controlMask, xK_semicolon),
-        namedScratchpadAction scratchpads "st-float"),
+        namedScratchpadAction scratchpads "browser"),
       ( (modm .|. controlMask, xK_u),
         sendMessage $ IncGap 5 D ),
       ( (modm .|. controlMask, xK_d ),
@@ -243,6 +243,10 @@ scratchpads =
          W.RationalRect (0/32) (0/32) (32/32) (18/32)),
     NS "terminal" ("st -f \"UbuntuMono Nerd Font:pixelsize=40\" -T st-256color-scratchpad -e bash -i -c 'tmux new-session -A -s scratch'")
        (title =? "st-256color-scratchpad")
+       (customFloating $
+         W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+    NS "browser" ("(firefox && sleep 1 && xdotool search --onlyvisible --class firefox) | head -n1 | xargs xdotool set_window --class firefox-scratchpad")
+       (className =? "firefox-scratchpad")
        (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3)),
     NS "kotatogram-desktop" "kotatogram-desktop"
