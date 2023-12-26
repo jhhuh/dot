@@ -26,7 +26,7 @@
     useXkbConfig = true;
   };
 
-  security.pam.enableSSHAgentAuth = true;
+#  security.pam.enableSSHAgentAuth = true;
 
   nixpkgs = {
     config.allowUnfree = true;
