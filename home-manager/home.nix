@@ -51,6 +51,7 @@ let
   ];
 
   packages-for-desktop = with pkgs; [
+    ario
     espeak-ng
     # Messenger
     #kotatogram-desktop-with-webkit
