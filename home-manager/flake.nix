@@ -44,6 +44,7 @@
 
       overlays = [
         inputs.haskell-nix.overlay
+        (import ./overlays/02-backports.nix { inherit (inputs) nixpkgs-unstable; inherit system; })
         (import ./overlays/03-myPackages.nix)
         (import ./overlays/04-myEnvs.nix)
         (import ./overlays/05-prefer-remote-fetch.nix)
