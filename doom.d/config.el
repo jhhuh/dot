@@ -140,31 +140,16 @@
 
 (use-package! auth-source
   :config
-  (setq auth-sources '(password-store)))
-
-;(use-package! org-ai
-;  :commands (org-ai-mode org-ai-global-mode)
-;  :init
-;  (add-hook 'org-mode-hook #'org-ai-mode)
-;  (org-ai-global-mode)
-;  :config
-;  ;(setq org-ai-default-chat-model "gpt-4")
-;  (setq org-ai-use-auth-source t)
-;  (org-ai-install-yasnippets))
+  (setq auth-sources '(password-store))
+  (setq auth-source-cache-expiry nil))
 
 (use-package! gptel
   :config
   (setq! gptel-default-mode #'org-mode)
-  (setq! gptel-model "gpt-4")
+  (setq! gptel-model "gpt-4-1106-preview")
   )
 
-;(use-package! greader)
-
-;; (use-package! lsp-grammarly
-;;   :ensure t
-;;   :hook (text-mode . (lambda ()
-;;                        (require 'lsp-grammarly)
-;;                        (lsp))))  ; or lsp-deferred
+(use-package! gptel-extensions)
 
 (use-package! codegpt
   :ensure t
@@ -181,3 +166,22 @@
   :ensure t
   :config
   (setq chatgpt-model "gpt-4"))
+
+
+;(use-package! org-ai
+;  :commands (org-ai-mode org-ai-global-mode)
+;  :init
+;  (add-hook 'org-mode-hook #'org-ai-mode)
+;  (org-ai-global-mode)
+;  :config
+;  ;(setq org-ai-default-chat-model "gpt-4")
+;  (setq org-ai-use-auth-source t)
+;  (org-ai-install-yasnippets))
+
+;(use-package! greader)
+
+;; (use-package! lsp-grammarly
+;;   :ensure t
+;;   :hook (text-mode . (lambda ()
+;;                        (require 'lsp-grammarly)
+;;                        (lsp))))  ; or lsp-deferred
