@@ -326,6 +326,8 @@ in
       vim.plugins = with pkgs.vimPlugins; [
         base16-vim vim-airline ];
 
+
+      emacs.package = pkgs.emacs29;
       emacs.extraPackages = epkgs: with epkgs; [
         all-the-icons
         vterm
