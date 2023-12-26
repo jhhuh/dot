@@ -205,7 +205,10 @@
 
   services.tailscale.enable = true;
 
-  networking.firewall.checkReversePath = "loose";
+  networking.firewall = {
+    checkReversePath = "loose";
+    trustedInterfaces = [ "wg-hds0" ];
+  };
 
   system.copySystemConfiguration = false;
 
