@@ -393,10 +393,44 @@ in
       syncthing = isDesktop;
       gpg-agent = true;
       emacs     = isDesktop;
+      mopidy = isDesktop;
     }
     {
       syncthing.tray = false;
       emacs.client.enable = true;
+      mopidy = {
+        extensionPackages = (with pkgs; [
+          mopidy-local
+          mopidy-mpd
+          (mopidy-youtube.overridePythonAttrs (old: rec {
+            version = "develop";
+            src = fetchFromGitHub {
+              owner = "natumbri";
+              repo = "mopidy-youtube";
+              rev = "develop";
+              sha256 = "sha256-h3CYGtIOl95ZlLZprjc1wssWW9Wzr6zvikLX95Osahg=";
+            };
+            propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.python3.pkgs.yt-dlp ];
+            doCheck = false;
+          }))
+          # mopidy-bandcamp            mopidy-mpd                 mopidy-scrobbler           mopidy-tunein
+          # mopidy-iris                mopidy-mpris               mopidy-somafm              mopidy-youtube
+          # mopidy-jellyfin            mopidy-muse                mopidy-soundcloud          #mopidy-ytmusic
+          # mopidy-local               mopidy-musicbox-webclient  mopidy-spotify
+          # mopidy-moped               mopidy-notify              mopidy-subidy
+          # mopidy-mopify              mopidy-podcast             #mopidy-tidal
+        ]);
+        settings = {
+          mpd.enabled = true;
+          youtube ={
+            enabled = true;
+            allow_cache = true;
+          };
+        };
+        extraConfigFiles = [
+          (config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/mopidy/mopidy_youtube.conf")
+        ];
+      };
     };
 
   # Home
