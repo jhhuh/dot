@@ -29,6 +29,8 @@ import XMonad.Hooks.DynamicLog (
   xmobarStrip,
   shorten,wrap)
 
+import XMonad.Hooks.StatusBar
+
 import XMonad.Hooks.ManageDocks (
   manageDocks,
   docks,
@@ -54,6 +56,8 @@ import XMonad.Hooks.EwmhDesktops (
 import Graphics.X11.ExtraTypes.XF86 (
   xF86XK_MonBrightnessUp,
   xF86XK_MonBrightnessDown)
+
+import XMonad.Actions.CopyWindow
 
 desktop = ewmhFullscreen . ewmh $ def {
   handleEventHook = handleEventHook def
@@ -162,35 +166,43 @@ myKeys XConfig { modMask = modm }
       , ( (modm, xK_y), withFocused $ keysMoveWindow (-16, 0))
       -- Window floating at a custom position
       , ( (modm, xK_z), withFocused $ floatToRationalRect myLeft)
-      , ( (modm, xK_x), withFocused $ floatToRationalRect myCenter)
-      , ( (modm, xK_c), withFocused $ floatToRationalRect myRightCenter)
-      , ( (modm, xK_v), withFocused $ floatToRationalRect myRight)
+      , ( (modm, xK_x), withFocused $ floatToRationalRect myLeftCenter)
+      -- , ( (modm .|. shiftMask .|. controlMask, xK_c), withFocused $ floatToRationalRect myCenterSmall)
+      , ( (modm .|. shiftMask, xK_f), withFocused $ floatToRationalRect myFocus)
+      , ( (modm, xK_c), withFocused $ floatToRationalRect myCenter)
+      , ( (modm, xK_v), withFocused $ floatToRationalRect myRightCenter)
+      , ( (modm, xK_b), withFocused $ floatToRationalRect myRight)
       , ( (modm, xK_f), withFocused $ floatToRationalRect myFull)
+      , ( (modm .|. mod1Mask,  xK_a), windows copyToAll ) -- Pin to all workspaces
+      , ( (modm .|. mod1Mask .|. controlMask, xK_a), killAllOtherCopies ) -- remove window from all but current
+      , ( (modm .|. mod1Mask .|. shiftMask, xK_a), kill1 ) -- remove window from current, kill if only one
     ]
 
+
+myFocus :: W.RationalRect
+myFocus = W.RationalRect (1/6) (1/6) (2/3) (2/3)
 
 myCenter :: W.RationalRect
 myCenter = W.RationalRect (4 / 32) (1 / 32) (24 / 32) (30 / 32)
 
-
 myFull :: W.RationalRect
 myFull = W.RationalRect (0 / 32) (0 / 32) (32 / 32) (32 / 32)
-
 
 myRight :: W.RationalRect
 myRight = W.RationalRect (33 / 64) (1 / 32) (15 / 32) (30 / 32)
 
-
 myLeft :: W.RationalRect
 myLeft = W.RationalRect (1 / 64) (1 / 32) (15 / 32) (30 / 32)
 
-
-myTopCenter :: W.RationalRect
-myTopCenter = W.RationalRect (1 / 32) (1 / 32) (30 / 32) (16 / 32)
+-- myTopCenter :: W.RationalRect
+-- myTopCenter = W.RationalRect (1 / 32) (1 / 32) (30 / 32) (16 / 32)
 
 
 myRightCenter :: W.RationalRect
 myRightCenter = W.RationalRect (10 / 32) (1 / 32) (21 / 32) (30 / 32) -- px py wx wy
+
+myLeftCenter :: W.RationalRect
+myLeftCenter = W.RationalRect (1 / 64) (1 / 32) (21 / 32) (30 / 32)
 
 
 floatToRationalRect :: W.RationalRect -> Window -> X ()
@@ -278,8 +290,6 @@ scratchpads =
     NS "nixpkgs-search" "st -c nixpkgs-search -f \"UbuntuMono Nerd Font:pixelsize=20\" -e bash -i -c \"cd $HOME/nixpkgs && fzf --reverse --preview 'bat --color=always --decorations=always {}' | xargs bat --paging=always\""
        (className =? "nixpkgs-search")
        (customFloating $
-         W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-       (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3))
       ]
   where makeNS (name,cmd,px,py,w,h)
@@ -333,8 +343,11 @@ myXmobarPP = xmobarPP
     }
 
 toggleStrutsKey XConfig {XMonad.modMask = modMask}
-  = (modMask, xK_b)
+  = (modMask .|. shiftMask, xK_b)
+
+mySB = statusBarProp myBar (pure myXmobarPP)
 
 main :: IO ()
 main = xmonad =<< statusBar myBar myXmobarPP toggleStrutsKey conf
+--main = xmonad . withSB mySB . ewmh . docks $ conf
 
