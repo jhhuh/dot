@@ -8,7 +8,11 @@
 
   boot.kernelPackages = pkgs.linuxPackages_6_1;
 
-  boot.kernelParams = [ ''wireguard.dyndbg="module wireguard +p"''];
+  boot.kernelParams = [
+    # ''wireguard.dyndbg="module wireguard +p"''
+    #"i915.enable_psr=0"
+    "nvme_core.default_ps_max_latency_us=0"
+  ];
 
   networking.hostName = "p1gen3";
   networking.networkmanager.enable = true;
