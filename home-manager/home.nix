@@ -52,6 +52,7 @@ let
 
   packages-for-desktop = with pkgs; [
     ario
+    tuntox
     espeak-ng
     # Messenger
     #kotatogram-desktop-with-webkit
