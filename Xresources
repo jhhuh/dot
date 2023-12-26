@@ -3,12 +3,16 @@
 
 !!! Xterm !!!
 XTerm*metaSendsEscape: true
-!!! XTerm*font: xft:DejaVu Sans Mono :pixelsize=14
-!!! XTerm*font: xft:Liberation Mono :pixelsize=18
-!!! XTerm*ximFont: xft:Noto Sans Mono CJK KR:pixelsize=18
+!XTerm*font: xft:DejaVu Sans Mono :pixelsize=14
+!XTerm*font: xft:Liberation Mono :pixelsize=18
+XTerm*font: xft:UbuntuMono Nerd Font:pixelsize=48
+XTerm*ximFont: xft:Noto Sans Mono CJK KR:pixelsize=18
+
+!!! Xcursor !!!
+Xcursor.size: 50
 
 !!! Xft !!!
-Xft.dpi: 112
+Xft.dpi: 200
 
 !Xft.antialias:  1
 !Xft.autohint:   0
