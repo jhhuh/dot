@@ -332,8 +332,6 @@ in
         all-the-icons
         vterm
         pdf-tools
-        emacspeak
-        greader
       ];
 
       vscode.extensions = with pkgs.vscode-extensions; [
