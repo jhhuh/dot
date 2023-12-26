@@ -81,7 +81,7 @@ let
     linux-manual man-pages man-pages-posix
     dasht scheme-manpages
     # Packages that my `xmonad.hs` depends on
-    compton                       # Transparency
+    picom                       # Transparency
     feh farbfeld farbfeld-utils   # BG img
     xmobar                        # just xmobar
     st xst                        # suckless terminals
