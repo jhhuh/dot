@@ -30,9 +30,9 @@
        (setq doom-font (font-spec :family "Ubuntu Nerd Font Mono" :size 16.0 :weight 'regular)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0)))
       ((string= (system-name) "p1gen3")
-       (setq doom-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 12.0)
-             doom-big-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 14.0)
-             doom-variable-pitch-font (font-spec :family "sans" :size 12.0)))
+       (setq doom-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 14.0)
+             doom-big-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 16.0)
+             doom-variable-pitch-font (font-spec :family "sans" :size 14.0)))
       (t
        (setq doom-font (font-spec :family "Ubuntu Nerd Font Mono" :size 16.0 :weight 'regular)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0))))
@@ -45,7 +45,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one-light)
+(setq doom-theme 'doom-dracula)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
