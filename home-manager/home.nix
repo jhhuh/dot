@@ -276,7 +276,7 @@ else
         MYBASE16THEME_farmer2="irblack"
         #MYBASE16THEME_laptop-aa6mgb61="irblack"
         MYBASE16THEME_mimir="irblack"
-        MYBASE16THEME_p1gen3="one-light" # "nord"
+        MYBASE16THEME_p1gen3="dracula" # "one-light" # "nord"
         MYBASE16THEME_roekstonen="irblack"
         MYBASE16THEME_zhao="irblack"
 
