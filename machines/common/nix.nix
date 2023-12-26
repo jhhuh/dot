@@ -1,7 +1,11 @@
 { pkgs, ... }: {
 
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixFlakes.override {
+      editline = pkgs.editline.overrideAttrs (old: {
+        configureFlags = old.configureFlags or [] ++ [ "--enable-sigstop" ];
+      });
+    };
 
     extraOptions = ''
       keep-outputs = true
