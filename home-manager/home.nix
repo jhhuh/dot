@@ -51,6 +51,8 @@ let
   ];
 
   packages-for-desktop = with pkgs; [
+    nodejs
+
     ario
     tuntox
     espeak-ng
@@ -188,7 +190,7 @@ else
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
 
-  EDITOR = "${config.programs.vim.package}/bin/vim";
+  EDITOR = "${config.programs.neovim.package}/bin/vim";
 
   shellAliases = {
     nix-callPackage = "nix-callPackage-from ./.";
@@ -223,7 +225,7 @@ else
       "--run ipython"
     ];
 
-    vi = emacsCommand config.programs.emacs.package;
+    ec = emacsCommand config.programs.emacs.package;
 
     start-emacs    = "systemctl start  --user emacs.service && systemctl status --user emacs.service";
     restart-emacs  = "systemctl restart  --user emacs.service";
@@ -306,7 +308,8 @@ in
       brave         = isDesktop;
       google-chrome = isDesktop;
       ## 3. Editors
-      vim           = true;
+      #vim           = true;
+      neovim        = true;
       emacs         = isDesktop;
       vscode        = isDesktop;
       ## 4. CLI tools
@@ -328,6 +331,9 @@ in
       vim.plugins = with pkgs.vimPlugins; [
         base16-vim vim-airline ];
 
+      neovim.viAlias = true;
+      neovim.vimAlias = true;
+      neovim.vimdiffAlias = true;
 
       emacs.package = pkgs.emacs29;
       emacs.extraPackages = epkgs: with epkgs; [
