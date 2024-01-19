@@ -132,7 +132,9 @@ let
     zeal
     (pkgs.callPackage ./pkgs/grammarly-ls {})
 
+    haskellPackages.implicit-hie
     ghc
+    stack
     #ghcWithAllPackages-top-200
     #(lib.lowPrio (pkgs.callPackage ./ghc-200.nix {}))
     #(lib.lowPrio (pkgs.callPackage ./ghc-2000.nix {}))
