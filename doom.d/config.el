@@ -145,8 +145,9 @@
 
 (use-package! gptel
   :config
-  (setq! gptel-default-mode #'org-mode)
-  (setq! gptel-model "gpt-4-1106-preview")
+  (setq gptel-default-mode #'org-mode
+        gptel-model "gpt-4-1106-preview"
+        gptel-temperature 0.0)
   )
 
 (use-package! gptel-extensions)
