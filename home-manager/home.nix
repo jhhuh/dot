@@ -145,6 +145,8 @@ let
     galaxy-buds-client
 
     git-crypt
+
+    wordnet
   ];
 
   tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''
