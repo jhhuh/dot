@@ -167,6 +167,29 @@
   :config
   (setq chatgpt-model "gpt-4"))
 
+;; Upstream dash-docs is broken for async functionality
+(defun dash-docs-async-install-docset (docset-name)
+  "Asynchronously download docset with specified DOCSET-NAME and move its stuff to docsets-path."
+  (interactive (list (dash-docs-read-docset "Install docset" (dash-docs-official-docsets))))
+  (when (dash-docs--ensure-created-docsets-path (dash-docs-docsets-path))
+    (let ((feed-url (format "%s/%s.xml" dash-docs-docsets-url docset-name)))
+      (message (concat "The docset \"" docset-name "\" will now be installed asynchronously."))
+      (async-start ; First async call gets the docset meta data
+       `(lambda ()
+          ;; Beware! This lambda is run in it's own instance of emacs.
+          (url-file-local-copy ,feed-url))
+       (lambda (filename)
+         (let ((docset-url (dash-docs-get-docset-url filename)))
+           (async-start     ; Second async call gets the docset itself
+            `(lambda ()
+               ;; Beware! This lambda is run in it's own instance of emacs.
+               (url-file-local-copy ,docset-url))
+            (lambda (docset-tmp-path)
+              (let ((docset-folder (dash-docs-extract-and-get-folder docset-tmp-path)))
+                (dash-docs-activate-docset docset-folder)
+                (message (format
+                          "Docset installed. Add \"%s\" to dash-docs-common-docsets or dash-docs-docsets."
+                          docset-folder)))))))))))
 
 ;(use-package! org-ai
 ;  :commands (org-ai-mode org-ai-global-mode)
