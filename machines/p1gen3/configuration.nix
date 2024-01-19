@@ -150,6 +150,8 @@
     nvidiaBusId = "PCI:1:0:0";
   };
 
+  services.upower.enable = true;
+
   services.xserver.libinput.enable = false;
 
   services.logind.extraConfig = ''
