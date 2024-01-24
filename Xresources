@@ -12,7 +12,7 @@ XTerm*ximFont: xft:Noto Sans Mono CJK KR:pixelsize=18
 Xcursor.size: 50
 
 !!! Xft !!!
-Xft.dpi: 200
+Xft.dpi: 120
 
 !Xft.antialias:  1
 !Xft.autohint:   0

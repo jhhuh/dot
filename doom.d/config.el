@@ -30,9 +30,9 @@
        (setq doom-font (font-spec :family "Ubuntu Nerd Font Mono" :size 16.0 :weight 'regular)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0)))
       ((string= (system-name) "p1gen3")
-       (setq doom-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 14.0)
-             doom-big-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 16.0)
-             doom-variable-pitch-font (font-spec :family "sans" :size 14.0)))
+       (setq doom-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 10.0)
+             doom-big-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 12.0)
+             doom-variable-pitch-font (font-spec :family "sans" :size 10.0)))
       (t
        (setq doom-font (font-spec :family "Ubuntu Nerd Font Mono" :size 16.0 :weight 'regular)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0))))
