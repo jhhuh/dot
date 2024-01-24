@@ -140,12 +140,12 @@
 
 (use-package! auth-source
   :config
-  (setq auth-sources '(password-store))
-  (setq auth-source-cache-expiry nil))
+  (setq! auth-sources '(password-store))
+  (setq! auth-source-cache-expiry nil))
 
 (use-package! gptel
   :config
-  (setq gptel-default-mode #'org-mode
+  (setq! gptel-default-mode #'org-mode
         gptel-model "gpt-4-1106-preview"
         gptel-temperature 0.0)
   )
@@ -155,18 +155,18 @@
 (use-package! codegpt
   :ensure t
   :config
-  (setq openai-key #'openai-key-auth-source))
+  (setq! openai-key #'openai-key-auth-source))
 
 (use-package! codegpt
   :ensure t
   :config
-  (setq codegpt-tunnel 'chat            ; The default is 'completion
+  (setq! codegpt-tunnel 'chat            ; The default is 'completion
         codegpt-model "gpt-")) ; You can pick any model you want!
 
 (use-package! chatgpt
   :ensure t
   :config
-  (setq chatgpt-model "gpt-4"))
+  (setq! chatgpt-model "gpt-4"))
 
 ;; Upstream dash-docs is broken for async functionality
 (defun dash-docs-async-install-docset (docset-name)
