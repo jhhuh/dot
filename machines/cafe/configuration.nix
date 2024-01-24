@@ -22,7 +22,7 @@
   ];
 
   virtualisation = {
-    virtualbox.host.enable = true;
+    virtualbox.host.enable = false;
     virtualbox.host.enableExtensionPack = true;
   };
 
