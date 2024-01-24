@@ -9,6 +9,7 @@
     (import ./virtualisation.nix)
     (import ./tailscale.nix)
     (import ./allow-unfree.nix)
+    (import ./pam.nix)
   ];
 
   programs.slock.enable = true;
