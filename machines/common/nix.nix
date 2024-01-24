@@ -26,7 +26,7 @@
       ];
       trusted-public-keys = [
         "cache.mimir.asgard-labs.com-1:lw8GZNUYWsCV6letxzfdeF+qmXpgBIEnjoAUWOCBA5w="
-        "cache.cafe.asgard-labs.com-1:EzqMdsAkeTj819HbOzImDffgRWCfFJUVkZhzcZLxE1c="
+        "cache.cafe.asgard-labs.com-1:WvrgWs0irdeOLZkXc22qElWzbyaYWOKiuFluFJoGQos="
         "cache.p1gen3.asgard-labs.com-1:cFBR49pfNUjZ8jY5he5+sKc0RIVuaNmVymgSU8uVAYU="
       ];
     };
