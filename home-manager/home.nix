@@ -295,8 +295,6 @@ else
          if [ "''${-#*i}" != "$-" ] && [ -n "$PS1" ] && [ -f ${inputs.base16-shell}/scripts/base16-$MYBASE16THEME.sh ]; then
            source ${inputs.base16-shell}/scripts/base16-$MYBASE16THEME.sh
          fi
-
-        ${pkgs.macchina}/bin/macchina
       '';
 in
 
