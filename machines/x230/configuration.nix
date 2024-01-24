@@ -3,18 +3,6 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  nixpkgs = {
-    overlays = [
-     # (self: super: {
-     #   firmwareLinuxNonfree = self.runCommandNoCC "firmware-linux-nonfree" {} ''
-     #     mkdir -p $out/lib/firmware
-     #     cp -R ${super.firmwareLinuxNonfree.out}/lib/firmware/* $out/lib/firmware/
-     #     rm $out/lib/firmware/iwlwifi-*.pnvm
-     #   '';})
-      ];
-    config.allowUnfree = true;
-  };
-
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [ "vm.laptop_mode=5" ];
@@ -62,7 +50,6 @@
     };
     interfaces.enp0s25.useDHCP = true;
     firewall.allowedTCPPorts = [ 5900 ];
-    firewall.trustedInterfaces = [ "tailscale0" ];
 
     wireguard = {
       enable = true;
@@ -128,7 +115,6 @@
         } ];
     };
     openssh.enable = true;
-    tailscale.enable = true;
     xserver = {
       enable = true;
       displayManager.lightdm.enable = true;

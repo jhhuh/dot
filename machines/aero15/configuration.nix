@@ -131,21 +131,9 @@
        '';
       };
 
-      useGlamor = true;
-
-      #imwheel = {
-      #  enable = true;
-      #  rules = {
-      #    ".*" = ''
-      #      None,      Up,   Button4, 10
-      #      None,      Down, Button5, 10
-      #    '';
-      #  };
-      #};
     };
     printing.enable = true;
     openssh.enable = true;
-    tailscale.enable = true;
   };
 
   fonts.fonts = with pkgs; [
@@ -156,8 +144,6 @@
     ubuntu_font_family
     hack-font
   ];
-
-  nixpkgs.config.allowUnfree = true;
 
   # Enable sound.
   sound.enable = true;

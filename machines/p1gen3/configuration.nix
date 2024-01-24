@@ -33,7 +33,6 @@
 #  security.pam.enableSSHAgentAuth = true;
 
   nixpkgs = {
-    config.allowUnfree = true;
     overlays = [
       (self: super: {
         slock = (super.slock.overrideAttrs (old: {
@@ -210,11 +209,13 @@
     };
   };
 
-  services.tailscale.enable = true;
-
   networking.firewall = {
-    checkReversePath = "loose";
     trustedInterfaces = [ "wg-hds0" ];
+  };
+
+  virtualisation = {
+    virtualbox.host.enable = true;
+    virtualbox.host.enableExtensionPack = true;
   };
 
   system.copySystemConfiguration = false;

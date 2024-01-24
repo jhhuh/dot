@@ -72,9 +72,9 @@
                 stateVersion = "22.11";
               };
 
-              aero15.nixpkgs = inputs.nixpkgs_22_05;
+              aero15.nixpkgs = inputs.nixpkgs_22_11;
 
-              tres-cantos.nixpkgs = inputs.nixpkgs_22_05;
+              tres-cantos.nixpkgs = inputs.nixpkgs_22_11;
 
             };
 
@@ -82,27 +82,30 @@
 
       //
 
-      (let
-        inherit (builtins) mapAttrs;
-        inherit (inputs) deploy-rs;
-        inherit (deploy-rs.lib.x86_64-linux) activate deployChecks;
-      in
         {
 
           deploy.nodes =
-            mapAttrs (n: v:
-              {
-                hostname = "${n}.coati-bebop.ts.net";
-                sshOpts = [ "-A" ];
-                profiles."system" = {
-                  user = "root";
-                  path = activate.nixos v;
-                };
-              }) self.nixosConfigurations;
+            __mapAttrs (n: v:
+              let
+                inherit (v.config.nixpkgs.localSystem) system;
+                inherit (inputs.deploy-rs.lib.${system}) activate;
+              in
+                {
+                  hostname = "${n}.coati-bebop.ts.net";
+                  sshOpts = [ "-A" ];
+                  profiles."system" = {
+                    user = "root";
+                    path = let
+                    in activate.nixos v;
+                  };
+                }) self.nixosConfigurations;
 
-          checks = deployChecks self.deploy;
+          checks =
+            __mapAttrs
+              (system: deploy-lib: deploy-lib.deployChecks self.deploy)
+              inputs.deploy-rs.lib;
 
-        })
+        }
 
       //
 

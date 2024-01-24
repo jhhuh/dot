@@ -18,19 +18,18 @@
   imports = [
     ./hardware-configuration.nix
     ./desktop.nix
-    ./tailscale.nix
     ./services.nix
   ];
+
+  virtualisation = {
+    virtualbox.host.enable = true;
+    virtualbox.host.enableExtensionPack = true;
+  };
 
   programs.steam.enable = true;
   hardware.steam-hardware.enable = true;
 
-  virtualisation.podman.enable = true;
-  virtualisation.podman.dockerCompat = true;
-
   zramSwap.enable = true;
-
-  nixpkgs.config.allowUnfree = true;
 
   system.stateVersion = stateVersion;
 

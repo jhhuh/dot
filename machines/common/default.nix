@@ -7,6 +7,8 @@
     (import ./distributed-build.nix)
     (import ./nix-ld.nix)
     (import ./virtualisation.nix)
+    (import ./tailscale.nix)
+    (import ./allow-unfree.nix)
   ];
 
   programs.slock.enable = true;
