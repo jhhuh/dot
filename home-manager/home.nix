@@ -51,6 +51,7 @@ let
   ];
 
   packages-for-desktop = with pkgs; [
+    kiwitalk
     nodejs
 
     ario
