@@ -1,4 +1,4 @@
-Config { font = "UbuntuMono Nerd Font 32"
+Config { font = "UbuntuMono Nerd Font 18"
        , additionalFonts = []
        , borderColor = "#2c2c2c"
        , border = TopB

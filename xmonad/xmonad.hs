@@ -66,7 +66,7 @@ desktop = ewmhFullscreen . ewmh $ def {
 conf = desktop {
   borderWidth = 4,
   focusedBorderColor = "#00FF00",
-  terminal = "st -f \"UbuntuMono Nerd Font:pixelsize=40\"",
+  terminal = "st -f \"UbuntuMono Nerd Font:pixelsize=24\"",
   modMask = mod4Mask,
   keys = keys desktop <+> myKeys,
   manageHook = scratchpadHook
@@ -92,7 +92,7 @@ myKeys XConfig { modMask = modm }
   = M.fromList
     [ ( (modm .|. controlMask, xK_p),
         shellPrompt $ def { alwaysHighlight = True,
-                            height = 48,
+                            height = 24,
                             promptBorderWidth = 0,
                             position = CenteredAt 0.02 0.5,
                             borderColor = "#000000",
@@ -249,16 +249,16 @@ scratchpads =
     ("vimpc",     "vimpc",     1/2,   1/6,  5/12,  2/3),
     ("ranger",    "ranger",    1/6,   1/6,  2/3,   2/3)
   ] ++
-  [ NS "xst" "xst -A 192 -T xst-alpha -f \"Liberation Mono:pixelsize=40\""
+  [ NS "xst" "xst -A 192 -T xst-alpha -f \"Liberation Mono:pixelsize=18\""
        (title =? "xst-alpha")
        (customFloating $
-         W.RationalRect (0/32) (0/32) (32/32) (18/32)),
-    NS "terminal" ("st -f \"UbuntuMono Nerd Font:pixelsize=40\" -T st-256color-scratchpad -e bash -i -c 'tmux new-session -A -s scratch'")
+         W.RationalRect (2/400) (2/300) (396/400) (98/300)),
+    NS "terminal" ("st -f \"UbuntuMono Nerd Font:pixelsize=12\" -T st-256color-scratchpad -e bash -i -c 'tmux new-session -A -s scratch'")
        (title =? "st-256color-scratchpad")
        (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-    NS "browser" ("(firefox && sleep 1 && xdotool search --onlyvisible --class firefox) | head -n1 | xargs xdotool set_window --class firefox-scratchpad")
-       (className =? "firefox-scratchpad")
+    NS "browser" ("google-chrome-stable && xdotool search --onlyvisible --sync --class Google-chrome | head -n1 | xargs xdotool set_window --class Google-chrome-scratchpad")
+       (className =? "Google-chrome-scratchpad")
        (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3)),
     NS "kotatogram-desktop" "kotatogram-desktop"
