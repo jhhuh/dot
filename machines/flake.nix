@@ -6,8 +6,11 @@
     nixpkgs_22_05.url = github:nixos/nixpkgs/nixos-22.05;
     nixpkgs_22_11.url = github:nixos/nixpkgs/nixos-22.11;
     nixpkgs_23_05.url = github:nixos/nixpkgs/nixos-23.05;
+    nixpkgs_23_11.url = github:nixos/nixpkgs/nixos-23.11;
     flake-utils.url = github:numtide/flake-utils;
     deploy-rs.url = github:serokell/deploy-rs;
+    microvm.url = github:astro/microvm.nix;
+
   };
 
   outputs = inputs@{ self, flake-utils, ... }:
@@ -47,6 +50,8 @@
                     environment.systemPackages = [ pkgs.libxcrypt ];
                   })
 
+                  inputs.microvm.nixosModules.host
+
                   ./common
 
                   (./. + "/${host-name}/configuration.nix")
@@ -68,7 +73,7 @@
               };
 
               p1gen3 = {
-                nixpkgs = inputs.nixpkgs_23_05;
+                nixpkgs = inputs.nixpkgs_23_11;
                 stateVersion = "22.11";
               };
 

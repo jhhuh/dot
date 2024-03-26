@@ -214,7 +214,7 @@
   };
 
   virtualisation = {
-    virtualbox.host.enable = true;
+    virtualbox.host.enable = false; #true;
     virtualbox.host.enableExtensionPack = true;
   };
 

@@ -10,6 +10,7 @@
     (import ./tailscale.nix)
     (import ./allow-unfree.nix)
     (import ./pam.nix)
+    (import ./microvm-host.nix)
   ];
 
   programs.slock.enable = true;

@@ -50,6 +50,7 @@ in
             "ipfs"
             "podman"
             "docker"
+            "incus-admin"
             "disk" ];
           openssh.authorizedKeys.keys = jhhuh-pubkeys;
           uid = 1000;
