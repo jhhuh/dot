@@ -257,8 +257,8 @@ scratchpads =
        (title =? "st-256color-scratchpad")
        (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-    NS "browser" ("google-chrome-stable && xdotool search --onlyvisible --sync --class Google-chrome | head -n1 | xargs xdotool set_window --class Google-chrome-scratchpad")
-       (className =? "Google-chrome-scratchpad")
+    NS "browser" ("(firefox && sleep 1 && xdotool search --onlyvisible --class firefox) | head -n1 | xargs xdotool set_window --class firefox-scratchpad")
+       (className =? "firefox-scratchpad")
        (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3)),
     NS "kotatogram-desktop" "kotatogram-desktop"
