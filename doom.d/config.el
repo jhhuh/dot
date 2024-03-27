@@ -119,7 +119,9 @@
                       (lsp-ui-doc-mode))))
 
 (use-package! lsp-haskell
-  :hook (haskell-mode . lsp-deferred))
+  :hook (haskell-mode . (lambda ()
+                          (lsp-deferred)
+                          (setq-default flycheck-disabled-checkers '(haskell-stack-ghc)))))
 
 (use-package! lsp-ui
   :config
@@ -229,5 +231,5 @@
         (copilot-accept-completion)
       (evil-insert 1))) ; Default action to insert a tab. Adjust as needed.
 
-  ;; Bind the custom function to <tab> in Evil's insert state
-  (evil-define-key 'insert 'global (kbd "<tab>") 'my/copilot-tab-or-default))
+;; Bind the custom function to <tab> in Evil's insert state
+(evil-define-key 'insert 'global (kbd "<tab>") 'my/copilot-tab-or-default))
