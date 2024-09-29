@@ -1,5 +1,7 @@
 self: super: rec {
 
+  rmview = self.libsForQt5.callPackage ../pkgs/rmview {};
+
   all-hackage-sources =
     let
       hpkgs = self.haskellPackages;
