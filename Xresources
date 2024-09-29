@@ -12,16 +12,17 @@ XTerm*ximFont: xft:Noto Sans Mono CJK KR:pixelsize=18
 Xcursor.size: 50
 
 !!! Xft !!!
-Xft.dpi: 120
+Xft.dpi: 192
 
-!Xft.antialias:  1
-!Xft.autohint:   0
-!Xft.hinting:    1
-!Xft.hintstyle:  hintslight
-!Xft.lcdfilter:  lcddefault
-!Xft.rgba:       rgb
+Xft.antialias:  true
+Xft.hinting:    true
+Xft.autohint:   false
+Xft.hintstyle:  hintslight
+Xft.lcdfilter:  lcddefault
+Xft.rgba:       rgb
+Xft.embeddedbitmap: false
 !Xft.embolden: true 
-!!Xft.embolden: false
+!Xft.embolden: false
 
 !!! URxvt !!!
 !URxvt.font: xft:Liberation Mono :pixelsize=18

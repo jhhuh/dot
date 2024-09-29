@@ -30,9 +30,9 @@
        (setq doom-font (font-spec :family "Ubuntu Nerd Font Mono" :size 16.0 :weight 'regular)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0)))
       ((string= (system-name) "p1gen3")
-       (setq doom-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 10.0)
-             doom-big-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 12.0)
-             doom-variable-pitch-font (font-spec :family "sans" :size 10.0)))
+       (setq doom-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 16.0)
+             doom-big-font (font-spec :family "IosevkaTerm Nerd Font Mono" :size 24.0)
+             doom-variable-pitch-font (font-spec :family "sans" :size 16.0)))
       (t
        (setq doom-font (font-spec :family "Ubuntu Nerd Font Mono" :size 16.0 :weight 'regular)
              doom-variable-pitch-font (font-spec :family "sans" :size 12.0))))
@@ -148,7 +148,7 @@
 (use-package! gptel
   :config
   (setq! gptel-default-mode #'org-mode
-        gptel-model "gpt-4-1106-preview"
+        gptel-model "gpt-4o"
         gptel-temperature 0.0)
   )
 
@@ -215,6 +215,7 @@
 ;; accept completion from copilot and fallback to company
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
+  :config  (setq! copilot-indent-offset-warning-disable t)
   :bind (:map copilot-completion-map
               ("<tab>" . 'copilot-accept-completion)
               ("TAB" . 'copilot-accept-completion)

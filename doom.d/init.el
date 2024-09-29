@@ -67,7 +67,7 @@
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       (dired +ranger)             ; making dired pretty [functional]
+       dired             ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
        ;;ibuffer         ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
@@ -87,7 +87,7 @@
        :tools
        ;;ansible
        ;;biblio            ; Writes a PhD for you (citation needed)
-       (collab +tuntox)           ; buffers with friends
+       ;;(collab +tuntox)           ; buffers with friends
        ;;debugger          ; FIXME stepping through code, to help you add bugs
        direnv
        ;;docker
@@ -100,13 +100,13 @@
        magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        (pass +auth)        ; password manager for nerds
-       ;;pdf               ; pdf enhancements
+       pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
-       ;;tree-sitter       ; syntax and parsing, sitting in a tree...
+       tree-sitter       ; syntax and parsing, sitting in a tree...
        ;;upload            ; map local to remote projects via ssh/ftp
 
        :os
@@ -143,7 +143,7 @@
        ;;idris             ; a language you can depend on
        ;;json              ; At least it ain't XML
        ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
-       ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
+       javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
@@ -158,7 +158,7 @@
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp +cython)  ; beautiful is better than ugly
+       (python +lsp +cython +pyright +tree-siter)  ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -199,3 +199,11 @@
 (setq native-comp-jit-compilation nil)
 (after! (doom-packages straight)
   (setq straight--native-comp-available t))
+
+(after! comp
+  ;; HACK Disable native-compilation for some troublesome packages
+  (mapc (doom-partial #'add-to-list 'native-comp-deferred-compilation-deny-list)
+        (list "/emacs-jupyter.*\\.el\\'"
+              "/evil-collection-vterm\\.el\\'"
+              "/vterm\\.el\\'"
+              "/with-editor\\.el\\'")))
