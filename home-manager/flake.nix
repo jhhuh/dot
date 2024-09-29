@@ -3,11 +3,11 @@
 
   inputs = {
 
-    nixpkgs.url = github:nixos/nixpkgs/nixos-23.11;
+    nixpkgs.url = github:nixos/nixpkgs/nixos-24.05;
 
     nixpkgs-unstable.url = github:nixos/nixpkgs/nixos-unstable;
 
-    home-manager.url = github:nix-community/home-manager/release-23.11;
+    home-manager.url = github:nix-community/home-manager/release-24.05;
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     declarative-cachix.url = github:jonascarpay/declarative-cachix;
@@ -44,21 +44,11 @@
 
       overlays = [
         inputs.haskell-nix.overlay
+        inputs.emacs-overlay.overlay
         (import ./overlays/02-backports.nix { inherit (inputs) nixpkgs-unstable; inherit system; })
         (import ./overlays/03-myPackages.nix)
         (import ./overlays/04-myEnvs.nix)
         (import ./overlays/05-prefer-remote-fetch.nix)
-        (self: super: {
-          mermaid-cli = (self.callPackage ./node-pkgs {})."@mermaid-js/mermaid-cli".override {
-            nativeBuildInputs = [ self.makeWrapper ];
-            prePatch = ''
-              export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
-            '';
-            postInstall = ''
-              wrapProgram $out/bin/mmdc \
-              --set PUPPETEER_EXECUTABLE_PATH ${self.chromium.outPath}/bin/chromium
-            '';
-          };})
       ];
 
       pkgs = import inputs.nixpkgs { inherit system config overlays; };
