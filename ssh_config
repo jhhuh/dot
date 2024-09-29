@@ -1,4 +1,5 @@
 Include ~/.ssh/config_private
+Include ~/.ssh/config_tera
 
 Host m1
     HostName 51.159.120.131
