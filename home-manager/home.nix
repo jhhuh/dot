@@ -1,9 +1,7 @@
 { config, pkgs, lib, inputs, system, hostname, stateVersion, username, homeDirectory, ... }:
 
 let
-
-#  nix-tools = ;
-
+ 
   nix-init = inputs.nix-init.packages.${system}.default;
 
   emacsCommand = emacs: "TERM=st-direct ${emacs}/bin/emacsclient -nw";
@@ -51,134 +49,130 @@ let
   ];
 
   packages-for-desktop = with pkgs; [
-    kiwitalk
-    nodejs
-
-    ario
-    tuntox
-    espeak-ng
+    #
+    # blockchain
+    #
+    electrum
+   
+    #
     # Messenger
-    #kotatogram-desktop-with-webkit
-    keybase-gui
+    #
+    signal-desktop
+    discordo
+
     # DB
-    postgresql sqlite
+    postgresql
+    sqlite
+
     # Screenshot
-    scrot gnome.gnome-screenshot
+    scrot
+    gnome.gnome-screenshot
+
     # Nix-{related,specific}
-    patchelf nix-prefetch
-    inputs.devenv.packages.${system}.devenv
-    nix-template
-    appimage-run steam-run
-    nixos-shell comma
+    patchelf
+    nix-prefetch
+    nodePackages.node2nix
+    comma
+
     # Emulation
     qemu
+    dosbox-x
+
     # Compilers/interpreters-related
     sbcl
-    nodePackages.node2nix
-    cabal-install ghcid cabal2nix
+    cabal-install
+    ghcid
+    cabal2nix
+    nodejs
+
     # Version controll system
-    gh git-lfs
-    darcs
+    gh
+    git-lfs
+
     # Document creation/reading
-    texlive.combined.scheme-full pandoc
+    pandoc
+    texlive.combined.scheme-full
     koreader
+
     # Manual
-    linux-manual man-pages man-pages-posix
-    dasht scheme-manpages
+    linux-manual
+    man-pages
+    man-pages-posix
+    scheme-manpages
+    dasht
+    zeal
+
     # Packages that my `xmonad.hs` depends on
-    picom                       # Transparency
-    feh farbfeld farbfeld-utils   # BG img
+    picom            # Transparency
+    feh
+    farbfeld
+    farbfeld-utils   # BG img
     xmobar                        # just xmobar
-    st xst                        # suckless terminals
+    st                            # suckless terminals
+    xst                           # suckless terminals
     pavucontrol                   # Volume control
-    zathura tabbed tabbed-zathura # For {,tabbed-}zathura
+    zathura                       # zathura
     scrcpy                        # Android mirroring
     ranger                        # TUI File manager
+
     # Network
-    cloudflare-warp sshuttle
-    xpra x2x
+    sshuttle
+    xpra
+    x2x
+
     # Video
-    ffmpeg mplayer
-    # Personal scripts
-    toggle-touchpad
+    ffmpeg
+    mplayer
+
     # CLI tools
     fx
     google-drive-ocamlfuse
     pass
     mosh
-    asciinema termtosvg
+    asciinema
+    termtosvg
     magic-wormhole
     graphviz
-    yt-dlp wget
-    libsixel w3m
-    pciutils acpi
+    yt-dlp
+    wget
+    libsixel
+    w3m
+    pciutils
+    acpi
     unzip
     binutils
-    jq loc tree ripgrep fd
+    jq
+    loc
+    tree
+    ripgrep
+    fd
     htop
     parallel
-    xdotool arandr xclip
+    xdotool
+    xclip
+    arandr
+    powertop
+    git-annex
+
     # Misc.
     nerdfonts
 
     poetry
     passphrase2pgp
-    powertop
-    signal-desktop
-    #(pkgs.callPackage ./pkgs/ytui-music {})
-    #cachix
-    nix-init
-
-    mermaid-cli
-    zeal
-    (pkgs.callPackage ./pkgs/grammarly-ls {})
 
     haskellPackages.implicit-hie
     ghc
     stack
-    #ghcWithAllPackages-top-200
-    #(lib.lowPrio (pkgs.callPackage ./ghc-200.nix {}))
-    #(lib.lowPrio (pkgs.callPackage ./ghc-2000.nix {}))
-
-    #(haskell-language-server.override { supportedGhcVersions = [ "90" "92" ]; })
-    inputs.haskell-language-server.packages.${system}.haskell-language-server-92
-
-    galaxy-buds-client
 
     git-crypt
 
     wordnet
+
+    (pkgs.callPackage ./pkgs/vastai {})
+
+    distrobox
   ];
 
-  tabbed-zathura = pkgs.writeScriptBin "tabbed-zathura.sh" ''
-      #! /bin/sh
-
-      XID_FILE="$XDG_RUNTIME_DIR/zathura.xid"
-      ${pkgs.xorg.xprop}/bin/xprop -id "$(< $XID_FILE)" &> /dev/null \
-        || rm $XID_FILE &> /dev/null
-
-      if [ -f $XID_FILE ];
-      then
-          ${pkgs.zathura}/bin/zathura -e $(< $XID_FILE) $@
-      else
-          XID=$(${pkgs.tabbed}/bin/tabbed -c -n tabbed-zathura -d ${pkgs.zathura}/bin/zathura $@ -e)
-          echo $XID > $XID_FILE
-          # ${pkgs.zathura}/bin/zathura -e $XID $@
-      fi
-    '';
-
-  toggle-touchpad = pkgs.writeScriptBin "toggle_touchpad.sh"
-    ''
-         #!{bash}/bin/bash
-         
-         if [ $(gsettings get org.gnome.desktop.peripherals.touchpad send-events) == "'enabled'" ]; then
-           echo "Switching off"
-           gsettings set org.gnome.desktop.peripherals.touchpad send-events disabled
-else     
-           echo "Switching on"
-         gsettings set org.gnome.desktop.peripherals.touchpad send-events enabled
-         fi
-       '';
 
   nixpkgs-overlays-compat-nix = pkgs.writeText "nixpkgs-overlays-compat.nix" ''
       let
@@ -195,7 +189,7 @@ else
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
 
-  EDITOR = "${config.programs.neovim.package}/bin/vim";
+  EDITOR = "${config.programs.neovim.package}/bin/nvim";
 
   shellAliases = {
     nix-callPackage = "nix-callPackage-from ./.";
@@ -231,6 +225,7 @@ else
     ];
 
     ec = emacsCommand config.programs.emacs.package;
+    vi = emacsCommand config.programs.emacs.package;
 
     start-emacs    = "systemctl start  --user emacs.service && systemctl status --user emacs.service";
     restart-emacs  = "systemctl restart  --user emacs.service";
@@ -243,40 +238,6 @@ else
 
 
   bashrcExtra = ''
-        # git-prompt
-        source ${pkgs.git}/share/git/contrib/completion/git-prompt.sh
-
-        get_sha() {
-            git rev-parse --short HEAD 2>/dev/null
-        }
-
-        GIT_PS1_SHOWDIRTYSTATE=1
-        GIT_PS1_SHOWSTASHSTATE=1
-        GIT_PS1_SHOWUNTRACKEDFILES=1
-        GIT_PS1_DESCRIBE_STYLE="branch"
-        GIT_PS1_SHOWUPSTREAM="auto git"
-        PROMPT_COLOR="1;31m"
-        let $UID && PROMPT_COLOR="1;32m"
-        #PS1='\n\[\033[$PROMPT_COLOR\][\u@\h \W]\[\033[0m\]$(__git_ps1 " (%s)")\n\$ '
-        PROMPT_COMMAND='__git_ps1 "'
-        PROMPT_COMMAND+='\[\033[00;36m\]\u\[\033[00m\]@'
-        PROMPT_COMMAND+='\[\033[00;32m\]\h\[\033[00m\]:'
-        PROMPT_COMMAND+='\[\033[00;34m\]\w\[\033[00m\]'
-        PROMPT_COMMAND+='" "'
-        PROMPT_COMMAND+='\n'
-        PROMPT_COMMAND+='\[\033[01;35m\]$(is_in_nixshell "(" ")")\[\033[00m\]$ '
-        PROMPT_COMMAND+='" "(%s)"'
-
-        is_in_nixshell() {
-            if [ $IN_NIX_SHELL ]
-            then
-                echo "$1$name$2"
-            elif [[ "$PATH" =~ "/nix/store/" ]]
-            then
-                echo "$PATH" | sed -e "s#.*/nix/store/[^-]*-\([^/:]*\).*#$1\1$2#"
-            fi
-        }
-
         MYBASE16THEME_x230="flat"
         MYBASE16THEME_aero15="atelier-dune-light"
         MYBASE16THEME_cafe="rebecca"
@@ -303,18 +264,21 @@ in
   # Programs
   programs = enable-with-config
     {
+
       ## 1. Nix-related
       nix-index     = true;
       home-manager  = true;
+
       ## 2.Browsers
       firefox       = isDesktop;
       brave         = isDesktop;
       google-chrome = isDesktop;
+
       ## 3. Editors
-      #vim           = true;
       neovim        = true;
       emacs         = isDesktop;
       vscode        = isDesktop;
+
       ## 4. CLI tools
       bat           = true;
       direnv        = true;
@@ -323,8 +287,11 @@ in
       tmux          = true;
       gpg           = true;
       fzf           = true;
+
       ## 5. Shell
       bash          = true;
+      starship     = true;
+
     }
     {
       ## 1. Nix-related
@@ -391,84 +358,56 @@ in
       ## 5. Shell
       bash = {
         inherit shellAliases bashrcExtra;
+        inherit (config.home) sessionVariables;
         historyControl = [ "erasedups" "ignoredups" "ignorespace" ];
       };
 
+      starship.enableBashIntegration = true;
+      starship.settings = {
+        nix_shell = {
+          disabled = false;
+          impure_msg = "";
+          symbol = "";
+          format = "[$symbol$state]($style) ";
+          heuristic = true;
+        };
+        shlvl = {
+          disabled = false;
+          symbol = "λ ";
+        };
+        haskell.symbol = " ";
+      };
+
     };
 
-  # Services
   services = enable-with-config
     {
-      keybase   = isDesktop;
-      kbfs      = isDesktop;
-      syncthing = isDesktop;
       gpg-agent = true;
-      emacs     = isDesktop;
-      mopidy = isDesktop;
+      emacs     = false; # isDesktop;
     }
     {
-      syncthing.tray = false;
+      gpg-agent.pinentryPackage = pkgs.pinentry-gnome3; 
       emacs.client.enable = true;
-      mopidy = {
-        extensionPackages = (with pkgs; [
-          mopidy-local
-          mopidy-mpd
-          (mopidy-youtube.overridePythonAttrs (old: rec {
-            version = "develop";
-            src = fetchFromGitHub {
-              owner = "natumbri";
-              repo = "mopidy-youtube";
-              rev = "develop";
-              sha256 = "sha256-h3CYGtIOl95ZlLZprjc1wssWW9Wzr6zvikLX95Osahg=";
-            };
-            propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.python3.pkgs.yt-dlp ];
-            doCheck = false;
-          }))
-          # mopidy-bandcamp            mopidy-mpd                 mopidy-scrobbler           mopidy-tunein
-          # mopidy-iris                mopidy-mpris               mopidy-somafm              mopidy-youtube
-          # mopidy-jellyfin            mopidy-muse                mopidy-soundcloud          #mopidy-ytmusic
-          # mopidy-local               mopidy-musicbox-webclient  mopidy-spotify
-          # mopidy-moped               mopidy-notify              mopidy-subidy
-          # mopidy-mopify              mopidy-podcast             #mopidy-tidal
-        ]);
-        settings = {
-          mpd.enabled = true;
-          youtube ={
-            enabled = true;
-            allow_cache = true;
-          };
-        };
-        extraConfigFiles = [
-          (config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/mopidy/mopidy_youtube.conf")
-        ];
-      };
     };
 
-  # Home
   home = {
     inherit stateVersion username homeDirectory packages;
     sessionVariables = { inherit EDITOR NIX_PATH; };
-    sessionPath = [ "$HOME/.emacs.d/bin" "$HOME/mutable_node_modules/bin" "$HOME/.cargo/bin"];
+    sessionPath = [
+      "$HOME/bin"
+      "$HOME/.config/emacs/bin"
+      "$HOME/mutable_node_modules/bin"
+      "$HOME/.cargo/bin"
+    ];
     file = __mapAttrs (_: source: { inherit source; }) {
       inherit (inputs) home-manager nixpkgs;
       home-pkgs = pkgs.linkFarmFromDrvs "home-pkgs" config.home.packages;
     };
   };
 
-  # Nix-related
   nix.package = pkgs.nix;
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
-  caches.cachix = let
-    hashes.nix-community = "sha256:0m6kb0a0m3pr6bbzqz54x37h5ri121sraj1idfmsrr6prknc7q3x";
-    hashes.haskell-language-server = "sha256:1g408rqjzbl2m3bbyfjg3yxr3glsa4y4szxif8d3b0nq1kjq5bpm";
-  in map (name: { inherit name; sha256 = hashes.${name}; }) (__attrNames hashes);
-
-  caches.extraCaches = [
-    { url = "https://nixcache.reflex-frp.org"; key = "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI="; }
-  ];
-
-  # Miscs.
   manual.html.enable = true;
   fonts.fontconfig.enable = true;
 
