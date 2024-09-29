@@ -96,9 +96,14 @@
   services.kmscon = {
       enable = true;
       hwRender = true;
+      fonts = [
+        { name = "IosevkaTerm Nerd Font Mono";
+          package = pkgs.nerdfonts;
+        }
+      ];
       extraConfig = ''
         font-dpi=192
-        xkb-options=ctrl:swapcaps
+        xkb-options=ctrl:nocaps
       '';   
     };
 
@@ -115,7 +120,7 @@
   #services.xserver.desktopManager.lumina.enable = true;
   #services.xserver.desktopManager.cinnamon.enable = true;
   
-  services.xserver.xkbOptions = "ctrl:swapcaps";
+  services.xserver.xkbOptions = "ctrl:nocaps";
 
   services.xserver.layout = "us";
 
@@ -172,7 +177,14 @@
     tmux
     wget
     home-manager
+    cloudflare-warp
   ];
+
+  systemd.packages = with pkgs; [
+    pkgs.cloudflare-warp
+  ];
+
+  systemd.targets.multi-user.wants = [ "warp-svc.service" ];
 
   # # See https://github.com/balsoft/nixos-fhs-compat
   # environment.fhs.enable = true;
@@ -210,11 +222,11 @@
   };
 
   networking.firewall = {
-    trustedInterfaces = [ "wg-hds0" ];
+    trustedInterfaces = [ "wg-hds0" "usb0" ];
   };
 
   virtualisation = {
-    virtualbox.host.enable = false; #true;
+    virtualbox.host.enable = true;
     virtualbox.host.enableExtensionPack = true;
   };
 
