@@ -66,7 +66,7 @@ desktop = ewmhFullscreen . ewmh $ def {
 conf = desktop {
   borderWidth = 4,
   focusedBorderColor = "#00FF00",
-  terminal = "st -f \"UbuntuMono Nerd Font:pixelsize=24\"",
+  terminal = "st -f \"UbuntuMono Nerd Font:pixelsize=36\"",
   modMask = mod4Mask,
   keys = keys desktop <+> myKeys,
   manageHook = scratchpadHook
@@ -249,11 +249,11 @@ scratchpads =
     ("vimpc",     "vimpc",     1/2,   1/6,  5/12,  2/3),
     ("ranger",    "ranger",    1/6,   1/6,  2/3,   2/3)
   ] ++
-  [ NS "xst" "xst -A 192 -T xst-alpha -f \"Liberation Mono:pixelsize=18\""
+  [ NS "xst" "xst -A 192 -T xst-alpha -f \"Liberation Mono:pixelsize=24\""
        (title =? "xst-alpha")
        (customFloating $
          W.RationalRect (2/400) (2/300) (396/400) (98/300)),
-    NS "terminal" ("st -f \"UbuntuMono Nerd Font:pixelsize=12\" -T st-256color-scratchpad -e bash -i -c 'tmux new-session -A -s scratch'")
+    NS "terminal" ("st -f \"UbuntuMono Nerd Font:pixelsize=36\" -T st-256color-scratchpad -e bash -i -c 'tmux new-session -A -s scratch'")
        (title =? "st-256color-scratchpad")
        (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3)),
@@ -279,8 +279,8 @@ scratchpads =
        (className =? "Emacs")
        (customFloating $
          W.RationalRect (2/32) (2/32) (28/32) (28/32)),
-    NS "zathura" "tabbed-zathura.sh"
-       (appName =? "tabbed-zathura")
+    NS "zathura" "zathura"
+       (appName =? "org.pwmt.zathura")
        (customFloating $
          W.RationalRect (1/8) (1/32) (6/8) (30/32)),
     NS "pavucontrol" "pavucontrol"
