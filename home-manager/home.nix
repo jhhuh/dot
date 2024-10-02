@@ -108,7 +108,7 @@ let
     farbfeld
     farbfeld-utils   # BG img
     xmobar                        # just xmobar
-    st                            # suckless terminals
+    (st-flexipatch.override { patchNames = [ "SIXEL" ]; }) # suckless terminals
     xst                           # suckless terminals
     pavucontrol                   # Volume control
     zathura                       # zathura
@@ -194,7 +194,7 @@ let
   shellAliases = {
     nix-callPackage = "nix-callPackage-from ./.";
     nix-callPackage-from = ''function __nix-callPackage-from() { nix build -L --impure --expr "(import <nixpkgs> {}).callPackage $1 {}"; }; __nix-callPackage-from'';
-    nix-visit-src = ''function __nix-visit-src() { nix build -L --impure --expr "with (import <nixpkgs> {}); srcOnly $1"; }; __nix-visit-src'';
+
     nix-run = ''function __nix-run() { nix run "nixpkgs#$1" "''${@:2}"; }; __nix-run'';
     nix-repl = "nix repl '<nixpkgs>'";
     nix-which = "function __nix-which() { readlink $(which $1); }; __nix-which";
@@ -330,7 +330,13 @@ in
       git.package = pkgs.gitFull;
 
       tmux = {
-        package = pkgs.tmux;
+        package = (pkgs.tmux.overrideAttrs (old: {
+          postPatch = (old.postPatch or "")
+            + ''
+              substituteInPlace input.c \
+                --replace "#define INPUT_BUF_LIMIT 1048576" "#define INPUT_BUF_LIMIT 10485760"
+            '';
+        }));
         prefix = "C-j";
         keyMode = "vi";
         sensibleOnTop = true;
@@ -350,8 +356,6 @@ in
             set-option -g automatic-rename-format '#{b:pane_current_path}'
 
             set -s escape-time 0
-
-            set -ag terminal-overrides ",xterm-256color:RGB"
           '';
       };
 

@@ -168,47 +168,7 @@ self: super: rec {
 
   texmacs = super.texmacs.override { koreanFonts = true; };
 
-  st-flexipatch = super.st.overrideAttrs (old:
-    let
-      inherit (self) fetchFromGitHub;
-
-      wallpaper-ff =
-        let
-          inherit (self) runCommand farbfeld farbfeld-utils;
-          wallpaper-jpg = ../wallpaper.jpg;
-        in runCommand "wallpaper.ff" {
-          inherit wallpaper-jpg;
-          buildInputs = [ farbfeld farbfeld-utils ]; }
-          "jpg2ff < ${wallpaper-jpg} | ff-border e 50 | ff-bright rgba 0 0.9 1.0 | ff-blur 50 15 > $out";
-
-      pixelsize = 14;
-
-    in
-      {
-
-        src = fetchFromGitHub {
-          owner = "bakkeby";
-          repo = "st-flexipatch";
-          rev = "34cd955f148709e5adc5fce380f6528944f144e2";
-          hash = "sha256-R5NZ/9c2uea1WxZ5sFvlCf+zzFvo7E3CM4iiXLYZasA=";
-        };
-
-        postPatch = ''
-          substituteInPlace patches.def.h \
-            --replace "BACKGROUND_IMAGE_PATCH 0" "BACKGROUND_IMAGE_PATCH 1" \
-            --replace "SIXEL_PATCH 0" "SIXEL_PATCH 1" \
-            --replace "ALPHA_PATCH 0" "ALPHA_PATCH 0" \
-            --replace "ALPHA_FOCUS_HIGHLIGHT_PATCH 0" "ALPHA_FOCUS_HIGHLIGHT_PATCH 0"
-
-          substituteInPlace config.mk \
-            --replace "#SIXEL_C" "SIXEL_C"
-
-          substituteInPlace config.def.h \
-            --replace "/path/to/image.ff" "${wallpaper-ff}" \
-            --replace "pseudotransparency = 0" "pseudotransparency = 1" \
-            --replace "float alpha = 0.8;" "float alpha = 0.9;" \
-            --replace ":pixelsize=12:" ":pixelsize=${toString pixelsize}:"
-      '';});
+  st-flexipatch = self.callPackage ../pkgs/st-flexipatch {};
 
   st = let
     patches = let inherit (self) fetchurl; in {
