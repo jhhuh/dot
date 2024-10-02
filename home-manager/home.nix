@@ -203,7 +203,10 @@ let
     nix-where-from = "function __nix-where-from() { nix-build $1 -A $2 --no-out-link; }; __nix-where-from";
     nix-where = "nix-where-from '<nixpkgs>'";
     nix-show-tree = "function __nix-show-tree() { nix-shell -p tree --run 'tree $(nix-where $1)'; }; __nix-show-tree";
+
     nix-visit = "function __nix-visit() { pushd $(nix-where $1); }; __nix-visit";
+    nix-visit-src = ''function __nix-visit-src() { pushd $(nix build -L --impure --expr "with (import <nixpkgs> {}); srcOnly $1" --no-link --print-out-paths); }; __nix-visit-src'';
+
     nix-X-help-in-Y = "function __nix-X-help-in-Y() { $(nix-where w3m)/bin/w3m $1/share/doc/$2; }; __nix-X-help-in-Y";
     nix-help = "nix-X-help-in-Y $(nix-where nix.doc) nix/manual/index.html";
     nix-outpath = "nix-build --no-out-link '<nixpkgs>' -A";
