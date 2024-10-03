@@ -227,8 +227,8 @@ let
       "--run ipython"
     ];
 
-    ec = emacsCommand config.programs.emacs.package;
-    vi = emacsCommand config.programs.emacs.package;
+    ec = emacsCommand config.programs.emacs.finalPackage;
+    vi = emacsCommand config.programs.emacs.finalPackage;
 
     start-emacs    = "systemctl start  --user emacs.service && systemctl status --user emacs.service";
     restart-emacs  = "systemctl restart  --user emacs.service";
