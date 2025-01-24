@@ -38,23 +38,40 @@ in
 
     # TODO: Make UPG as a nix module so that it is more composable
     users = users-and-groups-with-UPG {
-      users."jhhuh" = {
-          isNormalUser = true;
-          extraGroups = [
-            "wheel"
-            "video"
-            "vboxusers"
-            "lxd"
-            "networkmanager"
-            "libvirtd"
-            "ipfs"
-            "podman"
-            "docker"
-            "incus-admin"
-            "disk" ];
-          openssh.authorizedKeys.keys = jhhuh-pubkeys;
-          uid = 1000;
-        };
+      users = {
+        "jhhuh" = {
+            isNormalUser = true;
+            extraGroups = [
+              "wheel"
+              "video"
+              "vboxusers"
+              "lxd"
+              "networkmanager"
+              "libvirtd"
+              "ipfs"
+              "podman"
+              "docker"
+              "incus-admin"
+              "disk"
+              "dialout"
+              "adbusers"
+              "plugdev"
+              ];
+            openssh.authorizedKeys.keys = jhhuh-pubkeys;
+            uid = 1000;
+          };
+        
+        "guest" = {
+            isNormalUser = true;
+            extraGroups = [
+              "podman"
+              "docker"
+              ];
+            openssh.authorizedKeys.keys = jhhuh-pubkeys;
+            uid = 1001;
+          };
+      };
+
     };
 
   }

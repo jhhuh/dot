@@ -7,6 +7,7 @@
     nixpkgs_22_11.url = github:nixos/nixpkgs/nixos-22.11;
     nixpkgs_23_05.url = github:nixos/nixpkgs/nixos-23.05;
     nixpkgs_23_11.url = github:nixos/nixpkgs/nixos-23.11;
+    nixpkgs_24_11.url = github:nixos/nixpkgs/nixos-24.11;
     flake-utils.url = github:numtide/flake-utils;
     deploy-rs.url = github:serokell/deploy-rs;
     microvm.url = github:astro/microvm.nix;
@@ -73,7 +74,7 @@
               };
 
               p1gen3 = {
-                nixpkgs = inputs.nixpkgs_23_11;
+                nixpkgs = inputs.nixpkgs_24_11;
                 stateVersion = "22.11";
               };
 
@@ -116,12 +117,12 @@
 
       flake-utils.lib.eachSystem ["x86_64-linux"] (system:
         let
-          pkgs = import inputs.nixpkgs_22_11 { inherit system; };
+          pkgs = import inputs.nixpkgs_24_11 { inherit system; };
           inherit (inputs.deploy-rs.packages.${system}) deploy-rs;
         in
           {
             packages = {
-              local-deploy = pkgs.writeScriptBin "local-deploy" ''
+              local-deploy = pkgs.writeShellScriptBin "local-deploy" ''
                   HOSTNAME=`hostname`
                   echo "***************************************************"
                   echo "$ sudo nixos-rebuild switch --flake \".#$HOSTNAME\""

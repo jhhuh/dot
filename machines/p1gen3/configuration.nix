@@ -1,4 +1,4 @@
-{ config, pkgs, stateVersion, ... }:
+{ config, pkgs, stateVersion, lib, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -21,6 +21,7 @@
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
+    inputMethod.package = lib.mkForce (pkgs.kime.overrideAttrs { RUSTFLAGS="-Clink-args=-L./target/release"; });
     inputMethod = {
       enabled = "kime";
     };
@@ -107,6 +108,7 @@
       '';   
     };
 
+  #services.xserver.windowManager.stumpwm.enable = true;
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.xmonad.enableContribAndExtras = true;
 
@@ -124,19 +126,22 @@
 
   services.xserver.layout = "us";
 
-  # services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    cups-pdf.enable = true;
+  };
 
-  sound.enable = true;
+  systemd.services.cups.environment.LD_LIBRARY_PATH = config.system.nssModules.path;
+
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+  };
 
   hardware = {
     acpilight.enable = true;
     bluetooth.enable = true;
     enableAllFirmware = true;
-    pulseaudio = {
-      enable = true;
-      extraModules = [];
-      package = pkgs.pulseaudioFull;
-    };
     trackpoint = {
       enable = true;
       emulateWheel = true;
@@ -147,6 +152,7 @@
   hardware.opengl.enable = true;
   hardware.opengl.driSupport32Bit = true;
 
+  hardware.nvidia.open = true;
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.prime.sync.enable = true;
   hardware.nvidia.prime = {
@@ -166,7 +172,7 @@
     noto-fonts
     noto-fonts-emoji
     noto-fonts-extra
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     ubuntu_font_family
     hack-font
   ];
@@ -193,6 +199,8 @@
   # environment.lsb.support32Bit = true;
 
   programs.slock.enable = true;
+
+  programs.adb.enable = true;
 
   services.openssh = {
     enable = true;
