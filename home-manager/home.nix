@@ -140,8 +140,8 @@ let
     pciutils
     acpi
     unzip
-    binutils
     jq
+    xq
     loc
     tree
     ripgrep
@@ -188,6 +188,14 @@ let
     (pkgs.callPackage ./pkgs/vastai {})
 
     distrobox
+
+    arduino-ide
+
+    nixpkgs-channels.unstable.nyxt
+
+    inputs.devenv.packages.${system}.devenv
+
+    galaxy-buds-client
   ];
 
 
@@ -240,7 +248,7 @@ let
 
     ipython-for-crawl = lib.concatStringsSep " " [
       "nix-shell"
-      ''-p "python3.withPackages (p: with p; [ ipython requests beautifulsoup4 ])"''
+      ''-p "python3.withPackages (p: with p; [ ipython requests beautifulsoup4 pandas openpyxl ])"''
       "--run ipython"
     ];
 
@@ -327,6 +335,7 @@ in
       neovim.vimdiffAlias = true;
 
       emacs.package = pkgs.emacs29;
+
       emacs.extraPackages = epkgs: with epkgs; [
         all-the-icons
         vterm
@@ -377,6 +386,8 @@ in
             set-option -g automatic-rename-format '#{b:pane_current_path}'
 
             set -s escape-time 0
+
+            set -g status off
           '';
       };
 
@@ -385,6 +396,9 @@ in
         inherit shellAliases bashrcExtra;
         inherit (config.home) sessionVariables;
         historyControl = [ "erasedups" "ignoredups" "ignorespace" ];
+        initExtra = ''
+          [[ -f ~/.bashrcInitExtra ]] && . ~/.bashrcInitExtra
+        '';
       };
 
       starship.enableBashIntegration = true;
