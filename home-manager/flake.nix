@@ -3,11 +3,11 @@
 
   inputs = {
 
-    nixpkgs.url = github:nixos/nixpkgs/nixos-24.05;
+    nixpkgs.url = github:nixos/nixpkgs/nixos-24.11;
 
     nixpkgs-unstable.url = github:nixos/nixpkgs/nixos-unstable;
 
-    home-manager.url = github:nix-community/home-manager/release-24.05;
+    home-manager.url = github:nix-community/home-manager/release-24.11;
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     declarative-cachix.url = github:jonascarpay/declarative-cachix;
@@ -15,9 +15,6 @@
     nix-init.url = github:nix-community/nix-init;
 
     emacs-overlay.url = github:nix-community/emacs-overlay;
-
-    doom-emacs.url = github:doomemacs/doomemacs;
-    doom-emacs.flake = false;
 
     x86-manpages-nix.url = github:blitz/x86-manpages-nix;
     x86-manpages-nix.flake = false;
@@ -49,6 +46,7 @@
         (import ./overlays/03-myPackages.nix)
         (import ./overlays/04-myEnvs.nix)
         (import ./overlays/05-prefer-remote-fetch.nix)
+        (next: prev: { galaxy-buds-client = inputs.galaxy-buds-client.packages.${system}.default; })
       ];
 
       pkgs = import inputs.nixpkgs { inherit system config overlays; };
