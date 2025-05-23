@@ -1,11 +1,11 @@
-Config { font = "UbuntuMono Nerd Font 18"
+Config { font = "UbuntuMono Nerd Font 25"
        , additionalFonts = []
-       , borderColor = "#2c2c2c"
-       , border = TopB
-       , bgColor = "#2c2c2c"
-       , fgColor = "gray"
+       , borderColor = "black"
+       , border = NoBorder
+       , bgColor = "#937591"
+       , fgColor = "black"
        , alpha = 255
-       , position = BottomH 48
+       , position = BottomSize C 100 40
        , textOffset = -1
        , iconOffset = -1
        , lowerOnStart = True

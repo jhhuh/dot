@@ -25,6 +25,7 @@ import XMonad.Hooks.DynamicLog (
   statusBar,
   xmobarPP,
   PP(..),
+
   xmobarColor,
   xmobarStrip,
   shorten,wrap)
@@ -64,8 +65,8 @@ desktop = ewmhFullscreen . ewmh $ def {
  }
 
 conf = desktop {
-  borderWidth = 4,
-  focusedBorderColor = "#00FF00",
+  borderWidth = 0,
+  focusedBorderColor = "#000000",
   terminal = "st -f \"UbuntuMono Nerd Font:pixelsize=36\"",
   modMask = mod4Mask,
   keys = keys desktop <+> myKeys,
@@ -84,7 +85,7 @@ conf = desktop {
 
 myStartupHook =
   spawn "xset r rate 250 50"
- <+> spawn "feh --bg-scale /home/jhhuh/wallpapers/theWallpaper"
+ <+> spawn "hsetroot -solid '#937591' -cover ~/wallpapers/theWallpaper"
 -- <+> spawn "compton -CGcf -i 0.7 -I 1.0 -O 1.0 -D 0 --detect-client-leader"
  <+> spawn "source ~/.screenlayout/default.sh"
 
@@ -111,7 +112,7 @@ myKeys XConfig { modMask = modm }
           "  xmessage xmonad not in \\$PATH: \"$PATH\"",
           "fi"] ),
       ( (modm .|. controlMask, xK_F7),
-        spawn $ "xrandr --auto" ),
+        spawn $ "xrandr --auto; pkill picom" ),
       ( (modm .|. controlMask, xK_F8),
         spawn $ "source ~/.screenlayout/default.sh" ),
       ( (modm .|. controlMask, xK_F9),
@@ -142,8 +143,8 @@ myKeys XConfig { modMask = modm }
         namedScratchpadAction scratchpads "keybase-gui"),
       ( (modm .|. controlMask, xK_g),
         namedScratchpadAction scratchpads "nixpkgs-search"),
-      ( (modm .|. controlMask, xK_semicolon),
-        namedScratchpadAction scratchpads "browser"),
+      -- ( (modm .|. controlMask, xK_semicolon),
+      --   namedScratchpadAction scratchpads "browser"),
       ( (modm .|. controlMask, xK_u),
         sendMessage $ IncGap 5 D ),
       ( (modm .|. controlMask, xK_d ),
@@ -168,41 +169,25 @@ myKeys XConfig { modMask = modm }
       , ( (modm, xK_z), withFocused $ floatToRationalRect myLeft)
       , ( (modm, xK_x), withFocused $ floatToRationalRect myLeftCenter)
       -- , ( (modm .|. shiftMask .|. controlMask, xK_c), withFocused $ floatToRationalRect myCenterSmall)
-      , ( (modm .|. shiftMask, xK_f), withFocused $ floatToRationalRect myFocus)
+      , ( (modm .|. shiftMask, xK_f), withFocused $ floatToRationalRect myFocusBig)
       , ( (modm, xK_c), withFocused $ floatToRationalRect myCenter)
       , ( (modm, xK_v), withFocused $ floatToRationalRect myRightCenter)
       , ( (modm, xK_b), withFocused $ floatToRationalRect myRight)
-      , ( (modm, xK_f), withFocused $ floatToRationalRect myFull)
-      , ( (modm .|. mod1Mask,  xK_a), windows copyToAll ) -- Pin to all workspaces
-      , ( (modm .|. mod1Mask .|. controlMask, xK_a), killAllOtherCopies ) -- remove window from all but current
-      , ( (modm .|. mod1Mask .|. shiftMask, xK_a), kill1 ) -- remove window from current, kill if only one
+      , ( (modm, xK_f), withFocused $ floatToRationalRect myFocus)
+      , ( (modm,  xK_a), windows copyToAll ) -- Pin to all workspaces
+      , ( (modm .|. controlMask, xK_a), killAllOtherCopies ) -- remove window from all but current
+      , ( (modm .|. shiftMask, xK_a), kill1 ) -- remove window from current, kill if only one
     ]
 
 
-myFocus :: W.RationalRect
-myFocus = W.RationalRect (1/6) (1/6) (2/3) (2/3)
-
-myCenter :: W.RationalRect
-myCenter = W.RationalRect (4 / 32) (1 / 32) (24 / 32) (30 / 32)
-
-myFull :: W.RationalRect
-myFull = W.RationalRect (0 / 32) (0 / 32) (32 / 32) (32 / 32)
-
-myRight :: W.RationalRect
-myRight = W.RationalRect (33 / 64) (1 / 32) (15 / 32) (30 / 32)
-
-myLeft :: W.RationalRect
-myLeft = W.RationalRect (1 / 64) (1 / 32) (15 / 32) (30 / 32)
-
--- myTopCenter :: W.RationalRect
--- myTopCenter = W.RationalRect (1 / 32) (1 / 32) (30 / 32) (16 / 32)
-
-
-myRightCenter :: W.RationalRect
-myRightCenter = W.RationalRect (10 / 32) (1 / 32) (21 / 32) (30 / 32) -- px py wx wy
-
-myLeftCenter :: W.RationalRect
-myLeftCenter = W.RationalRect (1 / 64) (1 / 32) (21 / 32) (30 / 32)
+myCenter, myFocus, myFocusBig, myLeft, myRight, myLeftCenter, myRightCenter:: W.RationalRect
+myCenter      = W.RationalRect ( 8 / 32) (1 / 32) (16 / 32) (30 / 32)
+myFocus       = W.RationalRect ( 1 /  6) (1 /  6) ( 2 /  3) (2  /  3)
+myFocusBig    = W.RationalRect ( 2 / 32) (2 / 32) (28 / 32) (28 / 32)
+myLeft        = W.RationalRect ( 1 / 64) (1 / 32) (15 / 32) (30 / 32)
+myRight       = W.RationalRect (33 / 64) (1 / 32) (15 / 32) (30 / 32)
+myLeftCenter  = W.RationalRect ( 1 / 64) (1 / 32) (21 / 32) (30 / 32)
+myRightCenter = W.RationalRect (10 / 32) (1 / 32) (21 / 32) (30 / 32)
 
 
 floatToRationalRect :: W.RationalRect -> Window -> X ()
@@ -249,18 +234,18 @@ scratchpads =
     ("vimpc",     "vimpc",     1/2,   1/6,  5/12,  2/3),
     ("ranger",    "ranger",    1/6,   1/6,  2/3,   2/3)
   ] ++
-  [ NS "xst" "xst -A 192 -T xst-alpha -f \"Liberation Mono:pixelsize=24\""
+  [ NS "xst" "st -A 0.5 -T xst-alpha -f \"Liberation Mono:pixelsize=24\""
        (title =? "xst-alpha")
        (customFloating $
-         W.RationalRect (2/400) (2/300) (396/400) (98/300)),
-    NS "terminal" ("st -f \"UbuntuMono Nerd Font:pixelsize=36\" -T st-256color-scratchpad -e bash -i -c 'tmux new-session -A -s scratch'")
+         W.RationalRect (0/400) (300/400) (400/400) (100/400)),
+    NS "terminal" ("st -A 0.9 -f \"UbuntuMono Nerd Font:pixelsize=36\" -T st-256color-scratchpad -e bash -i -c 'tmux new-session -A -s scratch'")
        (title =? "st-256color-scratchpad")
        (customFloating $
          W.RationalRect (1/6) (1/6) (2/3) (2/3)),
-    NS "browser" ("(firefox && sleep 1 && xdotool search --onlyvisible --class firefox) | head -n1 | xargs xdotool set_window --class firefox-scratchpad")
-       (className =? "firefox-scratchpad")
-       (customFloating $
-         W.RationalRect (1/6) (1/6) (2/3) (2/3)),
+    -- NS "browser" ("(firefox && sleep 1 && xdotool search --onlyvisible --class firefox) | head -n1 | xargs xdotool set_window --class firefox-scratchpad")
+    --    (className =? "firefox-scratchpad")
+    --    (customFloating $
+    --      W.RationalRect (1/6) (1/6) (2/3) (2/3)),
     NS "kotatogram-desktop" "kotatogram-desktop"
        (className =? "KotatogramDesktop")
        (customFloating $
@@ -296,7 +281,7 @@ scratchpads =
           = NS name (terminalCmd++cmd)
                (title =? name )
                (customFloating $ W.RationalRect px py w h)
-        terminalCmd = "st -e "
+        terminalCmd = "st -A 0.9 -f \"UbuntuMono Nerd Font:pixelsize=36\" -e "
 
 scratchpadHook = namedScratchpadManageHook scratchpads
 
@@ -321,26 +306,24 @@ myBar = unwords [
   "/home/jhhuh/.xmonad/xmobar.sh",
   "/home/jhhuh/.xmonad/xmobar.hs"]
 
+
 -- Custom PP.
 myXmobarPP = xmobarPP
-    { ppCurrent = xmobarColor "#f8f8f8"
-                              "DodgerBlue4"
-                    . wrap " " " "
-    , ppVisible = xmobarColor "#f8f8f8"
-                              "LightSkyBlue4"
-                    . wrap " " " "
-    , ppUrgent  = xmobarColor "#f8f8f8"
-                              "red4"
-                    . wrap " " " "
-                    . xmobarStrip
-    , ppLayout  = wrap "" ""
-                    . xmobarColor "DarkOrange" ""
-                    . wrap " [" "] "
-    , ppTitle   = xmobarColor "#61ce3c" ""
-                    . shorten 50
-    , ppSep     = ""
-    , ppWsSep   = " "
-    }
+    -- { ppCurrent = xmobarColor "white" ""
+    --                 . wrap "[" "]"
+    -- , ppVisible = xmobarColor "black" ""
+    --                 . wrap "" ""
+    -- , ppUrgent  = xmobarColor "black" "red"
+    --                 . wrap "!" "!"
+    --                 . xmobarStrip
+    -- , ppLayout  = wrap "" ""
+    --                 . xmobarColor "blue4" ""
+    --                 . wrap "{" "}"
+    -- , ppTitle   = xmobarColor "black" ""
+    --                 . shorten 50
+    -- , ppSep     = " <> "
+    -- , ppWsSep   = "|"
+    -- }
 
 toggleStrutsKey XConfig {XMonad.modMask = modMask}
   = (modMask .|. shiftMask, xK_b)
