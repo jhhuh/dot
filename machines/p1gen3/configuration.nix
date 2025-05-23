@@ -6,13 +6,17 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_6_1;
+  #boot.kernelPackages = pkgs.linuxPackages_6_1;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
 
   boot.kernelParams = [
     # ''wireguard.dyndbg="module wireguard +p"''
     #"i915.enable_psr=0"
     "nvme_core.default_ps_max_latency_us=0"
+    "psmouse.synaptics_intertouch=0"
   ];
+
+  # boot.binfmt.emulatedSystems = [ "wasm32-wasi" "wasm64-wasi" ];
 
   networking.hostName = "p1gen3";
   networking.networkmanager.enable = true;
@@ -223,7 +227,7 @@
 
   services.prometheus.exporters = {
     node = {
-      enable = true;
+      enable = false;
       enabledCollectors = [ "systemd" ];
       port = 9002;
     };
