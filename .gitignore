@@ -3,3 +3,4 @@
 .*.swp
 .syncthing.*.tmp
 /doom.d/autosave
+doom.d/.projectile
