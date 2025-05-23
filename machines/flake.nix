@@ -8,6 +8,7 @@
     nixpkgs_23_05.url = github:nixos/nixpkgs/nixos-23.05;
     nixpkgs_23_11.url = github:nixos/nixpkgs/nixos-23.11;
     nixpkgs_24_11.url = github:nixos/nixpkgs/nixos-24.11;
+    nixpkgs_25_05.url = github:nixos/nixpkgs/nixos-25.05;
     flake-utils.url = github:numtide/flake-utils;
     deploy-rs.url = github:serokell/deploy-rs;
     microvm.url = github:astro/microvm.nix;
@@ -66,7 +67,7 @@
             __mapAttrs mkNixosSystem {
 
               x230 = {
-                nixpkgs = inputs.nixpkgs_22_11;
+                nixpkgs = inputs.nixpkgs_25_05;
                 stateVersion = "22.11";
               };
 
@@ -78,11 +79,11 @@
               p1gen3 = {
                 nixpkgs = inputs.nixpkgs_24_11;
                 stateVersion = "22.11";
-		modules = [
+                modules = [
                   inputs.chaotic.nixosModules.nyx-cache
                   inputs.chaotic.nixosModules.nyx-overlay
                   inputs.chaotic.nixosModules.nyx-registry
-	        ];
+                ];
               };
 
               aero15.nixpkgs = inputs.nixpkgs_22_11;
