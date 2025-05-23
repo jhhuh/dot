@@ -32,8 +32,8 @@ let
   packages-for-server = with pkgs; [
     inputs.devenv.packages.${system}.devenv
     unzip
-    binutils
-    jq loc tree ripgrep
+    #binutils
+    jq xq loc tree ripgrep
     htop
     parallel
     mosh
@@ -57,7 +57,7 @@ let
     #
     # Messenger
     #
-    signal-desktop
+    nixpkgs-channels.unstable.signal-desktop
     discordo
 
     # DB
@@ -66,7 +66,7 @@ let
 
     # Screenshot
     scrot
-    gnome.gnome-screenshot
+    gnome-screenshot
 
     # Nix-{related,specific}
     patchelf
@@ -80,8 +80,6 @@ let
 
     # Compilers/interpreters-related
     sbcl
-    cabal-install
-    ghcid
     cabal2nix
     nodejs
 
@@ -104,16 +102,18 @@ let
 
     # Packages that my `xmonad.hs` depends on
     picom            # Transparency
+    hsetroot
     feh
     farbfeld
     farbfeld-utils   # BG img
     xmobar                        # just xmobar
-    (st-flexipatch.override { patchNames = [ "SIXEL" ]; }) # suckless terminals
+    (st-flexipatch.override { patchNames = [ "ALPHA" "SIXEL" ]; }) # suckless terminals
     xst                           # suckless terminals
     pavucontrol                   # Volume control
     zathura                       # zathura
     scrcpy                        # Android mirroring
     ranger                        # TUI File manager
+    ghostty
 
     # Network
     sshuttle
@@ -160,8 +160,25 @@ let
     poetry
     passphrase2pgp
 
-    haskellPackages.implicit-hie
-    ghc
+    #ghcup
+    #(stdenv.cc.override {
+    #  extraPackages = [ gmp.dev ];
+    #})
+    #gnumake
+    #pkg-config
+    #gmp
+    #gmp.dev
+    #ncurses
+
+    cabal-install
+    nixpkgs-channels.unstable.haskell.compiler.ghc910
+    nixpkgs-channels.unstable.ghcid
+    (nixpkgs-channels.unstable.haskell-language-server.override { supportedGhcVersions = [ "965" "966" "910" ]; })
+    nixpkgs-channels.unstable.haskellPackages.implicit-hie
+
+    lua54Packages.luarocks-nix
+    lua54Packages.lua
+
     stack
 
     git-crypt
@@ -196,7 +213,7 @@ let
     nix-callPackage-from = ''function __nix-callPackage-from() { nix build -L --impure --expr "(import <nixpkgs> {}).callPackage $1 {}"; }; __nix-callPackage-from'';
 
     nix-run = ''function __nix-run() { nix run "nixpkgs#$1" "''${@:2}"; }; __nix-run'';
-    nix-repl = "nix repl '<nixpkgs>'";
+    nix-repl = "nix repl -f '<nixpkgs>'";
     nix-which = "function __nix-which() { readlink $(which $1); }; __nix-which";
     nix-unpack-from = "function __nix-unpack-from() { nix-shell $1 -A $2 --run unpackPhase; }; __nix-unpack-from";
     nix-unpack = "nix-unpack-from '<nixpkgs>'";
@@ -240,26 +257,27 @@ let
   };
 
 
-  bashrcExtra = ''
-        MYBASE16THEME_x230="flat"
-        MYBASE16THEME_aero15="atelier-dune-light"
-        MYBASE16THEME_cafe="rebecca"
-        MYBASE16THEME_dasan="irblack"
-        MYBASE16THEME_farmer1="irblack"
-        MYBASE16THEME_farmer2="irblack"
-        #MYBASE16THEME_laptop-aa6mgb61="irblack"
-        MYBASE16THEME_mimir="irblack"
-        MYBASE16THEME_p1gen3="dracula" # "one-light" # "nord"
-        MYBASE16THEME_roekstonen="irblack"
-        MYBASE16THEME_zhao="irblack"
+   bashrcExtra = ''
+         MYBASE16THEME_x230="flat"
+         MYBASE16THEME_aero15="atelier-dune-light"
+         MYBASE16THEME_cafe="rebecca"
+         MYBASE16THEME_dasan="irblack"
+         MYBASE16THEME_farmer1="irblack"
+         MYBASE16THEME_farmer2="irblack"
+         #MYBASE16THEME_laptop-aa6mgb61="irblack"
+         MYBASE16THEME_mimir="irblack"
+         MYBASE16THEME_p1gen3="dracula" # "one-light" # "nord"
+         MYBASE16THEME_roekstonen="irblack"
+         MYBASE16THEME_zhao="irblack"
 
-        _MYBASE16THEME="MYBASE16THEME_$HOSTNAME"
+         _MYBASE16THEME="MYBASE16THEME_$HOSTNAME"
 
-        export MYBASE16THEME="''${!_MYBASE16THEME}"
-         if [ "''${-#*i}" != "$-" ] && [ -n "$PS1" ] && [ -f ${inputs.base16-shell}/scripts/base16-$MYBASE16THEME.sh ]; then
-           source ${inputs.base16-shell}/scripts/base16-$MYBASE16THEME.sh
-         fi
-      '';
+         export MYBASE16THEME="''${!_MYBASE16THEME}"
+          if [ "''${-#*i}" != "$-" ] && [ -n "$PS1" ] && [ -f ${inputs.base16-shell}/scripts/base16-$MYBASE16THEME.sh ]; then
+            source ${inputs.base16-shell}/scripts/base16-$MYBASE16THEME.sh
+          fi
+       '';
+
 in
 
 {
@@ -375,8 +393,8 @@ in
           disabled = false;
           impure_msg = "";
           symbol = "";
-          format = "[$symbol$state]($style) ";
-          heuristic = true;
+          #format = "[$symbol$state]($style) ";
+          heuristic = false;
         };
         shlvl = {
           disabled = false;
@@ -399,7 +417,10 @@ in
 
   home = {
     inherit stateVersion username homeDirectory packages;
-    sessionVariables = { inherit EDITOR NIX_PATH; };
+    sessionVariables = {
+      inherit EDITOR NIX_PATH;
+      WEBKIT_DISABLE_DMABUF_RENDERER = 1;
+    };
     sessionPath = [
       "$HOME/bin"
       "$HOME/.config/emacs/bin"
@@ -407,8 +428,9 @@ in
       "$HOME/.cargo/bin"
     ];
     file = __mapAttrs (_: source: { inherit source; }) {
-      inherit (inputs) home-manager nixpkgs;
-      home-pkgs = pkgs.linkFarmFromDrvs "home-pkgs" config.home.packages;
+      ".home-manager" = inputs.home-manager;
+      ".nixpkgs" = inputs.nixpkgs;
+      ".home-pkgs" = pkgs.linkFarmFromDrvs "home-pkgs" config.home.packages;
     };
   };
 
