@@ -7,6 +7,8 @@ XTerm*metaSendsEscape: true
 !XTerm*font: xft:Liberation Mono :pixelsize=18
 XTerm*font: xft:UbuntuMono Nerd Font:pixelsize=48
 XTerm*ximFont: xft:Noto Sans Mono CJK KR:pixelsize=18
+XTerm.*.decTerminalID: vt340
+XTerm.*.numColorRegisters: 256
 
 !!! Xcursor !!!
 Xcursor.size: 50
@@ -52,5 +54,3 @@ URxvt.color-themes.autosave: 1
 URxvt.keysym.M-C-l:  perl:color-themes:load-state
 URxvt.keysym.M-C-s:  perl:color-themes:save-state
 
-st.font:         JetBrains Mono Nerd Font:pixelsize=18:antialias=true:autohint=true;
-st.opacity:      223
