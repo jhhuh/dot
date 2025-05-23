@@ -29,7 +29,7 @@
 
     devenv.url = github:cachix/devenv;
 
-    haskell-language-server.url = github:haskell/haskell-language-server/2.1.0.0;
+    galaxy-buds-client.url = github:jhhuh/GalaxyBudsClient/nixflake;
 
   };
 
