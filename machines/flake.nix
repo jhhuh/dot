@@ -12,6 +12,8 @@
     deploy-rs.url = github:serokell/deploy-rs;
     microvm.url = github:astro/microvm.nix;
 
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+
   };
 
   outputs = inputs@{ self, flake-utils, ... }:
@@ -36,7 +38,7 @@
         nixosConfigurations =
           let
 
-            mkNixosSystem =  host-name: { nixpkgs, stateVersion ? "22.05", system ? "x86_64-linux" }:
+            mkNixosSystem =  host-name: { nixpkgs, stateVersion ? "22.05", system ? "x86_64-linux", modules ? [] }:
               nixpkgs.lib.nixosSystem {
                 inherit system;
                 modules = [
@@ -57,7 +59,7 @@
 
                   (./. + "/${host-name}/configuration.nix")
 
-                ];
+                ] ++ modules;
               };
 
           in
@@ -76,6 +78,11 @@
               p1gen3 = {
                 nixpkgs = inputs.nixpkgs_24_11;
                 stateVersion = "22.11";
+		modules = [
+                  inputs.chaotic.nixosModules.nyx-cache
+                  inputs.chaotic.nixosModules.nyx-overlay
+                  inputs.chaotic.nixosModules.nyx-registry
+	        ];
               };
 
               aero15.nixpkgs = inputs.nixpkgs_22_11;
