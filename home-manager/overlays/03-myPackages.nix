@@ -1,5 +1,7 @@
 self: super: rec {
 
+  ghcup = self.callPackage ../pkgs/ghcup {};
+
   rmview = self.libsForQt5.callPackage ../pkgs/rmview {};
 
   all-hackage-sources =
@@ -169,60 +171,6 @@ self: super: rec {
   texmacs = super.texmacs.override { koreanFonts = true; };
 
   st-flexipatch = self.callPackage ../pkgs/st-flexipatch {};
-
-  st = let
-    patches = let inherit (self) fetchurl; in {
-
-      dracula = fetchurl {
-        url = "https://st.suckless.org/patches/dracula/st-dracula-0.8.5.diff";
-        sha256 = "0ldy43y2xa8q54ci6ahxa3iimfb4hmjsbclkmisx0xjr88nazzhz";
-      };
-
-      nord = fetchurl {
-        url = "https://st.suckless.org/patches/nordtheme/st-nordtheme-0.8.5.diff";
-        sha256 = "Tlpp1HD4vl/c88UxI1t4rS7nDEzMkDeyW7/opIv4Rf8=";
-      };
-
-      background-image = fetchurl {
-        url = "https://st.suckless.org/patches/background_image/st-background-image-0.8.5.diff";
-        sha256 ="19a5dq1vyhviyvi7qr7w679r53vgvfypdv2bkx1h2p6zkgbzys0j";
-      };
-
-      fullscreen = fetchurl {
-        url = "https://st.suckless.org/patches/fullscreen/st-fullscreen-0.8.5.diff";
-        sha256 = "1njsd4nv5lxxyc7a3fawf7jz585bwwqlqnvggwmc4zb25bcz92gq";
-      };
-
-      xrandrfontsize = fetchurl {
-        url = "https://st.suckless.org/patches/xrandrfontsize/xrandrfontsize-0.8.4-20211224-2f6e597.diff";
-        sha256 = "olDdxC6RSw5KxWsEQFVvfOtFa4sWvPqdwLcNU03NZq4=";
-      };
-
-    };
-    
-    wallpaper-ff =
-      let
-        inherit (self) runCommand farbfeld farbfeld-utils;
-        wallpaper-jpg = ../wallpaper.jpg;
-      in runCommand "wallpaper.ff" {
-        inherit wallpaper-jpg;
-        buildInputs = [ farbfeld farbfeld-utils ]; }
-        "jpg2ff < ${wallpaper-jpg} | ff-border e 50 | ff-bright rgba 0 0.5 1 | ff-blur 50 15 > $out";
-
-    pixelsize = 14;
-
-  in (super.st.override {
-    patches = [
-      #patches.dracula
-      #patches.background-image
-      #patches.fullscreen
-    ];}).overrideAttrs (_: {
-        postPatch = ''
-          substituteInPlace config.def.h \
-            --replace "/path/to/image.ff" "${wallpaper-ff}" \
-            --replace "pseudotransparency = 0" "pseudotransparency = 1" \
-            --replace ":pixelsize=12:" ":pixelsize=${toString pixelsize}:"
-      '';});
 
   myEmacs = self.emacsWithPackages (epkg: with epkg; [ emacs-libvterm ]);
 
