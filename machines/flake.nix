@@ -135,7 +135,7 @@
                   echo "***************************************************"
                   echo "$ sudo nixos-rebuild switch --flake \".#$HOSTNAME\""
                   echo "***************************************************"
-                  sudo nixos-rebuild switch --flake ".#$HOSTNAME" --print-build-logs
+                  NIX_SSHOPTS="-A" nixos-rebuild switch --flake ".#$HOSTNAME" --print-build-logs --target-host "$HOSTNAME" --use-remote-sudo
                 '';
             };
 
